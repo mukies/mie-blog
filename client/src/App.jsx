@@ -1,7 +1,13 @@
-import "./App.css";
+// import Nav from "./components/Navbar";
+import Register from "./pages/Register";
 
 function App() {
-  return <div>helo world</div>;
+  return (
+    <div className="text-black">
+      {/* <Nav /> */}
+      <Register />
+    </div>
+  );
 }
 
 export default App;
