@@ -9,7 +9,7 @@ export default function Nav() {
     <div className="navbar sticky top-0 bg-base-300 px-10">
       <div className="flex-1 gap-4 md:justify-between  ">
         <span className="nav-title cursor-pointer text-3xl font-bold text-[#316FF6]">
-          Mie
+          Mie!
         </span>
 
         <label className="input input-bordered hidden md:flex items-center gap-2">

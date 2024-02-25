@@ -1,11 +1,22 @@
+import { Link } from "react-router-dom";
+
 export default function Register() {
   return (
-    <div className="h-[100dvh] w-screen flex justify-center items-center">
-      <div className="md:h-[70%] md:w-[50%] flex flex-col gap-10 justify-center items-center  ">
+    <div className="h-auto md:h-[100dvh] w-screen bg-base-300 flex md:flex-row gap-14 md:gap-20 px-5 flex-col justify-center items-center">
+      <div className="md:h-[70%] md:w-[35%] gap-3 flex justify-center  items-center md:items-start flex-col">
+        <h1 className="text-[#316ff6]  font-bold text-5xl">Mie!</h1>
+        <p className="w-[25rem] text-center md:text-left  md:w-[20rem] lg:w-[27rem] text-2xl lg:text-3xl font-semibold md:px-0 px-3 ">
+          Connect with friends and the world around you on Mie!
+        </p>
+      </div>
+      <div className="md:h-[70%]  py-4 w-[25rem] flex bg-white rounded-xl flex-col  md:gap-10 gap-5 justify-center items-center  ">
         <p className="text-3xl font-bold">
           Register to <span className="text-[#316ff6]">Mie!</span>
         </p>
-        <form className="form-control gap-2 md:h-[70%] md:w-[60%]">
+        <form
+          onSubmit={(e) => e.preventDefault()}
+          className="form-control gap-2 md:h-[70%] md:w-[60%]"
+        >
           <label className="input input-bordered flex items-center gap-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -64,14 +75,39 @@ export default function Register() {
               placeholder="Confirm Password"
             />
           </label>
+          <div className="flex gap-4">
+            <label className=" flex gap-2 items-center cursor-pointer">
+              <span className="font-semibold text-sm">Male</span>
+              <input
+                type="radio"
+                name="radio-10"
+                className="radio checked:bg-red-500"
+                checked
+              />
+            </label>
+            <label className=" flex gap-2 items-center cursor-pointer">
+              <span className="font-semibold text-sm">Female</span>
+
+              <input
+                type="radio"
+                name="radio-10"
+                className="radio checked:bg-red-500"
+                checked
+              />
+            </label>
+          </div>
+
           <button className="btn bg-[#316FF6] hover:bg-[#283e6b] text-white font-semibold">
             Sign up
           </button>
           <p>
             Already have an account ?{" "}
-            <span className="cursor-pointer text-[#316ff6] font-bold">
+            <Link
+              to="/login"
+              className="cursor-pointer text-[#316ff6] font-bold"
+            >
               Login
-            </span>{" "}
+            </Link>{" "}
           </p>
         </form>
       </div>
