@@ -1,65 +1,56 @@
-import { IoMdVideocam } from "react-icons/io";
 import { MdPermMedia } from "react-icons/md";
+import CreatePost from "../components/CreatePost";
+import { FaUserFriends } from "react-icons/fa";
+import Post from "../components/Post";
 
 export default function Profile() {
   return (
     <div className=" bg-base-200">
       <div>
         {/* cover img  */}
-        <div className="h-[45vh] relative">
-          <img
-            className="h-full object-cover object-center w-full"
-            src="/cover.jpg"
-            alt="cover-image"
-          />
-        </div>
-        <div className="relative  h-[35vh]">
-          <div className="w-[25%] overflow-hidden absolute top-[0%] left-[2%] translate-y-[-50%] ">
+
+        <div className="flex flex-col ">
+          {/* cover and profile  */}
+          <div className="relative h-[400px]  w-full">
             <img
-              className="rounded-full"
-              src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-              alt="profile-picture"
+              className="h-[70%] object-cover object-center w-full"
+              src="/cover.jpg"
+              alt="cover-image"
             />
-            <div className="border-2 border-red-400 flex justify-center py-3">
-              <h1 className="text-3xl font-bold">Mukesh Bhattarai</h1>
+            <div className="absolute flex flex-col items-center  translate-x-[-50%] translate-y-[-50%] left-[50%] top-[70%]">
+              <img
+                className="  h-[170px] w-[170px] rounded-full border-[5px] border-white  object-cover object-center"
+                alt="Tailwind CSS Navbar component"
+                src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+              />
+              <div className=" flex flex-col items-center">
+                <h1 className="text-2xl text-nowrap md:text-3xl font-bold">
+                  mukesh Bhattarai
+                </h1>
+                <span className="text-xl text-gray-600 font-semibold">
+                  50 friends
+                </span>
+              </div>
             </div>
           </div>
         </div>
         <div className="divider m-0 p-0"></div>
         {/* feed  */}
-        <div className="max-w-[768px] mx-auto">
+        <div className="max-w-[768px] flex flex-col gap-5 mx-auto">
           {/* create post  */}
-          <div className=" flex py-3 justify-center flex-col gap-3">
-            <div className="flex bg-white rounded-3xl justify-between mx-auto gap-3  w-[80%] py-2 md:p-5 items-center">
-              <div className="w-[60px] rounded-full overflow-hidden cursor-pointer">
-                <img
-                  alt="Tailwind CSS Navbar component"
-                  className=""
-                  src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                />
-              </div>
-              <div className="flex-1">
-                <input
-                  type="text"
-                  placeholder="What's on your mind..."
-                  className="input w-full bg-gray-200 md:input-lg sm:input-md  rounded-3xl"
-                />
-              </div>
-            </div>
-            <div className="w-[80%] flex justify-between mx-auto px-5">
-              <div className="flex items-center gap-2 cursor-pointer hover:bg-gray-300 rounded-lg duration-200 px-4 py-3">
-                <IoMdVideocam size={30} color="#8b0000" />
-                <span className="text-lg font-semibold">Live</span>
-              </div>
-              <div className="flex items-center gap-2 cursor-pointer hover:bg-gray-300 rounded-lg duration-200 px-4 py-3">
-                <MdPermMedia size={30} color="#316ff6" />
-                <span className="text-lg font-semibold">Photo/Video</span>
-              </div>
-              <button className="btn btn-success rounded-xl font-bold text-white">
-                Post
-              </button>
-            </div>
+          <div className="bg-gray-300 w-[70%] mx-auto rounded-lg p-2 flex justify-around ">
+            <p className=" flex items-center gap-2 p-3 rounded-lg hover:bg-gray-100 duration-200 cursor-pointer">
+              <FaUserFriends />{" "}
+              <span className="text-xl font-semibold">All Friends</span>
+            </p>
+            <p className=" flex items-center gap-2 p-3 rounded-lg hover:bg-gray-100 duration-200 cursor-pointer">
+              <MdPermMedia />{" "}
+              <span className="text-xl font-semibold">Your Photos</span>
+            </p>
           </div>
+          <CreatePost />
+          <span className="text-xl font-semibold">Posts</span>
+          <Post />
         </div>
       </div>
     </div>

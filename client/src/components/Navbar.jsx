@@ -6,7 +6,7 @@ import "../index.css";
 
 export default function Nav() {
   return (
-    <div className="navbar nav-bar sticky top-0 bg-base-300 px-10 ">
+    <div className="navbar nav-bar sticky top-0 bg-base-300 px-10 z-[100] ">
       <div className="flex-1 gap-4 md:justify-between  ">
         <span className="nav-title cursor-pointer text-3xl font-bold text-[#316FF6]">
           Mie!
