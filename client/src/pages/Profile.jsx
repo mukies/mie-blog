@@ -7,8 +7,6 @@ export default function Profile() {
   return (
     <div className=" bg-base-200">
       <div>
-        {/* cover img  */}
-
         <div className="flex flex-col ">
           {/* cover and profile  */}
           <div className="relative h-[400px]  w-full">
@@ -37,7 +35,6 @@ export default function Profile() {
         <div className="divider m-0 p-0"></div>
         {/* feed  */}
         <div className="max-w-[768px] flex flex-col gap-5 mx-auto">
-          {/* create post  */}
           <div className="bg-gray-300 w-[70%] mx-auto rounded-lg p-2 flex justify-around ">
             <p className=" flex items-center gap-2 p-3 rounded-lg hover:bg-gray-100 duration-200 cursor-pointer">
               <FaUserFriends />{" "}
@@ -48,6 +45,7 @@ export default function Profile() {
               <span className="text-xl font-semibold">Your Photos</span>
             </p>
           </div>
+          {/* create post  */}
           <CreatePost />
           <span className="text-xl font-semibold">Posts</span>
           <Post />

@@ -3,7 +3,7 @@ import Post from "./Post";
 
 export default function Feed() {
   return (
-    <div className=" max-w-[768px] mx-auto  ">
+    <div className=" ">
       <div>
         <CreatePost />
         <div className="divider m-0 p-0"></div>

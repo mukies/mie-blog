@@ -7,10 +7,15 @@ import Profile from "./pages/Profile";
 import PostPage from "./pages/PostPage";
 import PageNotFound from "./pages/PageNotFound";
 import AdminHome from "./pages/admin/AdminHome";
+import ManageChats from "./pages/admin/ManageChats";
+import ManageUsers from "./pages/admin/ManageUsers";
+import UserDetails from "./components/layout/admin/UserDetails";
+import UserFriendsPage from "./pages/admin/UserFriendsPage";
+import AdminLogin from "./pages/admin/AdminLogin";
 
 function App() {
   return (
-    <div className="text-black">
+    <div>
       {/* <Nav /> */}
       <Routes>
         <Route path="/" element={<Home />} />
@@ -18,7 +23,13 @@ function App() {
         <Route path="/post" element={<PostPage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/mie-admin" element={<AdminLogin />} />
+        {/* admin routes */}
         <Route path="/admin" element={<AdminHome />} />
+        <Route path="/admin/chats" element={<ManageChats />} />
+        <Route path="/admin/users" element={<ManageUsers />} />
+        <Route path="/admin/users/:id" element={<UserDetails />} />
+        <Route path="/admin/users/friend-list" element={<UserFriendsPage />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </div>
