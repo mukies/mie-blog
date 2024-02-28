@@ -8,9 +8,10 @@ export default function Post() {
     "hello wowrsjkjds dj fs fkssjfkskfkf d djkdj skdjsdj jsdsdkjfs hsjhfhjdjfhgdjfgdjfdgjfhdfjdfhfdjfjhdfhf dfjdfjhsdfj jh kjhkjhdkfh kjdfjhfkjdfh jhfjkdk jfkjdfkjkjs jk sjdkskjsfk  s fs fkssjfkskfkf d djkdj skdjsdj jsdsdkjfs sjdkskjsfk  s fs fkssjfkskfkf d djkdj skdjsdj jsdsdkjfs sjdkskjsfk  s fs fkssjfkskfkf99";
   return (
     <div className=" flex flex-col gap-3 border-2 rounded-xl bg-white w-full px-4 py-5 ">
-      <div className=" flex flex-col gap-5">
+      {/* content  */}
+      <div className=" flex flex-col gap-5 ">
         {/* title  */}
-        <div className="flex items-center gap-4">
+        <div className="flex  px-3 items-center gap-4">
           <div className="w-10 overflow-hidden rounded-full">
             <img
               alt="Tailwind CSS Navbar component"
