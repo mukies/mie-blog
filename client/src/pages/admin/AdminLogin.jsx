@@ -1,3 +1,6 @@
+/* eslint-disable react/no-unescaped-entities */
+import { Link } from "react-router-dom";
+
 export default function AdminLogin() {
   return (
     <div className=" h-[100dvh] py-5  bg-base-300 flex md:flex-row gap-14 md:gap-20 px-5 flex-col justify-center items-center">
@@ -47,6 +50,15 @@ export default function AdminLogin() {
           <button className="btn bg-[#316FF6] hover:bg-[#283e6b] text-white font-semibold">
             Login
           </button>
+          <p>
+            Didn't have an account ?{" "}
+            <Link
+              to="/mie-reg"
+              className="cursor-pointer text-[#316ff6] font-bold"
+            >
+              Sign Up
+            </Link>{" "}
+          </p>
         </form>
       </div>
     </div>

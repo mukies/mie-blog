@@ -12,6 +12,7 @@ import ManageUsers from "./pages/admin/ManageUsers";
 import UserDetails from "./components/layout/admin/UserDetails";
 import UserFriendsPage from "./pages/admin/UserFriendsPage";
 import AdminLogin from "./pages/admin/AdminLogin";
+import AdminRegister from "./pages/admin/AdminRegister";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/mie-admin" element={<AdminLogin />} />
+        <Route path="/mie-reg" element={<AdminRegister />} />
         {/* admin routes */}
         <Route path="/admin" element={<AdminHome />} />
         <Route path="/admin/chats" element={<ManageChats />} />
