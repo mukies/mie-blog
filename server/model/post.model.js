@@ -9,7 +9,7 @@ const postSchema = new mongoose.Schema(
     },
     textContent: { type: String },
     mediaContent: { type: String },
-    likes: { type: Number, default: 0 },
+    likes: { type: [mongoose.Schema.Types.ObjectId], ref: "User", default: [] },
     comments: [
       {
         commentedBy: {
@@ -18,7 +18,11 @@ const postSchema = new mongoose.Schema(
           required: true,
         },
         content: { type: String, required: true },
-        likes: { type: Number, default: 0 },
+        likes: {
+          type: [mongoose.Schema.Types.ObjectId],
+          ref: "User",
+          default: [],
+        },
       },
     ],
   },
