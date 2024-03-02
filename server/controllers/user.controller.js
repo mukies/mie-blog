@@ -26,12 +26,23 @@ exports.login = async (req, res) => {
 
       if (isRegister) {
         //    password check
-        console.log(isRegister.password);
         const isMatched = await bcrypt.compare(password, isRegister.password);
 
         if (isMatched) {
           // get jwt token and send cookie
-          getToken(isRegister, res);
+          getToken(isRegister._id, res);
+
+          res.json({
+            success: true,
+            message: "Login Successful.",
+            data: {
+              _id: isRegister._id,
+              fullName: isRegister.fullName,
+              username: isRegister.username,
+              email: isRegister.email,
+              isFrozen: isRegister.isFrozen,
+            },
+          });
         } else {
           res.json({
             success: false,
@@ -100,6 +111,59 @@ exports.register = async (req, res) => {
     res.json({
       success: false,
       message: "try catch error",
+    });
+  }
+};
+
+exports.logout = async (req, res) => {
+  res.cookie("jwt", "", { maxAge: 0 });
+  res.json({ success: true, message: "logout successfully" });
+};
+
+exports.followUnfollow = async (req, res) => {
+  const othersID = req.params.id;
+  const currentUserID = req.user._id;
+
+  if (othersID == currentUserID.toString())
+    return res.json({
+      success: false,
+      message: "you can not follow yourself.",
+    });
+
+  // check if the user is already folowed or not
+  const isFollowing = req.user.followings.includes(othersID);
+
+  if (isFollowing) {
+    // unfollow or remove from my following list
+    await userModel.findByIdAndUpdate(
+      { _id: currentUserID },
+      { $pull: { followings: othersID } }
+    );
+    //  remove from others followers list
+    await userModel.findByIdAndUpdate(
+      { _id: othersID },
+      { $pull: { followers: currentUserID } }
+    );
+
+    res.json({
+      success: true,
+      message: "removed from following list",
+    });
+  } else {
+    // add into my following list
+    await userModel.findByIdAndUpdate(
+      { _id: currentUserID },
+      { $push: { followings: othersID } }
+    );
+    //  add into others followers list
+    await userModel.findByIdAndUpdate(
+      { _id: othersID },
+      { $push: { followers: currentUserID } }
+    );
+
+    res.json({
+      success: true,
+      message: "added to following list",
     });
   }
 };
