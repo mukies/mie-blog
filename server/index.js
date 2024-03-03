@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const cookie = require("cookie-parser");
 const userRoutes = require("./routes/user.route");
+const postRoutes = require("./routes/post.route");
 require("dotenv").config();
 
 // database
@@ -13,6 +14,7 @@ app.use(cookie());
 
 // routes
 app.use("/api/user", userRoutes);
+app.use("/api/post", postRoutes);
 
 const port = process.env.PORT;
 app.listen(port, () => {

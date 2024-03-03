@@ -124,46 +124,167 @@ exports.followUnfollow = async (req, res) => {
   const othersID = req.params.id;
   const currentUserID = req.user._id;
 
-  if (othersID == currentUserID.toString())
-    return res.json({
+  try {
+    if (othersID == currentUserID.toString())
+      return res.json({
+        success: false,
+        message: "you can not follow yourself.",
+      });
+
+    // check if the user is already folowed or not
+    const isFollowing = req.user.followings.includes(othersID);
+
+    if (isFollowing) {
+      // unfollow or remove from my following list
+      await userModel.findByIdAndUpdate(
+        { _id: currentUserID },
+        { $pull: { followings: othersID } }
+      );
+      //  remove from others followers list
+      await userModel.findByIdAndUpdate(
+        { _id: othersID },
+        { $pull: { followers: currentUserID } }
+      );
+
+      res.json({
+        success: true,
+        message: "removed from following list",
+      });
+    } else {
+      // add into my following list
+      await userModel.findByIdAndUpdate(
+        { _id: currentUserID },
+        { $push: { followings: othersID } }
+      );
+      //  add into others followers list
+      await userModel.findByIdAndUpdate(
+        { _id: othersID },
+        { $push: { followers: currentUserID } }
+      );
+
+      res.json({
+        success: true,
+        message: "added to following list",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.json({
       success: false,
-      message: "you can not follow yourself.",
+      message: "try catch error in follow and unfollow controller.",
     });
+  }
+};
 
-  // check if the user is already folowed or not
-  const isFollowing = req.user.followings.includes(othersID);
+exports.updateProfile = async (req, res) => {
+  const { fullName, username } = req.body;
+  const userID = req.user._id;
 
-  if (isFollowing) {
-    // unfollow or remove from my following list
-    await userModel.findByIdAndUpdate(
-      { _id: currentUserID },
-      { $pull: { followings: othersID } }
-    );
-    //  remove from others followers list
-    await userModel.findByIdAndUpdate(
-      { _id: othersID },
-      { $pull: { followers: currentUserID } }
-    );
+  try {
+    if (userID) {
+      const user = await userModel.findById(userID);
+      if (user) {
+        user.fullName = fullName || user.fullName;
+        if (username) {
+          user.username = "@" + username;
+        }
 
+        await user.save();
+        res.json({
+          success: true,
+          message: "user details has been updated.",
+        });
+      } else {
+        res.json({
+          success: false,
+          message: "User  not found",
+        });
+      }
+    } else {
+      res.json({
+        success: false,
+        message: "User ID not found",
+      });
+    }
+  } catch (error) {
+    console.log(error);
     res.json({
-      success: true,
-      message: "removed from following list",
+      success: false,
+      message: "try catch error in profile update controller.",
     });
-  } else {
-    // add into my following list
-    await userModel.findByIdAndUpdate(
-      { _id: currentUserID },
-      { $push: { followings: othersID } }
-    );
-    //  add into others followers list
-    await userModel.findByIdAndUpdate(
-      { _id: othersID },
-      { $push: { followers: currentUserID } }
-    );
+  }
+};
 
+exports.changePassword = async (req, res) => {
+  const { newPassword, oldPassword } = req.body;
+  const userID = req.user._id;
+  try {
+    if (userID) {
+      const user = await userModel.findById(userID);
+      if (user) {
+        if (oldPassword && newPassword) {
+          // check if the old password is correct or not
+
+          const isCorrect = await bcrypt.compare(oldPassword, user.password);
+          if (isCorrect) {
+            // hash the new password
+
+            const hashedPassword = await bcrypt.hash(newPassword, 10);
+            user.password = hashedPassword;
+            await user.save();
+
+            res.json({
+              success: true,
+              message: "Your Password has been changed.",
+            });
+          } else {
+            res.json({
+              success: false,
+              message: "Incorrect Password.",
+            });
+          }
+        } else {
+          res.json({
+            success: false,
+            message: "Please fill all the fields.",
+          });
+        }
+      } else {
+        res.json({
+          success: false,
+          message: "user not found.",
+        });
+      }
+    } else {
+      res.json({
+        success: false,
+        message: "User ID not found.",
+      });
+    }
+  } catch (error) {
+    console.log(error);
     res.json({
-      success: true,
-      message: "added to following list",
+      success: false,
+      message: "try catch error in profile update controller.",
+    });
+  }
+};
+
+exports.getUser = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await userModel.findById(id).select("-password");
+    if (!user) {
+      return res.json({ success: false, message: "user not found." });
+    } else {
+      res.json({ success: true, message: "user found.", user });
+    }
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success: false,
+      message: "try catch error in get user controller.",
+      error,
     });
   }
 };
