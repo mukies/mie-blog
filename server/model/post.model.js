@@ -7,8 +7,8 @@ const postSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    textContent: { type: String },
-    mediaContent: { type: String },
+    text: { type: String },
+    image: { type: String },
     likes: { type: [mongoose.Schema.Types.ObjectId], ref: "User", default: [] },
     comments: [
       {
@@ -31,6 +31,6 @@ const postSchema = new mongoose.Schema(
   }
 );
 
-const postModel = mongoose.model("Posts", postSchema);
+const postModel = mongoose.model("Post", postSchema);
 
 module.exports = postModel;
