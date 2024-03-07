@@ -1,11 +1,52 @@
+/* eslint-disable react/prop-types */
+import axios from "axios";
 import { useState } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { MdOutlineChat } from "react-icons/md";
 
-export default function Post() {
-  const [like, setLike] = useState(false);
-  const text2 =
-    "hello wowrsjkjds dj fs fkssjfkskfkf d djkdj skdjsdj jsdsdkjfs hsjhfhjdjfhgdjfgdjfdgjfhdfjdfhfdjfjhdfhf dfjdfjhsdfj jh kjhkjhdkfh kjdfjhfkjdfh jhfjkdk jfkjdfkjkjs jk sjdkskjsfk  s fs fkssjfkskfkf d djkdj skdjsdj jsdsdkjfs sjdkskjsfk  s fs fkssjfkskfkf d djkdj skdjsdj jsdsdkjfs sjdkskjsfk  s fs fkssjfkskfkf99";
+export default function Post({ item: items }) {
+  const auth = JSON.parse(localStorage.getItem("_L"));
+  const [item, setItem] = useState(items);
+  const [like, setLike] = useState(item.likes.includes(auth._id));
+  const [comment, setComment] = useState("");
+  const [loading, setLoading] = useState(false);
+  const text = item.text;
+
+  // like and unlike
+  const handleLike = async () => {
+    if (item.likes.includes(auth._id)) {
+      setItem({ ...item, likes: item.likes.filter((id) => id !== auth._id) });
+    } else {
+      setItem({ ...item, likes: [...item.likes, auth._id] });
+    }
+    setLike((p) => !p);
+    await axios.put(`/api/post/like-unlike/${item._id}`);
+  };
+
+  // commenting
+
+  const handleComment = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.post(`/api/post/add-comment/${item._id}`, {
+        text: comment,
+      });
+      if (data.success) {
+        setItem({
+          ...item,
+          comments: [...item.comments, { topic: "new comment added" }],
+        });
+        setComment("");
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className=" flex flex-col gap-3 border-2 rounded-xl bg-white w-full px-4 py-5 ">
       {/* content  */}
@@ -19,7 +60,7 @@ export default function Post() {
             />
           </div>
           <div className="flex flex-col gap-0">
-            <h1 className="text-xl font-semibold">Mukesh Bhattarai</h1>
+            <h1 className="text-xl font-semibold">{item.postedBy.fullName}</h1>
             <span className="text-gray-700">Just now</span>
           </div>
         </div>
@@ -27,8 +68,8 @@ export default function Post() {
         {/* text content  */}
         <div>
           <p className="">
-            {text2.length < 300 ? text2 : text2.substring(0, 300) + "..."}
-            {text2.length < 300 ? (
+            {text.length < 300 ? text : text.substring(0, 300) + "..."}
+            {text.length < 300 ? (
               ""
             ) : (
               <span className="text-blue-700 cursor-pointer text-lg">
@@ -49,12 +90,20 @@ export default function Post() {
       <div className="flex items-center gap-5 w-[90%] mx-auto">
         <div className="flex items-center gap-3">
           <FaHeart size={15} color="#316ff6" />
-          <span>5 likes</span>
+          <span>
+            {item.likes.length
+              ? `${item.likes.length} Likes`
+              : "Be the first to Like."}
+          </span>
         </div>
-        <div className="flex items-center gap-3">
-          <MdOutlineChat size={17} color="#316ff6" />
-          <span>3 comments</span>
-        </div>
+        {item.comments.length ? (
+          <div className="flex items-center gap-3">
+            <MdOutlineChat size={17} color="#316ff6" />
+            <span>{item.comments.length} comments</span>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
       <div className="divider m-0 p-0 w-[90%] mx-auto"></div>
 
@@ -63,17 +112,21 @@ export default function Post() {
         <div className="flex w-full items-center gap-[50px]">
           {/* <p>50 people likes this.</p> */}
           <div className="flex  items-center gap-3">
-            {like ? (
+            {like || item.likes.includes(auth._id) ? (
               <FaHeart
                 className="cursor-pointer"
-                onClick={() => setLike((p) => !p)}
+                onClick={() => {
+                  handleLike();
+                }}
                 size={30}
                 color="#316ff6"
               />
             ) : (
               <FaRegHeart
                 className="cursor-pointer"
-                onClick={() => setLike((p) => !p)}
+                onClick={() => {
+                  handleLike();
+                }}
                 size={30}
                 color="#316ff6"
               />
@@ -91,11 +144,25 @@ export default function Post() {
         </div>
         <div className=" hidden md:flex items-center gap-1">
           <input
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
             type="text"
             className="input input-accent input-md"
             placeholder="write a comment"
           />
-          <button className="btn btn-md btn-primary">send</button>
+          <button
+            disabled={loading}
+            onClick={handleComment}
+            className="btn btn-md btn-primary"
+          >
+            {loading ? (
+              <>
+                <span className="loading loading-spinner"></span>
+              </>
+            ) : (
+              <span>send</span>
+            )}
+          </button>
         </div>
       </div>
     </div>

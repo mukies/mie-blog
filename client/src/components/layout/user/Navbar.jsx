@@ -1,10 +1,17 @@
 import { IoChatbubbleEllipsesSharp } from "react-icons/io5";
-import { FaBell } from "react-icons/fa";
+// import { FaBell } from "react-icons/fa";
 import { IoSearchOutline } from "react-icons/io5";
+import { BsFillPeopleFill } from "react-icons/bs";
 import "../../../index.css";
-// import { Link } from "react-router-dom";
+import axios from "axios";
 
 export default function Nav() {
+  const logout = async () => {
+    localStorage.removeItem("_L");
+    await axios.post("/api/user/logout");
+    window.location.reload();
+    // navigate("/");
+  };
   return (
     <div className="navbar nav-bar sticky top-0 bg-base-300 px-10 z-[100] ">
       <div className="flex-1 gap-4 md:justify-between  ">
@@ -27,7 +34,7 @@ export default function Nav() {
             <IoChatbubbleEllipsesSharp size={30} color="#316FF6" />
           </span>
           <span className="btn btn-circle">
-            <FaBell size={30} color="#316FF6" />
+            <BsFillPeopleFill size={30} color="#316FF6" />
           </span>
           <span className="btn btn-md  flex justify-center items-center  btn-circle md:hidden">
             <IoSearchOutline size={30} color="#316FF6" />
@@ -56,7 +63,7 @@ export default function Nav() {
             <li>
               <a>Settings</a>
             </li>
-            <li>
+            <li onClick={logout}>
               <a>Logout</a>
             </li>
           </ul>

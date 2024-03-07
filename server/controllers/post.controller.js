@@ -209,9 +209,13 @@ exports.getFeedPost = async (req, res) => {
   try {
     const feedPost = await postModel
       .find({
-        postedBy: { $in: user.followings },
+        $or: [
+          { postedBy: { $in: user.followings } },
+          { postedBy: req.user._id },
+        ],
       })
-      .populate("postedBy", "fullName username profilePic");
+      .populate("postedBy", "fullName username profilePic")
+      .sort({ createdAt: -1 });
     res.json({
       success: true,
       message: "feed post found.",

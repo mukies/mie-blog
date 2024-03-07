@@ -1,6 +1,26 @@
-import { Link } from "react-router-dom";
+/* eslint-disable react/no-unescaped-entities */
+import { useState } from "react";
+import Register from "./Register";
+import { useLogin } from "../hooks/useLogin";
 
 export default function Login() {
+  const [register, setRegister] = useState(false);
+  // form states for login
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  // login hooks
+  const { login, loading } = useLogin();
+
+  const handleLogin = () => {
+    if (!username || !password) {
+      alert("enter username and password to login.");
+    } else {
+      login(username, password);
+      console.log({ username, password });
+    }
+  };
+
   return (
     <div className=" h-[100dvh] py-5  bg-base-300 flex md:flex-row gap-14 md:gap-20 px-5 flex-col justify-center items-center">
       <div className="md:h-[70%] md:w-[35%] h-auto gap-3 flex justify-center  items-center md:items-start flex-col">
@@ -14,7 +34,9 @@ export default function Login() {
           Login to <span className="text-[#316ff6]">Mie!</span>
         </p>
         <form
-          onSubmit={(e) => e.preventDefault()}
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
           className="form-control gap-2 md:h-[70%]  md:w-[60%]"
         >
           <label className="input input-bordered flex items-center gap-2">
@@ -22,12 +44,18 @@ export default function Login() {
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 16 16"
               fill="currentColor"
-              className="w-4 h-4 opacity-70"
+              className="w-4 h-4 opacity-70 hidden sm:flex"
             >
               <path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" />
               <path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
             </svg>
-            <input type="email" className="grow" placeholder="Email" />
+            <input
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              type="text"
+              className="grow"
+              placeholder="Username or Email"
+            />
           </label>
 
           <label className="input input-bordered flex items-center gap-2">
@@ -35,7 +63,7 @@ export default function Login() {
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 16 16"
               fill="currentColor"
-              className="w-4 h-4 opacity-70"
+              className="w-4 h-4 opacity-70 hidden sm:flex"
             >
               <path
                 fillRule="evenodd"
@@ -43,19 +71,49 @@ export default function Login() {
                 clipRule="evenodd"
               />
             </svg>
-            <input type="password" className="grow" placeholder="Password" />
+            <input
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              type="password"
+              className="grow"
+              placeholder="Password"
+            />
           </label>
 
-          <button className="btn bg-[#316FF6] hover:bg-[#283e6b] text-white font-semibold">
-            Login
+          <button
+            disabled={loading}
+            onClick={handleLogin}
+            className="btn bg-[#316FF6] hover:bg-[#283e6b] text-white font-semibold"
+          >
+            {loading ? (
+              <>
+                <span className="loading loading-spinner"></span>
+              </>
+            ) : (
+              <span>Login</span>
+            )}
           </button>
           <p>
             Didn't have an account ?{" "}
-            <Link to="/" className="cursor-pointer text-[#316ff6] font-bold">
+            <button
+              onClick={() => setRegister((p) => !p)}
+              className="cursor-pointer text-[#316ff6] font-bold"
+            >
               Sign Up
-            </Link>{" "}
+            </button>{" "}
           </p>
         </form>
+      </div>
+      <div
+        className={
+          register
+            ? "fixed bg-[#000000be] top-0 left-0 right-0 bottom-0 flex justify-center items-center"
+            : "fixed top-0 left-0 right-0 bottom-0 hidden justify-center items-center"
+        }
+      >
+        <div>
+          <Register setRegister={setRegister} />
+        </div>
       </div>
     </div>
   );
