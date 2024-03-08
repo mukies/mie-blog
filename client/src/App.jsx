@@ -23,7 +23,7 @@ function App() {
         <Route path="/" element={auth ? <Home /> : <Login />} />
         {/* <Route path="/" element={<Home />} /> */}
         <Route element={<ProtectedRoute />}>
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/:username" element={<Profile />} />
         </Route>
         <Route path="/post/:id" element={<PostPage />} />
         {/* <Route path="/login" element={<Login />} /> */}

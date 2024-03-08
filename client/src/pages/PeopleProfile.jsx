@@ -1,19 +1,16 @@
-import { MdPermMedia } from "react-icons/md";
-import CreatePost from "../components/CreatePost";
-import { FaUserFriends } from "react-icons/fa";
+import { useEffect } from "react";
 import Post from "../components/Post";
+import { MdPermMedia } from "react-icons/md";
+import { FaUserFriends } from "react-icons/fa";
 import Layout from "../components/layout/user/Layout";
 import { useProfilePost } from "../hooks/useProfilePost";
-import { useEffect } from "react";
-import { useParams } from "react-router-dom";
 
-export default function Profile() {
+export default function PeopleProfile() {
   const { getProfilePost, loading, posts } = useProfilePost();
   const auth = JSON.parse(localStorage.getItem("_L"));
-  const { username } = useParams();
 
   useEffect(() => {
-    getProfilePost(username);
+    getProfilePost(auth?._id);
   }, []);
   return (
     <Layout>
@@ -53,38 +50,21 @@ export default function Profile() {
           <div className="divider m-0 p-0"></div>
           {/* feed  */}
           <div className="max-w-[768px] flex flex-col gap-5 mx-auto">
-            <div
-              className={
-                username == auth?.username
-                  ? "bg-gray-300 w-[90%] md:w-[80%] mx-auto rounded-lg p-2 flex justify-around "
-                  : "bg-gray-300 w-[90%] md:w-auto mx-auto rounded-lg p-2 flex justify-around "
-              }
-            >
-              {username == auth?.username && (
-                <p className=" flex items-center gap-2 py-3 px-4 rounded-lg hover:bg-gray-100 duration-200 cursor-pointer">
-                  <FaUserFriends />{" "}
-                  <span className=" text-sm text-nowrap md:text-[17px] font-semibold">
-                    Followers
-                  </span>
-                </p>
-              )}
-              {username == auth?.username && (
-                <p className=" flex items-center gap-2 py-3 px-4 rounded-lg hover:bg-gray-100 duration-200 cursor-pointer">
-                  <FaUserFriends />{" "}
-                  <span className=" text-sm text-nowrap md:text-[17px] font-semibold">
-                    Followings
-                  </span>
-                </p>
-              )}
+            <div className="bg-gray-300 w-[90%] md:w-[70%] mx-auto rounded-lg p-2 flex justify-around ">
+              <p className=" flex items-center gap-2 py-3 px-4 rounded-lg hover:bg-gray-100 duration-200 cursor-pointer">
+                <FaUserFriends />{" "}
+                <span className=" text-sm text-nowrap md:text-xl font-semibold">
+                  All Friends
+                </span>
+              </p>
               <p className=" flex items-center gap-2 py-3 px-4 rounded-lg hover:bg-gray-100 duration-200 cursor-pointer">
                 <MdPermMedia />{" "}
-                <span className=" text-sm text-nowrap md:text-[17px] font-semibold">
-                  {username == auth?.username ? "Your" : ""} Photos
+                <span className=" text-sm text-nowrap md:text-xl font-semibold">
+                  Your Photos
                 </span>
               </p>
             </div>
-            {/* create post  */}
-            {auth?.username == username && <CreatePost />}
+
             <span className="text-xl font-semibold">Posts</span>
             {/* <Post /> */}
             <div className="flex flex-col mb-3 gap-5">

@@ -1,7 +1,11 @@
-import { useState } from "react";
+/* eslint-disable react-refresh/only-export-components */
+/* eslint-disable react/prop-types */
 import axios from "axios";
+import { createContext, useContext, useState } from "react";
 
-export const useFeed = () => {
+const FeedContext = createContext();
+
+const FeedProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState([]);
 
@@ -21,5 +25,13 @@ export const useFeed = () => {
       setLoading(false);
     }
   };
-  return { getFeedPost, loading, posts, setPosts };
+  return (
+    <FeedContext.Provider value={{ posts, loading, getFeedPost, setPosts }}>
+      {children}
+    </FeedContext.Provider>
+  );
 };
+
+const useFeed = () => useContext(FeedContext);
+
+export { useFeed, FeedProvider };

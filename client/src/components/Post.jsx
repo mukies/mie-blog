@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
 import axios from "axios";
 import { useState } from "react";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { FaHeart, FaRegHeart, FaTrash } from "react-icons/fa";
 import { MdOutlineChat } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 export default function Post({ item: items }) {
   const auth = JSON.parse(localStorage.getItem("_L"));
@@ -11,6 +12,7 @@ export default function Post({ item: items }) {
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
   const text = item.text;
+  const navigate = useNavigate();
 
   // like and unlike
   const handleLike = async () => {
@@ -52,7 +54,7 @@ export default function Post({ item: items }) {
       {/* content  */}
       <div className=" flex flex-col gap-5 ">
         {/* title  */}
-        <div className="flex  px-3 items-center gap-4">
+        <div className="flex relative px-3 items-center gap-4">
           <div className="w-10 overflow-hidden rounded-full">
             <img
               alt="Tailwind CSS Navbar component"
@@ -63,10 +65,17 @@ export default function Post({ item: items }) {
             <h1 className="text-xl font-semibold">{item.postedBy.fullName}</h1>
             <span className="text-gray-700">Just now</span>
           </div>
+          {item.postedBy._id == auth?._id && (
+            <div className="absolute btn btn-circle right-0 top-[50%] translate-y-[-50%]">
+              <span>
+                <FaTrash color="red" />
+              </span>
+            </div>
+          )}
         </div>
 
         {/* text content  */}
-        <div>
+        <div className="w-[90%] bg-gray-200 p-3 rounded-md overflow-hidden md:w-[80%] duration-200 transition-all  mx-auto">
           <p className="">
             {text.length < 300 ? text : text.substring(0, 300) + "..."}
             {text.length < 300 ? (
@@ -79,18 +88,23 @@ export default function Post({ item: items }) {
           </p>
         </div>
         {/* image content  */}
-        <div className="w-[99%] rounded-2xl overflow-hidden md:w-[90%] duration-200 transition-all h-[80vh] mx-auto ">
-          <img
-            className=" w-full h-full object-cover object-center"
-            alt="Tailwind CSS Navbar component"
-            src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-          />
-        </div>
+        {item.image && (
+          <div
+            onClick={() => navigate(`/post/${item._id}`)}
+            className="w-[90%] cursor-pointer rounded-2xl overflow-hidden md:w-[80%] duration-200 transition-all h-[70vh] mx-auto "
+          >
+            <img
+              className=" w-full h-full object-cover object-center"
+              alt="Tailwind CSS Navbar component"
+              src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+            />
+          </div>
+        )}
       </div>
       <div className="flex items-center gap-5 w-[90%] mx-auto">
         <div className="flex items-center gap-3">
           <FaHeart size={15} color="#316ff6" />
-          <span>
+          <span className="text-sm">
             {item.likes.length
               ? `${item.likes.length} Likes`
               : "Be the first to Like."}
@@ -99,7 +113,7 @@ export default function Post({ item: items }) {
         {item.comments.length ? (
           <div className="flex items-center gap-3">
             <MdOutlineChat size={17} color="#316ff6" />
-            <span>{item.comments.length} comments</span>
+            <span className="text-sm">{item.comments.length} comments</span>
           </div>
         ) : (
           ""
@@ -111,29 +125,21 @@ export default function Post({ item: items }) {
       <div className="flex w-[99%] md:w-[90%] justify-around px-5 mx-auto  items-center ">
         <div className="flex w-full items-center gap-[50px]">
           {/* <p>50 people likes this.</p> */}
-          <div className="flex  items-center gap-3">
+          <div
+            onClick={handleLike}
+            className="flex cursor-pointer btn  items-center gap-3"
+          >
             {like || item.likes.includes(auth._id) ? (
-              <FaHeart
-                className="cursor-pointer"
-                onClick={() => {
-                  handleLike();
-                }}
-                size={30}
-                color="#316ff6"
-              />
+              <FaHeart size={30} color="#316ff6" />
             ) : (
-              <FaRegHeart
-                className="cursor-pointer"
-                onClick={() => {
-                  handleLike();
-                }}
-                size={30}
-                color="#316ff6"
-              />
+              <FaRegHeart size={30} color="#316ff6" />
             )}
             <span className="font-semibold ">Like</span>
           </div>
-          <div className="flex items-center gap-3">
+          <div
+            onClick={() => navigate(`/post/${item._id}`)}
+            className="flex cursor-pointer btn items-center gap-3"
+          >
             <MdOutlineChat
               className="cursor-pointer"
               size={30}

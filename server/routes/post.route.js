@@ -11,6 +11,7 @@ const {
   userDeleteComment,
   adminDeletePost,
   adminDeleteComment,
+  getProfilePost,
 } = require("../controllers/post.controller");
 const { protectedRoute } = require("../middlewares/protectedRoute");
 const { adminProtection } = require("../middlewares/adminProtection");
@@ -18,6 +19,7 @@ const router = express.Router();
 // get routes
 router.get("/all", adminProtection, getAllPost);
 router.get("/feed", protectedRoute, getFeedPost);
+router.get("/profile-post/:username", protectedRoute, getProfilePost);
 router.get("/:id", getOnePost);
 // post routes
 router.post("/add", protectedRoute, addPost);

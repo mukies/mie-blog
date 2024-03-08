@@ -4,18 +4,26 @@ import { IoSearchOutline } from "react-icons/io5";
 import { BsFillPeopleFill } from "react-icons/bs";
 import "../../../index.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Nav() {
+  const auth = JSON.parse(localStorage.getItem("_L"));
+
+  const navigate = useNavigate();
   const logout = async () => {
     localStorage.removeItem("_L");
     await axios.post("/api/user/logout");
+    navigate("/");
     window.location.reload();
-    // navigate("/");
   };
+
   return (
     <div className="navbar nav-bar sticky top-0 bg-base-300 px-10 z-[100] ">
       <div className="flex-1 gap-4 md:justify-between  ">
-        <span className="nav-title cursor-pointer text-3xl font-bold text-[#316FF6]">
+        <span
+          onClick={() => navigate("/")}
+          className="nav-title cursor-pointer text-3xl font-bold text-[#316FF6]"
+        >
           Mie!
         </span>
 
@@ -57,7 +65,7 @@ export default function Nav() {
             tabIndex={0}
             className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-200 rounded-box w-52"
           >
-            <li>
+            <li onClick={() => navigate(`/profile/${auth?.username}`)}>
               <a className="justify-between">Profile</a>
             </li>
             <li>

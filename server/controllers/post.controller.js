@@ -18,6 +18,7 @@ exports.addPost = async (req, res) => {
       res.json({
         success: true,
         message: "A new post was posted to your timeline.",
+        post,
       });
     }
   } catch (error) {
@@ -187,8 +188,7 @@ exports.getOnePost = async (req, res) => {
     const post = await postModel
       .findById(postID)
       .populate("postedBy", "fullName username profilePic")
-      .populate("comments.commentedBy", "fullName username profilePic")
-      .populate("likes", "fullName username profilePic");
+      .populate("comments.commentedBy", "fullName username profilePic");
 
     res.json({
       success: true,
@@ -226,6 +226,31 @@ exports.getFeedPost = async (req, res) => {
     res.json({
       success: false,
       message: "try catch error while getting feed posts.",
+    });
+  }
+};
+
+exports.getProfilePost = async (req, res) => {
+  const { username } = req.params;
+
+  try {
+    const user = await userModel.findOne({ username });
+    const posts = await postModel
+      .find({ postedBy: user?._id })
+      .populate("postedBy", "fullName username profilePic")
+      .populate("comments.commentedBy", "fullName username profilePic")
+      .sort({ createdAt: -1 });
+
+    res.json({
+      success: true,
+      message: "post found successfully.",
+      posts,
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success: false,
+      message: "try catch error on getting profile post.",
     });
   }
 };

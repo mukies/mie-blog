@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import CreatePost from "./CreatePost";
 import Post from "./Post";
-import { useFeed } from "../hooks/useFeed";
-import PostLoading from "./loading/PostLoading";
+import { useFeed } from "../context/FeedContext";
+// import PostLoading from "./loading/PostLoading";
 
 export default function Feed() {
   // call feed post hooks
@@ -19,7 +19,10 @@ export default function Feed() {
         <div className="divider m-0 p-0"></div>
         <div className="flex flex-col mb-3 gap-5">
           {loading ? (
-            <PostLoading />
+            <div className="flex h-[30dvh] items-center justify-center">
+              {" "}
+              <span className="loading scale-150 loading-spinner"></span>{" "}
+            </div>
           ) : posts?.length ? (
             posts.map((item, id) => <Post key={id} item={item} />)
           ) : (

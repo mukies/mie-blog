@@ -1,17 +1,17 @@
 import { useState } from "react";
 import axios from "axios";
 
-export const useFeed = () => {
+export const useProfilePost = () => {
   const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState([]);
 
-  const getFeedPost = async () => {
+  const getProfilePost = async (id) => {
     setLoading(true);
 
     try {
-      const { data } = await axios.get("/api/post/feed");
+      const { data } = await axios.get(`/api/post/profile-post/${id}`);
       if (data.success) {
-        setPosts(data.feedPost);
+        setPosts(data.posts);
       } else {
         alert("error while fetching feed post.");
       }
@@ -21,5 +21,5 @@ export const useFeed = () => {
       setLoading(false);
     }
   };
-  return { getFeedPost, loading, posts, setPosts };
+  return { getProfilePost, loading, posts, setPosts };
 };

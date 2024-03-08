@@ -3,11 +3,15 @@ import { FaTimes } from "react-icons/fa";
 import { IoMdVideocam } from "react-icons/io";
 import { useState } from "react";
 import { usePost } from "../hooks/usePost";
+import { useNavigate } from "react-router-dom";
 
 export default function CreatePost() {
+  const auth = JSON.parse(localStorage.getItem("_L"));
   const [text, setText] = useState("");
   const [image, setImage] = useState(null);
   const [show, setShow] = useState(false);
+
+  const navigate = useNavigate();
 
   // add post hook
   const { loading, addPost } = usePost();
@@ -17,6 +21,8 @@ export default function CreatePost() {
       alert("Nothing to post");
     } else {
       addPost(text, image);
+      setShow(false);
+      setText("");
       // console.log(image);
     }
   };
@@ -24,7 +30,10 @@ export default function CreatePost() {
   return (
     <div className=" flex py-2 justify-center flex-col gap-2">
       <div className="flex bg-white rounded-3xl justify-between mx-auto gap-3  w-[80%] py-2 md:p-5 items-center">
-        <div className="w-[50px] rounded-full overflow-hidden cursor-pointer">
+        <div
+          onClick={() => navigate(`/profile/${auth?.username}`)}
+          className="w-[50px] rounded-full overflow-hidden cursor-pointer"
+        >
           <img
             alt="Tailwind CSS Navbar component"
             className=""
