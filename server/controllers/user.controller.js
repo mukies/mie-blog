@@ -92,12 +92,19 @@ exports.register = async (req, res) => {
         // hash password
         const hashedPassword = await bcrypt.hash(password, 10);
         // console.log(hashedPassword);
+        let profilePic = "";
+        if (gender == "male") {
+          profilePic = `https://avatar.iran.liara.run/public/boy?username=${newUsername}`;
+        } else {
+          profilePic = `https://avatar.iran.liara.run/public/girl?username=${newUsername}`;
+        }
         const data = new userModel({
           fullName,
           username: newUsername,
           email,
           gender,
           password: hashedPassword,
+          profilePic,
         });
         await data.save();
         res.json({
@@ -273,7 +280,7 @@ exports.changePassword = async (req, res) => {
 exports.getUser = async (req, res) => {
   const { id } = req.params;
   try {
-    const user = await userModel.findById(id).select("-password");
+    const user = await userModel.findOne({ username: id }).select("-password");
     if (!user) {
       return res.json({ success: false, message: "user not found." });
     } else {

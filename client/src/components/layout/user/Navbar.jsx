@@ -5,9 +5,12 @@ import { BsFillPeopleFill } from "react-icons/bs";
 import "../../../index.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import useUserDetails from "../../../hooks/useUserDetails";
+import { useEffect } from "react";
 
 export default function Nav() {
   const auth = JSON.parse(localStorage.getItem("_L"));
+  const { getUserDetails, loading, user } = useUserDetails();
 
   const navigate = useNavigate();
   const logout = async () => {
@@ -17,8 +20,12 @@ export default function Nav() {
     window.location.reload();
   };
 
+  useEffect(() => {
+    getUserDetails(auth?.username);
+  }, [auth?.username]);
+
   return (
-    <div className="navbar nav-bar sticky top-0 bg-base-300 px-10 z-[100] ">
+    <div className="navbar nav-bar sticky top-0 bg-base-300 px-10 z-[99] ">
       <div className="flex-1 gap-4 md:justify-between  ">
         <span
           onClick={() => navigate("/")}
@@ -54,11 +61,15 @@ export default function Nav() {
             role="button"
             className="btn btn-ghost btn-circle  avatar"
           >
-            <div className="w-10 rounded-full">
-              <img
-                alt="Tailwind CSS Navbar component"
-                src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-              />
+            <div className="w-10 h-10 flex justify-center items-center rounded-full">
+              {user && !loading ? (
+                <img
+                  alt="Tailwind CSS Navbar component"
+                  src={user?.profilePic}
+                />
+              ) : (
+                <span className="loading loading-spinner "></span>
+              )}
             </div>
           </div>
           <ul

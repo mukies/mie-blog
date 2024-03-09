@@ -4,15 +4,19 @@ import { useState } from "react";
 import { FaHeart, FaRegHeart, FaTrash } from "react-icons/fa";
 import { MdOutlineChat } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import Popup from "./Popup";
+import { useFeed } from "../context/FeedContext";
 
-export default function Post({ item: items }) {
+export default function Post({ item: items, id }) {
   const auth = JSON.parse(localStorage.getItem("_L"));
   const [item, setItem] = useState(items);
   const [like, setLike] = useState(item.likes.includes(auth._id));
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
   const text = item.text;
+  const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
+  const { setPosts } = useFeed();
 
   // like and unlike
   const handleLike = async () => {
@@ -48,29 +52,55 @@ export default function Post({ item: items }) {
       setLoading(false);
     }
   };
+  const handleDelete = async () => {
+    console.log(item._id);
+    const { data } = await axios.delete(
+      `/api/post/user-delete-post/${item._id}`
+    );
+    if (data.success) {
+      setPosts((p) => p.filter((i, index) => index != id));
+    }
+  };
 
   return (
     <div className=" flex flex-col gap-3 border-2 rounded-xl bg-white w-full px-4 py-5 ">
       {/* content  */}
       <div className=" flex flex-col gap-5 ">
         {/* title  */}
-        <div className="flex relative px-3 items-center gap-4">
-          <div className="w-10 overflow-hidden rounded-full">
-            <img
-              alt="Tailwind CSS Navbar component"
-              src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-            />
-          </div>
-          <div className="flex flex-col gap-0">
-            <h1 className="text-xl font-semibold">{item.postedBy.fullName}</h1>
-            <span className="text-gray-700">Just now</span>
+        <div className="flex  px-3 items-center justify-between">
+          <div className=" flex items-center gap-4">
+            <div
+              onClick={() => navigate(`/profile/${item.postedBy.username}`)}
+              className="w-10 overflow-hidden cursor-pointer rounded-full"
+            >
+              <img
+                alt="Tailwind CSS Navbar component"
+                src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+              />
+            </div>
+            <div className="flex flex-col gap-0">
+              <h1 className="text-xl font-semibold">
+                {item.postedBy.fullName}
+              </h1>
+              <span className="text-gray-700">Just now</span>
+            </div>
           </div>
           {item.postedBy._id == auth?._id && (
-            <div className="absolute btn btn-circle right-0 top-[50%] translate-y-[-50%]">
+            <div
+              onClick={() => setShowPopup((p) => !p)}
+              className=" btn btn-circle "
+            >
               <span>
                 <FaTrash color="red" />
               </span>
             </div>
+          )}
+          {showPopup && (
+            <Popup
+              text={"Are you sure ?"}
+              handleDelete={handleDelete}
+              cancel={setShowPopup}
+            />
           )}
         </div>
 
@@ -88,7 +118,7 @@ export default function Post({ item: items }) {
           </p>
         </div>
         {/* image content  */}
-        {item.image && (
+        {!item.image && (
           <div
             onClick={() => navigate(`/post/${item._id}`)}
             className="w-[90%] cursor-pointer rounded-2xl overflow-hidden md:w-[80%] duration-200 transition-all h-[70vh] mx-auto "

@@ -10,7 +10,7 @@ export default function Feed() {
 
   useEffect(() => {
     getFeedPost();
-  }, []);
+  }, [posts.length]);
 
   return (
     <div className=" ">
@@ -24,7 +24,7 @@ export default function Feed() {
               <span className="loading scale-150 loading-spinner"></span>{" "}
             </div>
           ) : posts?.length ? (
-            posts.map((item, id) => <Post key={id} item={item} />)
+            posts?.map((item, id) => <Post key={id} id={id} item={item} />)
           ) : (
             <div>
               {" "}

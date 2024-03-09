@@ -1,7 +1,7 @@
 import { MdPermMedia } from "react-icons/md";
 import { FaTimes } from "react-icons/fa";
 import { IoMdVideocam } from "react-icons/io";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { usePost } from "../hooks/usePost";
 import { useNavigate } from "react-router-dom";
 
@@ -12,6 +12,7 @@ export default function CreatePost() {
   const [show, setShow] = useState(false);
 
   const navigate = useNavigate();
+  const postRef = useRef();
 
   // add post hook
   const { loading, addPost } = usePost();
@@ -40,7 +41,15 @@ export default function CreatePost() {
             src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
           />
         </div>
-        <div onClick={() => setShow((p) => !p)} className="flex-1">
+        <div
+          onClick={() => {
+            setShow((p) => !p);
+            setTimeout(() => {
+              postRef.current.focus();
+            }, 1);
+          }}
+          className="flex-1"
+        >
           <input
             type="text"
             placeholder="What's on your mind..."
@@ -95,6 +104,7 @@ export default function CreatePost() {
             <div className="h-[30%]">
               <div className="h-full px-5">
                 <textarea
+                  ref={postRef}
                   onChange={(e) => setText(e.target.value)}
                   value={text}
                   type="text"

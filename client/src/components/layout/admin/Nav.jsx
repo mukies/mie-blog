@@ -4,7 +4,7 @@ import "../../../index.css";
 import { BsFillPeopleFill } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 
-export default function Nav() {
+export default function AdminNav() {
   const navigate = useNavigate();
 
   return (

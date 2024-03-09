@@ -13,12 +13,15 @@ import UserFriendsPage from "./pages/admin/UserFriendsPage";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminRegister from "./pages/admin/AdminRegister";
 import ProtectedRoute from "./protectedRoute/ProtectedRoute";
+import AdminNav from "./components/layout/admin/Nav";
+import Nav from "./components/layout/user/Navbar";
 
 function App() {
   const auth = JSON.parse(localStorage.getItem("_L"));
+  const adminAuth = JSON.parse(localStorage.getItem("_A"));
   return (
     <div>
-      {/* <Nav /> */}
+      {auth && !adminAuth ? <Nav /> : !auth && adminAuth ? <AdminNav /> : ""}
       <Routes>
         <Route path="/" element={auth ? <Home /> : <Login />} />
         {/* <Route path="/" element={<Home />} /> */}
