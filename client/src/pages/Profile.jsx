@@ -4,24 +4,50 @@ import CreatePost from "../components/CreatePost";
 import { FaUserFriends } from "react-icons/fa";
 import Post from "../components/Post";
 // import Layout from "../components/layout/user/Layout";
-import { useProfilePost } from "../hooks/useProfilePost";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { IoPersonAdd } from "react-icons/io5";
 import { BiSolidImageAdd } from "react-icons/bi";
 import useUserDetails from "../hooks/useUserDetails";
+import { useProfilePost } from "../context/ProfilePost";
+import axios from "axios";
 
 export default function Profile() {
-  const { getProfilePost, loading, posts } = useProfilePost();
-  const { getUserDetails, loading: detailsLoading, user } = useUserDetails();
+  const { getProfilePost, posts, loading } = useProfilePost();
+  const {
+    getUserDetails,
+    loading: detailsLoading,
+    user,
+    setUser,
+  } = useUserDetails();
   const auth = JSON.parse(localStorage.getItem("_L"));
   const { username } = useParams();
 
   useEffect(() => {
     getProfilePost(username);
     getUserDetails(username);
-  }, [username]);
+  }, [
+    username,
+    posts?.length,
+    user.followers?.length,
+    user.followings?.length,
+  ]);
   // <Layout>
+
+  const followUnfollow = async () => {
+    const { data } = await axios.put(`/api/user/follow-unfollow/${username}`);
+    if (data.success) {
+      if (user.followers?.includes(auth?._id)) {
+        setUser({
+          ...user,
+          followers: user.followers.filter((i) => i !== auth?._id),
+        });
+      } else {
+        setUser({ ...user, followers: [...user.followers, auth?._id] });
+      }
+    }
+  };
+
   return (
     <div className=" bg-base-200">
       <div>
@@ -56,7 +82,7 @@ export default function Profile() {
               </div>
               <div className=" flex flex-col items-center">
                 {user && !detailsLoading ? (
-                  <h1 className="text-2xl text-nowrap md:text-3xl font-bold">
+                  <h1 className="text-2xl capitalize  text-nowrap md:text-3xl font-bold">
                     {user.fullName}
                   </h1>
                 ) : (
@@ -106,10 +132,17 @@ export default function Profile() {
               </p>
             )}
             {username !== auth?.username && (
-              <button className=" flex items-center text-white gap-2 btn btn-success btn-md">
+              <button
+                onClick={followUnfollow}
+                className={
+                  user.followers?.includes(auth?._id)
+                    ? " flex items-center text-white gap-2 btn btn-neutral btn-md"
+                    : " flex items-center text-white gap-2 btn btn-success btn-md"
+                }
+              >
                 <IoPersonAdd />{" "}
                 <span className=" text-sm  text-nowrap md:text-[17px] font-semibold">
-                  Follow
+                  {user.followers?.includes(auth?._id) ? "Unfollow" : "Follow"}
                 </span>
               </button>
             )}
@@ -132,7 +165,7 @@ export default function Profile() {
                 <span className="loading scale-150 loading-spinner"></span>{" "}
               </div>
             ) : posts?.length ? (
-              posts.map((item, id) => <Post key={id} item={item} />)
+              posts.map((item, id) => <Post key={id} id={id} item={item} />)
             ) : (
               <div>
                 {" "}

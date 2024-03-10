@@ -20,6 +20,7 @@ export default function Nav() {
     window.location.reload();
   };
 
+  // const { getUserDetails, loading, user } = useUserDetails();
   useEffect(() => {
     getUserDetails(auth?.username);
   }, [auth?.username]);

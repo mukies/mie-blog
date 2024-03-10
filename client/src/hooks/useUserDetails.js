@@ -21,5 +21,5 @@ export default function useUserDetails() {
     }
   };
 
-  return { getUserDetails, loading, user };
+  return { getUserDetails, loading, user, setUser };
 }

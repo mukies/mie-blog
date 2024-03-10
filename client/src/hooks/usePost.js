@@ -1,10 +1,12 @@
 import axios from "axios";
 import { useState } from "react";
 import { useFeed } from "../context/FeedContext";
+import { useProfilePost } from "../context/ProfilePost";
 
 export const usePost = () => {
   const [loading, setLoading] = useState(false);
   const { setPosts } = useFeed();
+  const { setPosts: setPost } = useProfilePost();
 
   const addPost = async (text, image) => {
     setLoading(true);
@@ -12,7 +14,8 @@ export const usePost = () => {
       const { data } = await axios.post("/api/post/add", { text, image });
       if (data.success) {
         // window.location.reload();
-        setPosts((p) => [data.post, ...p]);
+        setPosts((p) => [...p, data.post]);
+        setPost((p) => [...p, data.post]);
       } else {
         alert(data.message);
       }

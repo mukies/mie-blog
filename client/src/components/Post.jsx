@@ -6,6 +6,7 @@ import { MdOutlineChat } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import Popup from "./Popup";
 import { useFeed } from "../context/FeedContext";
+import { useProfilePost } from "../context/ProfilePost";
 
 export default function Post({ item: items, id }) {
   const auth = JSON.parse(localStorage.getItem("_L"));
@@ -16,7 +17,8 @@ export default function Post({ item: items, id }) {
   const text = item.text;
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
-  const { setPosts } = useFeed();
+  const { setPosts, loading: feedLoding } = useFeed();
+  const { setPosts: setPost } = useProfilePost();
 
   // like and unlike
   const handleLike = async () => {
@@ -59,6 +61,7 @@ export default function Post({ item: items, id }) {
     );
     if (data.success) {
       setPosts((p) => p.filter((i, index) => index != id));
+      setPost((p) => p.filter((i, index) => index != id));
     }
   };
 
@@ -71,12 +74,16 @@ export default function Post({ item: items, id }) {
           <div className=" flex items-center gap-4">
             <div
               onClick={() => navigate(`/profile/${item.postedBy.username}`)}
-              className="w-10 overflow-hidden cursor-pointer rounded-full"
+              className="w-10 h-10 flex justify-center items-center overflow-hidden cursor-pointer rounded-full"
             >
-              <img
-                alt="Tailwind CSS Navbar component"
-                src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-              />
+              {item || !feedLoding ? (
+                <img
+                  alt="Tailwind CSS Navbar component"
+                  src={item.postedBy?.profilePic}
+                />
+              ) : (
+                <span className="loading loading-spinner"></span>
+              )}
             </div>
             <div className="flex flex-col gap-0">
               <h1 className="text-xl font-semibold">

@@ -4,19 +4,22 @@ import { MdOutlineChat } from "react-icons/md";
 import { FaHeart, FaRegHeart, FaTrash } from "react-icons/fa";
 import { useRef, useState } from "react";
 import axios from "axios";
+import { useGetPost } from "../context/SinglePostContext";
 
-export default function SinglePost({ posts: post }) {
+export default function SinglePost() {
   const auth = JSON.parse(localStorage.getItem("_L"));
-  const [posts, setPosts] = useState(post);
+  const { posts, setPosts } = useGetPost();
+  const [text, setText] = useState("");
+  const [like, setLike] = useState(posts?.likes?.includes(auth?._id));
+  const [loading, setLoading] = useState(false);
 
-  const [like, setLike] = useState(posts.likes.includes(auth?._id));
-
+  // for like the post
   const handleLike = async () => {
     if (!auth) return alert("Login first");
-    if (posts.likes.includes(auth?._id)) {
+    if (posts?.likes?.includes(auth?._id)) {
       setPosts({
         ...posts,
-        likes: posts.likes.filter((id) => id !== auth._id),
+        likes: posts?.likes?.filter((id) => id !== auth._id),
       });
     } else {
       setPosts({ ...posts, likes: [...posts.likes, auth._id] });
@@ -25,25 +28,65 @@ export default function SinglePost({ posts: post }) {
     await axios.put(`/api/post/like-unlike/${posts._id}`);
   };
   const commentRef = useRef();
+
+  // for adding a comment
+  const handleComment = async () => {
+    if (!auth) {
+      alert("Please login first.");
+    } else {
+      if (text) {
+        setLoading(true);
+        try {
+          const { data } = await axios.post(
+            `/api/post/add-comment/${posts?._id}`,
+            {
+              text,
+            }
+          );
+          if (data.success) {
+            await setPosts({
+              ...posts,
+              comments: [...posts.comments, { topic: "new comment added" }],
+            });
+
+            setText("");
+          } else {
+            alert(data.message);
+          }
+        } catch (error) {
+          alert(error.message);
+        } finally {
+          setLoading(false);
+        }
+      }
+    }
+  };
+
   return (
     <div className="max-w-[768px] mx-auto flex flex-col gap-3 py-3">
-      <div className=" sticky  top-[70px] ">
-        <button
-          onClick={() => history.back()}
-          className="btn  btn-sm btn-outline text-[#316ff6]"
-        >
-          back
-        </button>
-      </div>
+      {auth && (
+        <div className=" sticky z-10  top-[70px] ">
+          <button
+            onClick={() => history.back()}
+            className="btn  btn-sm btn-outline text-[#316ff6]"
+          >
+            back
+          </button>
+        </div>
+      )}
       <div className=" flex flex-col gap-3 border-2 rounded-xl bg-white w-full px-4 py-5 ">
         <div className=" flex flex-col gap-5">
           {/* title  */}
           <div className="flex items-center gap-4  relative">
-            <div className="w-10 overflow-hidden rounded-full">
-              <img
-                alt="Tailwind CSS Navbar component"
-                src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-              />
+            <div className="w-10 h-10 flex justify-center items-center overflow-hidden rounded-full">
+              {posts.postedBy ? (
+                <img
+                  alt="Tailwind CSS Navbar component"
+                  src={posts.postedBy?.profilePic}
+                />
+              ) : (
+                <span className="loading loading-spinner"></span>
+              )}
             </div>
             <div className="flex flex-col gap-0">
               <h1 className="text-xl font-semibold">
@@ -51,7 +94,7 @@ export default function SinglePost({ posts: post }) {
               </h1>
               <span className="text-gray-700">Just now</span>
             </div>
-            {posts.postedBy._id == auth?._id && (
+            {posts?.postedBy?._id == auth?._id && (
               <div className="absolute btn btn-circle right-0 top-[50%] translate-y-[-50%]">
                 <span>
                   <FaTrash color="red" />
@@ -80,12 +123,13 @@ export default function SinglePost({ posts: post }) {
           </div>
           <div className="flex items-center gap-3">
             <MdOutlineChat size={17} color="#316ff6" />
-            <span>{posts.comments.length} comments</span>
+            <span>{posts?.comments?.length} comments</span>
           </div>
         </div>
         <div className="divider m-0 p-0 w-[90%] mx-auto"></div>
 
         {/* like comment */}
+
         <div className="flex w-[99%] md:w-[90%] justify-around px-5 mx-auto  items-center ">
           <div className="flex w-full items-center gap-[50px]">
             {/* <p>50 people likes this.</p> */}
@@ -115,12 +159,22 @@ export default function SinglePost({ posts: post }) {
             </div>
             <div className=" hidden md:flex items-center gap-1">
               <input
+                value={text}
+                onChange={(e) => setText(e.target.value)}
                 type="text"
                 className="input input-accent input-md"
                 placeholder="write a comment"
               />
-              <button className="btn btn-md btn-primary">
-                <span>send</span>
+              <button
+                disabled={loading}
+                onClick={handleComment}
+                className="btn btn-md btn-primary"
+              >
+                {loading ? (
+                  <span className="loading loading-spinner"></span>
+                ) : (
+                  <span>send</span>
+                )}
               </button>
             </div>
           </div>
@@ -131,9 +185,15 @@ export default function SinglePost({ posts: post }) {
       </span>
       {/* comments  */}
       <div ref={commentRef} className="flex mt-4 flex-col gap-5">
-        {posts.comments.length ? (
-          posts.comments.map((item, id) => (
-            <Comment key={id} commentId={id} postId={posts._id} item={item} />
+        {posts?.comments?.length ? (
+          posts?.comments?.map((item, id) => (
+            <Comment
+              key={id}
+              index={id}
+              commentId={item._id}
+              postId={posts._id}
+              item={item}
+            />
           ))
         ) : (
           <div className="h-[10dvh] flex justify-center items-center">

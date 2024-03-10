@@ -128,28 +128,31 @@ exports.logout = async (req, res) => {
 };
 
 exports.followUnfollow = async (req, res) => {
-  const othersID = req.params.id;
+  const othersUsername = req.params.id;
   const currentUserID = req.user._id;
 
   try {
-    if (othersID == currentUserID.toString())
+    const otherUser = await userModel.findOne({ username: othersUsername });
+    if (!otherUser)
+      return res.json({ success: false, message: "user not found." });
+    if (otherUser?._id.toString() == currentUserID.toString())
       return res.json({
         success: false,
         message: "you can not follow yourself.",
       });
 
     // check if the user is already folowed or not
-    const isFollowing = req.user.followings.includes(othersID);
+    const isFollowing = req.user.followings.includes(otherUser?._id);
 
     if (isFollowing) {
       // unfollow or remove from my following list
       await userModel.findByIdAndUpdate(
         { _id: currentUserID },
-        { $pull: { followings: othersID } }
+        { $pull: { followings: otherUser?._id } }
       );
       //  remove from others followers list
       await userModel.findByIdAndUpdate(
-        { _id: othersID },
+        { _id: otherUser?._id },
         { $pull: { followers: currentUserID } }
       );
 
@@ -161,11 +164,11 @@ exports.followUnfollow = async (req, res) => {
       // add into my following list
       await userModel.findByIdAndUpdate(
         { _id: currentUserID },
-        { $push: { followings: othersID } }
+        { $push: { followings: otherUser?._id } }
       );
       //  add into others followers list
       await userModel.findByIdAndUpdate(
-        { _id: othersID },
+        { _id: otherUser?._id },
         { $push: { followers: currentUserID } }
       );
 
