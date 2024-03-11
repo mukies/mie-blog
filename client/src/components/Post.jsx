@@ -78,7 +78,7 @@ export default function Post({ item: items, id }) {
             >
               {item || !feedLoding ? (
                 <img
-                  alt="Tailwind CSS Navbar component"
+                  alt={item.postedBy?.username}
                   src={item.postedBy?.profilePic}
                 />
               ) : (

@@ -1,9 +1,10 @@
 import { MdPermMedia } from "react-icons/md";
 import { FaTimes } from "react-icons/fa";
 import { IoMdVideocam } from "react-icons/io";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePost } from "../hooks/usePost";
 import { useNavigate } from "react-router-dom";
+import useUserDetails from "../hooks/useUserDetails";
 
 export default function CreatePost() {
   const auth = JSON.parse(localStorage.getItem("_L"));
@@ -14,8 +15,14 @@ export default function CreatePost() {
   const navigate = useNavigate();
   const postRef = useRef();
 
+  const { getUserDetails, loading: userLoading, user } = useUserDetails();
+
   // add post hook
   const { loading, addPost } = usePost();
+
+  useEffect(() => {
+    getUserDetails(auth?.username);
+  }, [auth?.username]);
 
   const handlePost = () => {
     if (!text && !image) {
@@ -33,13 +40,17 @@ export default function CreatePost() {
       <div className="flex bg-white rounded-3xl justify-between mx-auto gap-3  w-[80%] py-2 md:p-5 items-center">
         <div
           onClick={() => navigate(`/profile/${auth?.username}`)}
-          className="w-[50px] rounded-full overflow-hidden cursor-pointer"
+          className="w-[50px] h-[50px] bg-gray-200 rounded-full flex justify-center items-center overflow-hidden cursor-pointer "
         >
-          <img
-            alt="Tailwind CSS Navbar component"
-            className=""
-            src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-          />
+          {userLoading ? (
+            <span className=" text-black  loading loading-spinner"></span>
+          ) : (
+            <img
+              alt={user?.username}
+              className=" w-full h-full"
+              src={user?.profilePic}
+            />
+          )}
         </div>
         <div
           onClick={() => {
@@ -63,7 +74,12 @@ export default function CreatePost() {
           <span className="text-lg font-semibold">Live</span>
         </div>
         <div
-          onClick={() => setShow((p) => !p)}
+          onClick={() => {
+            setShow((p) => !p);
+            setTimeout(() => {
+              postRef.current.focus();
+            }, 1);
+          }}
           className="flex items-center gap-2 cursor-pointer hover:bg-gray-300 rounded-lg duration-200 px-4 py-3"
         >
           <MdPermMedia size={30} color="#316ff6" />

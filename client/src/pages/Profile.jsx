@@ -1,18 +1,32 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { MdPermMedia } from "react-icons/md";
 import CreatePost from "../components/CreatePost";
-import { FaUserFriends } from "react-icons/fa";
+import { FaFacebookMessenger, FaUserFriends } from "react-icons/fa";
 import Post from "../components/Post";
-// import Layout from "../components/layout/user/Layout";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { RiUserFollowFill } from "react-icons/ri";
 import { useParams } from "react-router-dom";
 import { IoPersonAdd } from "react-icons/io5";
 import { BiSolidImageAdd } from "react-icons/bi";
 import useUserDetails from "../hooks/useUserDetails";
 import { useProfilePost } from "../context/ProfilePost";
 import axios from "axios";
+import PeopleList from "../components/PeopleList";
+import ImageUploadPopup from "../components/ImageUploadPopup";
 
 export default function Profile() {
+  const [followerList, setFollowerList] = useState(false);
+  const [followingList, setFollowingList] = useState(false);
+
+  const [follower, setFollower] = useState([]);
+  const [following, setFollowing] = useState([]);
+
+  const [profileUploadPopup, setProfileUploadPopup] = useState(false);
+  const [coverUploadPopup, setCoverUploadPopup] = useState(false);
+
+  const [profilePic, setProfilePic] = useState(null);
+  const [coverPic, setCoverPic] = useState(null);
+
   const { getProfilePost, posts, loading } = useProfilePost();
   const {
     getUserDetails,
@@ -26,12 +40,25 @@ export default function Profile() {
   useEffect(() => {
     getProfilePost(username);
     getUserDetails(username);
+    if (username == auth?.username) {
+      getFollowers();
+    }
   }, [
     username,
     posts?.length,
     user.followers?.length,
     user.followings?.length,
   ]);
+
+  const getFollowers = async () => {
+    const { data } = await axios.get(`/api/user/followers/${username}`);
+    // console.log(data);
+    if (data.success) {
+      setFollower(data.user.followers);
+      setFollowing(data.user.followings);
+    }
+  };
+
   // <Layout>
 
   const followUnfollow = async () => {
@@ -59,6 +86,28 @@ export default function Profile() {
               src="/cover.jpg"
               alt="cover-image"
             />
+
+            {/* cover pic upload btn  */}
+            {username == auth?.username && (
+              <div
+                title="cover picture"
+                onClick={() => setCoverUploadPopup((p) => !p)}
+                className="absolute flex  justify-center items-center btn btn-sm btn-circle btn-warning top-[65%]  z-10 left-0 "
+              >
+                <span>
+                  <BiSolidImageAdd size={20} />
+                </span>
+              </div>
+            )}
+            {coverUploadPopup && (
+              <ImageUploadPopup
+                title={"Cover"}
+                photo={coverPic}
+                setPhoto={setCoverPic}
+                setPopup={setCoverUploadPopup}
+              />
+            )}
+
             <div className="absolute flex flex-col items-center  translate-x-[-50%] translate-y-[-50%] left-[50%] top-[70%]">
               <div className="h-[170px] relative bg-white w-[170px]  rounded-full flex justify-center items-center border-[5px] border-gray-400">
                 {user && !detailsLoading ? (
@@ -73,13 +122,17 @@ export default function Profile() {
                   </>
                 )}
                 {username == auth?.username && (
-                  <div className="absolute flex  justify-center items-center btn btn-sm btn-circle btn-primary bottom-0 z-10 right-[10%] ">
+                  <div
+                    onClick={() => setProfileUploadPopup((p) => !p)}
+                    className="absolute flex  justify-center items-center btn btn-sm btn-circle btn-primary bottom-0 z-10 right-[10%] "
+                  >
                     <span>
                       <BiSolidImageAdd size={20} />
                     </span>
                   </div>
                 )}
               </div>
+
               <div className=" flex flex-col items-center">
                 {user && !detailsLoading ? (
                   <h1 className="text-2xl capitalize  text-nowrap md:text-3xl font-bold">
@@ -104,6 +157,16 @@ export default function Profile() {
               </div>
             </div>
           </div>
+          {/* image upload popup */}
+
+          {profileUploadPopup && (
+            <ImageUploadPopup
+              title={"Profile"}
+              photo={profilePic}
+              setPhoto={setProfilePic}
+              setPopup={setProfileUploadPopup}
+            />
+          )}
         </div>
         <div className="divider m-0 p-0"></div>
         {/* feed  */}
@@ -115,44 +178,83 @@ export default function Profile() {
                 : "bg-gray-300 w-[90%] md:w-auto mx-auto rounded-lg p-2 gap-2 flex justify-around "
             }
           >
+            {/* follower list button  */}
             {username == auth?.username && (
-              <p className=" flex items-center gap-2 py-3 px-4 rounded-lg hover:bg-gray-100 duration-200 cursor-pointer">
+              <p
+                onClick={() => setFollowerList((p) => !p)}
+                className=" flex items-center gap-2 py-3 px-4 rounded-lg hover:bg-gray-100 duration-200 cursor-pointer"
+              >
                 <FaUserFriends />{" "}
                 <span className=" text-sm text-nowrap md:text-[17px] font-semibold">
                   Followers
                 </span>
               </p>
             )}
+            {/* following list button  */}
             {username == auth?.username && (
-              <p className=" flex items-center gap-2 py-3 px-4 rounded-lg hover:bg-gray-100 duration-200 cursor-pointer">
+              <p
+                onClick={() => setFollowingList((p) => !p)}
+                className=" flex items-center gap-2 py-3 px-4 rounded-lg hover:bg-gray-100 duration-200 cursor-pointer"
+              >
                 <FaUserFriends />{" "}
                 <span className=" text-sm text-nowrap md:text-[17px] font-semibold">
                   Followings
                 </span>
               </p>
             )}
+            {followingList && following && (
+              <PeopleList
+                data={following}
+                action={setFollowingList}
+                title={"followings"}
+              />
+            )}
+            {followerList && follower && (
+              <PeopleList
+                data={follower}
+                title={"followers"}
+                action={setFollowerList}
+              />
+            )}
+            {/* follow unfollow button  */}
             {username !== auth?.username && (
               <button
                 onClick={followUnfollow}
                 className={
                   user.followers?.includes(auth?._id)
-                    ? " flex items-center text-white gap-2 btn btn-neutral btn-md"
+                    ? " flex items-center text-black  gap-2 btn btn-active btn-md"
                     : " flex items-center text-white gap-2 btn btn-success btn-md"
                 }
               >
-                <IoPersonAdd />{" "}
+                {user.followers?.includes(auth?._id) ? (
+                  <RiUserFollowFill />
+                ) : (
+                  <IoPersonAdd />
+                )}{" "}
                 <span className=" text-sm  text-nowrap md:text-[17px] font-semibold">
-                  {user.followers?.includes(auth?._id) ? "Unfollow" : "Follow"}
+                  {user.followers?.includes(auth?._id) ? "Following" : "Follow"}
                 </span>
               </button>
             )}
-
-            <p className=" flex items-center gap-2 py-3 px-4 rounded-lg hover:bg-gray-100 duration-200 cursor-pointer">
-              <MdPermMedia />{" "}
-              <span className=" text-sm text-nowrap md:text-[17px] font-semibold">
-                {username == auth?.username ? "Your" : ""} Photos
-              </span>
-            </p>
+            {/* message button  */}
+            {username !== auth?.username &&
+              user.followers?.includes(auth?._id) && (
+                <button className="flex btn btn-primary items-center hover:text-white gap-2 py-3 px-4 ">
+                  <FaFacebookMessenger />
+                  <span className=" text-sm capitalize text-nowrap md:text-[17px] font-semibold">
+                    message
+                  </span>
+                </button>
+              )}
+            {/* photos button  */}
+            {username == auth?.username && (
+              <p className=" flex items-center gap-2 py-3 px-4 rounded-lg hover:bg-gray-100 duration-200 cursor-pointer">
+                <MdPermMedia />{" "}
+                <span className=" text-sm text-nowrap md:text-[17px] font-semibold">
+                  {username == auth?.username ? "Your" : ""} Photos
+                </span>
+              </p>
+            )}
           </div>
           {/* create post  */}
           {auth?.username == username && <CreatePost />}

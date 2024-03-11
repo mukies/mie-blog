@@ -1,17 +1,18 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { IoChatbubbleEllipsesSharp } from "react-icons/io5";
-// import { FaBell } from "react-icons/fa";
 import { IoSearchOutline } from "react-icons/io5";
 import { BsFillPeopleFill } from "react-icons/bs";
 import "../../../index.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useUserDetails from "../../../hooks/useUserDetails";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import SearchPage from "../../SearchPage";
 
 export default function Nav() {
   const auth = JSON.parse(localStorage.getItem("_L"));
   const { getUserDetails, loading, user } = useUserDetails();
-
+  const [searchbar, setSearchbar] = useState(false);
   const navigate = useNavigate();
   const logout = async () => {
     localStorage.removeItem("_L");
@@ -35,24 +36,40 @@ export default function Nav() {
           Mie!
         </span>
 
-        <label className="input input-bordered hidden md:w-[70%] md:flex items-center gap-2">
+        <label
+          onClick={() => setSearchbar((p) => !p)}
+          className="input relative input-bordered p-0  hidden md:w-[70%] md:flex items-center gap-2"
+        >
           <input
             type="text"
-            className="md:grow  "
+            maxLength={10}
+            className="md:grow h-full w-full  p-[16px] "
             placeholder="Find a friend"
           />
-          <IoSearchOutline className="cursor-pointer" size={25} />
+          <IoSearchOutline
+            onClick={() => setSearchbar((p) => !p)}
+            className="cursor-pointer absolute right-[5%]"
+            size={25}
+          />
         </label>
+        {searchbar && (
+          <div className="fixed z-[100] top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-[#000000af] ">
+            <SearchPage action={setSearchbar} />
+          </div>
+        )}
       </div>
       <div className="flex-1 justify-end gap-5  md:gap-10">
         <div className="flex flex-none  gap-4 md:gap-10">
-          <span className="btn btn-circle">
+          <span className="btn hidden md:flex btn-circle">
             <IoChatbubbleEllipsesSharp size={30} color="#316FF6" />
           </span>
-          <span className="btn btn-circle">
+          <span className="btn hidden md:flex btn-circle">
             <BsFillPeopleFill size={30} color="#316FF6" />
           </span>
-          <span className="btn btn-md  flex justify-center items-center  btn-circle md:hidden">
+          <span
+            onClick={() => setSearchbar((p) => !p)}
+            className="btn btn-md  flex justify-center items-center  btn-circle md:hidden"
+          >
             <IoSearchOutline size={30} color="#316FF6" />
           </span>
         </div>
@@ -64,10 +81,7 @@ export default function Nav() {
           >
             <div className="w-10 h-10 flex justify-center items-center rounded-full">
               {user && !loading ? (
-                <img
-                  alt="Tailwind CSS Navbar component"
-                  src={user?.profilePic}
-                />
+                <img alt={user?.username} src={user?.profilePic} />
               ) : (
                 <span className="loading loading-spinner "></span>
               )}

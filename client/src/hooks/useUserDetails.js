@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 
 export default function useUserDetails() {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState([]);
 
   const getUserDetails = async (username) => {

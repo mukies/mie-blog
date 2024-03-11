@@ -7,6 +7,7 @@ const {
   updateProfile,
   changePassword,
   getUser,
+  getFollowers,
 } = require("../controllers/user.controller");
 const { protectedRoute } = require("../middlewares/protectedRoute");
 
@@ -19,5 +20,6 @@ router.put("/follow-unfollow/:id", protectedRoute, followUnfollow);
 router.put("/update-profile", protectedRoute, updateProfile);
 router.put("/change-password", protectedRoute, changePassword);
 router.get("/:id", protectedRoute, getUser);
+router.get("/followers/:id", protectedRoute, getFollowers);
 
 module.exports = router;

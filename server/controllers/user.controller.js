@@ -284,6 +284,30 @@ exports.getUser = async (req, res) => {
   const { id } = req.params;
   try {
     const user = await userModel.findOne({ username: id }).select("-password");
+
+    if (!user) {
+      return res.json({ success: false, message: "user not found." });
+    } else {
+      res.json({ success: true, message: "user found.", user });
+    }
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success: false,
+      message: "try catch error in get user controller.",
+      error,
+    });
+  }
+};
+
+exports.getFollowers = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await userModel
+      .findOne({ username: id })
+      .select("-password")
+      .populate("followers", "username fullName profilePic")
+      .populate("followings", "username fullName profilePic");
     if (!user) {
       return res.json({ success: false, message: "user not found." });
     } else {
