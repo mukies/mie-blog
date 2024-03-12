@@ -39,7 +39,7 @@ export default function CreatePost() {
     <div className=" flex py-2 justify-center flex-col gap-2">
       <div className="flex bg-white rounded-3xl justify-between mx-auto gap-3  w-[80%] py-2 md:p-5 items-center">
         <div
-          onClick={() => navigate(`/profile/${auth?.username}`)}
+          onClick={() => navigate(`/profile/${user?.username}`)}
           className="w-[50px] h-[50px] bg-gray-200 rounded-full flex justify-center items-center overflow-hidden cursor-pointer "
         >
           {userLoading ? (
@@ -111,8 +111,8 @@ export default function CreatePost() {
             <div className=" flex mb-2 items-center gap-3">
               <img
                 className="h-[30px] w-[30px] rounded-full object-cover object-center cursor-pointer"
-                src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                alt="profile-pic"
+                src={user?.profilePic}
+                alt={user?.username}
               />
               <span className="text-lg font-semibold ">Mukesh Bhattarai</span>
             </div>

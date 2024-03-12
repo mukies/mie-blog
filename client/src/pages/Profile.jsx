@@ -1,32 +1,40 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { MdPermMedia } from "react-icons/md";
 import CreatePost from "../components/CreatePost";
-import { FaFacebookMessenger, FaUserFriends } from "react-icons/fa";
 import Post from "../components/Post";
 import { useEffect, useState } from "react";
+// react icons
+import { MdPermMedia } from "react-icons/md";
+import { FaFacebookMessenger, FaUserFriends } from "react-icons/fa";
 import { RiUserFollowFill } from "react-icons/ri";
-import { useParams } from "react-router-dom";
 import { IoPersonAdd } from "react-icons/io5";
 import { BiSolidImageAdd } from "react-icons/bi";
+import { FiEdit } from "react-icons/fi";
+
+import { useParams } from "react-router-dom";
 import useUserDetails from "../hooks/useUserDetails";
 import { useProfilePost } from "../context/ProfilePost";
 import axios from "axios";
 import PeopleList from "../components/PeopleList";
 import ImageUploadPopup from "../components/ImageUploadPopup";
+import EditProfile from "../components/EditProfile";
 
 export default function Profile() {
+  // popups
   const [followerList, setFollowerList] = useState(false);
   const [followingList, setFollowingList] = useState(false);
-
-  const [follower, setFollower] = useState([]);
-  const [following, setFollowing] = useState([]);
 
   const [profileUploadPopup, setProfileUploadPopup] = useState(false);
   const [coverUploadPopup, setCoverUploadPopup] = useState(false);
 
+  const [editProfile, setEditProfile] = useState(false);
+
+  // for values
+  const [follower, setFollower] = useState([]);
+  const [following, setFollowing] = useState([]);
+
   const [profilePic, setProfilePic] = useState(null);
   const [coverPic, setCoverPic] = useState(null);
-
+  // hooks
   const { getProfilePost, posts, loading } = useProfilePost();
   const {
     getUserDetails,
@@ -76,7 +84,7 @@ export default function Profile() {
   };
 
   return (
-    <div className=" bg-base-200">
+    <div className="  bg-base-200">
       <div>
         <div className="flex flex-col ">
           {/* cover and profile  */}
@@ -256,6 +264,26 @@ export default function Profile() {
               </p>
             )}
           </div>
+          {/* edit profile  */}
+          {username == auth?.username && (
+            <div
+              onClick={() => setEditProfile(true)}
+              className="flex items-center"
+            >
+              <button className="flex items-center text-white btn btn-error btn-sm">
+                <FiEdit />
+                <span>Edit Profile</span>
+              </button>
+            </div>
+          )}
+
+          {/* edit profile display  */}
+          {editProfile && user && (
+            <div className="fixed top-0 bottom-0 left-0 right-0 flex justify-center items-center bg-[#000000a9] z-[111] ">
+              <EditProfile data={user} action={setEditProfile} />
+            </div>
+          )}
+
           {/* create post  */}
           {auth?.username == username && <CreatePost />}
           <span className="text-xl font-semibold">Posts</span>

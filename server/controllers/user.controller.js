@@ -207,7 +207,7 @@ exports.updateProfile = async (req, res) => {
       } else {
         res.json({
           success: false,
-          message: "User  not found",
+          message: "User not found",
         });
       }
     } else {

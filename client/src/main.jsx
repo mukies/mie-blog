@@ -6,6 +6,8 @@ import { BrowserRouter } from "react-router-dom";
 import { FeedProvider } from "./context/FeedContext.jsx";
 import { SinglePostProvider } from "./context/SinglePostContext.jsx";
 import { ProfileContextProvider } from "./context/ProfilePost.jsx";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -13,6 +15,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <FeedProvider>
         <ProfileContextProvider>
           <SinglePostProvider>
+            <ToastContainer />
             <App />
           </SinglePostProvider>
         </ProfileContextProvider>
