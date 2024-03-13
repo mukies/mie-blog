@@ -60,7 +60,10 @@ export default function Nav() {
       </div>
       <div className="flex-1 justify-end gap-5  md:gap-10">
         <div className="flex flex-none  gap-4 md:gap-10">
-          <span className="btn hidden md:flex btn-circle">
+          <span
+            onClick={() => navigate("/chats")}
+            className="btn hidden md:flex btn-circle"
+          >
             <IoChatbubbleEllipsesSharp size={30} color="#316FF6" />
           </span>
           <span className="btn hidden md:flex btn-circle">

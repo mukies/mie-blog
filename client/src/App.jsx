@@ -15,6 +15,8 @@ import AdminRegister from "./pages/admin/AdminRegister";
 import ProtectedRoute from "./protectedRoute/ProtectedRoute";
 import AdminNav from "./components/layout/admin/Nav";
 import Nav from "./components/layout/user/Navbar";
+import ChatListPage from "./pages/ChatListPage";
+import MessagePage from "./pages/MessagePage";
 
 function App() {
   const auth = JSON.parse(localStorage.getItem("_L"));
@@ -27,6 +29,8 @@ function App() {
         {/* <Route path="/" element={<Home />} /> */}
         <Route element={<ProtectedRoute />}>
           <Route path="/profile/:username" element={<Profile />} />
+          <Route path="/chats" element={<ChatListPage />} />
+          <Route path="/chats/:id" element={<MessagePage />} />
         </Route>
         <Route path="/post/:id" element={<PostPage />} />
         {/* <Route path="/login" element={<Login />} /> */}

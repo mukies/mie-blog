@@ -10,7 +10,7 @@ import { IoPersonAdd } from "react-icons/io5";
 import { BiSolidImageAdd } from "react-icons/bi";
 import { FiEdit } from "react-icons/fi";
 
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useUserDetails from "../hooks/useUserDetails";
 import { useProfilePost } from "../context/ProfilePost";
 import axios from "axios";
@@ -19,6 +19,7 @@ import ImageUploadPopup from "../components/ImageUploadPopup";
 import EditProfile from "../components/EditProfile";
 
 export default function Profile() {
+  const navigate = useNavigate();
   // popups
   const [followerList, setFollowerList] = useState(false);
   const [followingList, setFollowingList] = useState(false);
@@ -247,7 +248,10 @@ export default function Profile() {
             {/* message button  */}
             {username !== auth?.username &&
               user.followers?.includes(auth?._id) && (
-                <button className="flex btn btn-primary items-center hover:text-white gap-2 py-3 px-4 ">
+                <button
+                  onClick={() => navigate(`/chats/${username}`)}
+                  className="flex btn btn-primary items-center hover:text-white gap-2 py-3 px-4 "
+                >
                   <FaFacebookMessenger />
                   <span className=" text-sm capitalize text-nowrap md:text-[17px] font-semibold">
                     message
