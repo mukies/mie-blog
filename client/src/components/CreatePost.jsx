@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { usePost } from "../hooks/usePost";
 import { useNavigate } from "react-router-dom";
 import useUserDetails from "../hooks/useUserDetails";
+import { toast } from "react-toastify";
 
 export default function CreatePost() {
   const auth = JSON.parse(localStorage.getItem("_L"));
@@ -26,9 +27,13 @@ export default function CreatePost() {
 
   const handlePost = () => {
     if (!text && !image) {
-      alert("Nothing to post");
+      toast.error("Nothing to post");
     } else {
-      addPost(text, image);
+      // try
+
+      // try
+
+      addPost(text);
       setShow(false);
       setText("");
       // console.log(image);

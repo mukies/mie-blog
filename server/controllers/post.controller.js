@@ -1,10 +1,12 @@
 const postModel = require("../model/post.model");
 const userModel = require("../model/user.model");
+const { v2: cloudinary } = require("cloudinary");
 
 // post
 
 exports.addPost = async (req, res) => {
-  const { text, image } = req.body;
+  const { text } = req.body;
+  let { image } = req.body;
 
   try {
     if (!text && !image) {
@@ -13,7 +15,11 @@ exports.addPost = async (req, res) => {
         message: "You don't have any content to post.",
       });
     } else {
-      const post = new postModel({ postedBy: req.user._id, text, image });
+      if (image) {
+        const response = await cloudinary.uploader.upload(image);
+        console.log("response", response);
+      }
+      const post = new postModel({ postedBy: req.user._id, text });
       await post.save();
       res.json({
         success: true,

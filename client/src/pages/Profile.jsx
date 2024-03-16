@@ -246,18 +246,17 @@ export default function Profile() {
               </button>
             )}
             {/* message button  */}
-            {username !== auth?.username &&
-              user.followers?.includes(auth?._id) && (
-                <button
-                  onClick={() => navigate(`/chats/${username}`)}
-                  className="flex btn btn-primary items-center hover:text-white gap-2 py-3 px-4 "
-                >
-                  <FaFacebookMessenger />
-                  <span className=" text-sm capitalize text-nowrap md:text-[17px] font-semibold">
-                    message
-                  </span>
-                </button>
-              )}
+            {username !== auth?.username && (
+              <button
+                onClick={() => navigate(`/chats/${username}`)}
+                className="flex btn btn-primary items-center hover:text-white gap-2 py-3 px-4 "
+              >
+                <FaFacebookMessenger />
+                <span className=" text-sm capitalize text-nowrap md:text-[17px] font-semibold">
+                  message
+                </span>
+              </button>
+            )}
             {/* photos button  */}
             {username == auth?.username && (
               <p className=" flex items-center gap-2 py-3 px-4 rounded-lg hover:bg-gray-100 duration-200 cursor-pointer">

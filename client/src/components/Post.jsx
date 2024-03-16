@@ -55,7 +55,6 @@ export default function Post({ item: items, id }) {
     }
   };
   const handleDelete = async () => {
-    console.log(item._id);
     const { data } = await axios.delete(
       `/api/post/user-delete-post/${item._id}`
     );

@@ -7,10 +7,15 @@ import { toast } from "react-toastify";
 
 export default function EditProfile({ action, data }) {
   const navigate = useNavigate();
+  // name change
   const [fullName, setFullName] = useState(data.fullName);
-
   const [loading, setLoading] = useState(false);
 
+  // password change
+  const [old, setOld] = useState("");
+  const [newPass, setNewPass] = useState("");
+  const [confirmPass, setConfirmPass] = useState("");
+  const [passLoading, setPassLoading] = useState(false);
   const [error, setError] = useState(false);
 
   const changeDetails = async () => {
@@ -36,6 +41,42 @@ export default function EditProfile({ action, data }) {
       toast.error(error.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const changePassword = async () => {
+    if (!newPass || !old || !confirmPass) {
+      setError(true);
+    } else {
+      setPassLoading(true);
+      try {
+        if (newPass == confirmPass) {
+          if (newPass.length < 6) {
+            toast.error("Password must be greater than 6 charecter.");
+          } else {
+            const { data } = await axios.put("/api/user/change-password", {
+              newPassword: newPass,
+              oldPassword: old,
+            });
+
+            if (data.success) {
+              toast.success("Password changed successfully.");
+              setOld("");
+              setNewPass("");
+              setConfirmPass("");
+              action((p) => !p);
+            } else {
+              toast.error(data.message);
+            }
+          }
+        } else {
+          toast.error("Incorrect confirm password.");
+        }
+      } catch (error) {
+        toast.error(error);
+      } finally {
+        setPassLoading(false);
+      }
     }
   };
 
@@ -75,7 +116,7 @@ export default function EditProfile({ action, data }) {
           </label>
           <label className="input input-disabled  flex items-center gap-2">
             <input
-              value={data.username}
+              defaultValue={data.username}
               type="text"
               className="grow"
               placeholder="Username"
@@ -83,7 +124,7 @@ export default function EditProfile({ action, data }) {
           </label>
           <label className="input input-disabled input-bordered flex items-center gap-2">
             <input
-              value={data.email}
+              defaultValue={data.email}
               type="text"
               className="grow"
               placeholder="Email"
@@ -110,6 +151,8 @@ export default function EditProfile({ action, data }) {
         >
           <label className="input input-bordered flex items-center gap-2">
             <input
+              value={old}
+              onChange={(e) => setOld(e.target.value)}
               type="password"
               className="grow"
               placeholder="Old Password"
@@ -117,6 +160,8 @@ export default function EditProfile({ action, data }) {
           </label>
           <label className="input input-bordered flex items-center gap-2">
             <input
+              value={newPass}
+              onChange={(e) => setNewPass(e.target.value)}
               type="password"
               className="grow"
               placeholder="New Password"
@@ -124,12 +169,18 @@ export default function EditProfile({ action, data }) {
           </label>
           <label className="input input-bordered flex items-center gap-2">
             <input
+              value={confirmPass}
+              onChange={(e) => setConfirmPass(e.target.value)}
               type="password"
               className="grow"
               placeholder="Confirm Password"
             />
           </label>
-          <button className="capitalize btn btn-success btn-sm text-white ">
+          <button
+            disabled={passLoading}
+            onClick={changePassword}
+            className="capitalize btn btn-success btn-sm text-white "
+          >
             change password
           </button>
         </form>

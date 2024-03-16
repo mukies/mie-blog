@@ -1,8 +1,36 @@
-import { useNavigate } from "react-router-dom";
-import Message from "../components/Message";
+import { useNavigate, useParams } from "react-router-dom";
+// import Message from "../components/Message";
+// import useGetMessage from "../hooks/useGetMessage";
+// import { useMessage } from "../context/MessageContext";
+import { useEffect, useState } from "react";
+import useUserDetails from "../hooks/useUserDetails";
+import useSendMessage from "../hooks/useSendMessage";
+import MessageSection from "../components/MessageSection";
 
 export default function MessagePage() {
+  const [text, setText] = useState("");
+
+  const { sendMessage, loading: sendLoading } = useSendMessage();
+
   const navigate = useNavigate();
+  const { id } = useParams();
+
+  const { getUserDetails, loading, user } = useUserDetails();
+
+  useEffect(() => {
+    // console.log("msg page", id);
+
+    getUserDetails(id);
+  }, [id]);
+
+  // send message
+  const handleMessage = async () => {
+    if (text) {
+      await sendMessage(id, text);
+      setText("");
+    }
+  };
+
   return (
     <div className="max-w-[768px] h-[calc(100dvh-66px)]   mx-auto">
       <div className="bg-gray-300 relative rounded-t-lg h-[60px] px-2 flex  items-center text-black">
@@ -14,23 +42,53 @@ export default function MessagePage() {
             back
           </button>
         </div>
-        <div className=" flex  items-center gap-3 px-5 justify-around mx-auto w-[50%]">
+        <div className=" flex  items-center gap-3 px-5 justify-center mx-auto w-[50%]">
           <span className="text-xl font-semibold">To:</span>
           <p className="text-2xl text-nowrap font-semibold">
-            {" "}
-            <span>Mukesh Bhattarai</span>{" "}
-            <span className="text-lg text-[green] capitalize">(online)</span>
+            {loading ? (
+              <span className="loading loading-bars"></span>
+            ) : (
+              <span
+                onClick={() => navigate(`/profile/${id}`)}
+                className=" cursor-pointer capitalize"
+              >
+                {user?.fullName}
+              </span>
+            )}
+            {!loading && (
+              <span className="text-lg text-[green] capitalize">(online)</span>
+            )}
           </p>
         </div>
       </div>
-      <div className="border-l-2 border-b-2 rounded-b-md border-r-2 border-gray-300 flex flex-col gap-2 h-[calc(100%-120px)] p-3 overflow-auto ">
-        <Message />
-      </div>
+      {/* message box */}
+      <MessageSection user={user} />
       <div className=" px-5 rounded-b-lg h-[60px] gap-2 flex justify-center items-center">
         <label className="input input-success w-full h-full flex items-center gap-2">
-          <input type="text" className="grow" placeholder="Type a message..." />
+          <input
+            value={text}
+            onKeyDown={(e) => {
+              if (e.key == "Enter") {
+                handleMessage();
+              }
+            }}
+            onChange={(e) => setText(e.target.value)}
+            type="text"
+            className="grow"
+            placeholder="Type a message..."
+          />
         </label>
-        <button className="btn btn-success text-white">send</button>
+        <button
+          onClick={handleMessage}
+          disabled={loading || sendLoading}
+          className="btn btn-success text-white"
+        >
+          {sendLoading ? (
+            <span className="loading loading-spinner"></span>
+          ) : (
+            <span>send</span>
+          )}
+        </button>
       </div>
     </div>
   );

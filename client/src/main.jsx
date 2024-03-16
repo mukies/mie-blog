@@ -8,6 +8,7 @@ import { SinglePostProvider } from "./context/SinglePostContext.jsx";
 import { ProfileContextProvider } from "./context/ProfilePost.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { MessageProvider } from "./context/MessageContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -15,8 +16,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <FeedProvider>
         <ProfileContextProvider>
           <SinglePostProvider>
-            <ToastContainer />
-            <App />
+            <MessageProvider>
+              <ToastContainer />
+              <App />
+            </MessageProvider>
           </SinglePostProvider>
         </ProfileContextProvider>
       </FeedProvider>
