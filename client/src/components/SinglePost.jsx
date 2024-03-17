@@ -5,6 +5,9 @@ import { FaHeart, FaRegHeart, FaTrash } from "react-icons/fa";
 import { useRef, useState } from "react";
 import axios from "axios";
 import { useGetPost } from "../context/SinglePostContext";
+import ImageViewerPopup from "./popup/ImageViewerPopup";
+import { useNavigate } from "react-router-dom";
+import Popup from "./popup/Popup";
 
 export default function SinglePost() {
   const auth = JSON.parse(localStorage.getItem("_L"));
@@ -12,7 +15,10 @@ export default function SinglePost() {
   const [text, setText] = useState("");
   const [like, setLike] = useState(posts?.likes?.includes(auth?._id));
   const [loading, setLoading] = useState(false);
-
+  const navigate = useNavigate();
+  const [viewImg, setViewImg] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
+  const commentRef = useRef();
   // for like the post
   const handleLike = async () => {
     if (!auth) return alert("Login first");
@@ -27,7 +33,6 @@ export default function SinglePost() {
     setLike((p) => !p);
     await axios.put(`/api/post/like-unlike/${posts._id}`);
   };
-  const commentRef = useRef();
 
   // for adding a comment
   const handleComment = async () => {
@@ -62,6 +67,16 @@ export default function SinglePost() {
     }
   };
 
+  // for delete post
+  const handleDelete = async () => {
+    const { data } = await axios.delete(
+      `/api/post/user-delete-post/${posts._id}`
+    );
+    if (data.success) {
+      navigate("/");
+    }
+  };
+
   return (
     <div className="max-w-[768px] mx-auto flex flex-col gap-3 py-3">
       {auth && (
@@ -77,29 +92,35 @@ export default function SinglePost() {
       <div className=" flex flex-col gap-3 border-2 rounded-xl bg-white w-full px-4 py-5 ">
         <div className=" flex flex-col gap-5">
           {/* title  */}
-          <div className="flex items-center gap-4  relative">
-            <div className="w-10 h-10 flex justify-center items-center overflow-hidden rounded-full">
-              {posts.postedBy ? (
-                <img
-                  alt="Tailwind CSS Navbar component"
-                  src={posts.postedBy?.profilePic}
-                />
-              ) : (
-                <span className="loading loading-spinner"></span>
-              )}
+          <div className="flex items-center gap-4  justify-between ">
+            <div className="flex items-center">
+              <div className="w-10 h-10 flex justify-center items-center overflow-hidden rounded-full">
+                {posts.postedBy ? (
+                  <img alt="user-profile" src={posts.postedBy?.profilePic} />
+                ) : (
+                  <span className="loading loading-spinner"></span>
+                )}
+              </div>
+              <div className="flex flex-col gap-0">
+                <h1 className="text-xl font-semibold">
+                  {posts?.postedBy?.fullName}
+                </h1>
+                <span className="text-gray-700">Just now</span>
+              </div>
             </div>
-            <div className="flex flex-col gap-0">
-              <h1 className="text-xl font-semibold">
-                {posts?.postedBy?.fullName}
-              </h1>
-              <span className="text-gray-700">Just now</span>
-            </div>
+
             {posts?.postedBy?._id == auth?._id && (
-              <div className="absolute btn btn-circle right-0 top-[50%] translate-y-[-50%]">
+              <div
+                onClick={() => setShowDelete(true)}
+                className=" btn btn-circle"
+              >
                 <span>
                   <FaTrash color="red" />
                 </span>
               </div>
+            )}
+            {showDelete && (
+              <Popup handleDelete={handleDelete} cancel={setShowDelete} />
             )}
           </div>
 
@@ -108,13 +129,21 @@ export default function SinglePost() {
             <p className="">{posts?.text}</p>
           </div>
           {/* image content  */}
-          <div className="w-[99%] rounded-2xl overflow-hidden md:w-[80%] duration-200 transition-all h-[70vh] mx-auto ">
-            <img
-              className=" w-full h-full object-cover object-center"
-              alt="Tailwind CSS Navbar component"
-              src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-            />
-          </div>
+          {posts?.image && (
+            <div
+              onClick={() => setViewImg(true)}
+              className="w-[99%] cursor-pointer rounded-2xl overflow-hidden md:w-[80%] duration-200 transition-all h-[70vh] mx-auto "
+            >
+              <img
+                className=" w-full h-full object-cover object-center"
+                alt="Tailwind CSS Navbar component"
+                src={posts?.image}
+              />
+            </div>
+          )}
+          {viewImg && (
+            <ImageViewerPopup img={posts?.image} action={setViewImg} />
+          )}
         </div>
         <div className="flex items-center gap-5 w-[90%] mx-auto">
           <div className="flex items-center gap-3">

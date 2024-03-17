@@ -15,7 +15,7 @@ import useUserDetails from "../hooks/useUserDetails";
 import { useProfilePost } from "../context/ProfilePost";
 import axios from "axios";
 import PeopleList from "../components/PeopleList";
-import ImageUploadPopup from "../components/ImageUploadPopup";
+import ImageUploadPopup from "../components/popup/ImageUploadPopup";
 import EditProfile from "../components/EditProfile";
 
 export default function Profile() {
@@ -24,7 +24,7 @@ export default function Profile() {
   const [followerList, setFollowerList] = useState(false);
   const [followingList, setFollowingList] = useState(false);
 
-  const [profileUploadPopup, setProfileUploadPopup] = useState(false);
+  const [uploadPopup, setUploadPopup] = useState(false);
   const [coverUploadPopup, setCoverUploadPopup] = useState(false);
 
   const [editProfile, setEditProfile] = useState(false);
@@ -33,8 +33,6 @@ export default function Profile() {
   const [follower, setFollower] = useState([]);
   const [following, setFollowing] = useState([]);
 
-  const [profilePic, setProfilePic] = useState(null);
-  const [coverPic, setCoverPic] = useState(null);
   // hooks
   const { getProfilePost, posts, loading } = useProfilePost();
   const {
@@ -92,7 +90,7 @@ export default function Profile() {
           <div className="relative h-[400px]  w-full">
             <img
               className="h-[70%] object-cover object-center w-full"
-              src="/cover.jpg"
+              src={user?.coverPic}
               alt="cover-image"
             />
 
@@ -111,8 +109,6 @@ export default function Profile() {
             {coverUploadPopup && (
               <ImageUploadPopup
                 title={"Cover"}
-                photo={coverPic}
-                setPhoto={setCoverPic}
                 setPopup={setCoverUploadPopup}
               />
             )}
@@ -132,7 +128,7 @@ export default function Profile() {
                 )}
                 {username == auth?.username && (
                   <div
-                    onClick={() => setProfileUploadPopup((p) => !p)}
+                    onClick={() => setUploadPopup((p) => !p)}
                     className="absolute flex  justify-center items-center btn btn-sm btn-circle btn-primary bottom-0 z-10 right-[10%] "
                   >
                     <span>
@@ -168,13 +164,8 @@ export default function Profile() {
           </div>
           {/* image upload popup */}
 
-          {profileUploadPopup && (
-            <ImageUploadPopup
-              title={"Profile"}
-              photo={profilePic}
-              setPhoto={setProfilePic}
-              setPopup={setProfileUploadPopup}
-            />
+          {uploadPopup && (
+            <ImageUploadPopup title={"Profile"} setPopup={setUploadPopup} />
           )}
         </div>
         <div className="divider m-0 p-0"></div>

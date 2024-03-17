@@ -4,6 +4,7 @@ const slugify = require("slugify");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { getToken } = require("../utils/getToken");
+const { v2: cloudinary } = require("cloudinary");
 
 exports.login = async (req, res) => {
   const { username, password } = req.body;
@@ -319,6 +320,40 @@ exports.getFollowers = async (req, res) => {
       success: false,
       message: "try catch error in get user controller.",
       error,
+    });
+  }
+};
+
+exports.changeProfileAndCover = async (req, res) => {
+  const userId = req.user._id;
+  let { profilePic, coverPic } = req.body;
+  try {
+    const user = await userModel.findById(userId);
+    if (!user) return res.json({ success: false, message: "User not found." });
+
+    if (!profilePic && !coverPic)
+      return res.json({ success: false, message: "Nothing to update." });
+
+    if (profilePic) {
+      const response = await cloudinary.uploader.upload(profilePic);
+      profilePic = response.secure_url;
+    }
+    if (coverPic) {
+      const response = await cloudinary.uploader.upload(coverPic);
+      coverPic = response.secure_url;
+    }
+
+    user.profilePic = profilePic;
+    user.coverPic = coverPic;
+
+    await user.save();
+
+    res.json({ success: true, message: "Pictures updated." });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success: false,
+      message: "Error while changing profile picture or cover picture.",
     });
   }
 };

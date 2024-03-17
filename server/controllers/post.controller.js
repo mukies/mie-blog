@@ -1,6 +1,6 @@
 const postModel = require("../model/post.model");
 const userModel = require("../model/user.model");
-const { v2: cloudinary } = require("cloudinary");
+const { v2 } = require("cloudinary");
 
 // post
 
@@ -16,10 +16,11 @@ exports.addPost = async (req, res) => {
       });
     } else {
       if (image) {
-        const response = await cloudinary.uploader.upload(image);
-        console.log("response", response);
+        const response = await v2.uploader.upload(image);
+
+        image = response.secure_url;
       }
-      const post = new postModel({ postedBy: req.user._id, text });
+      const post = new postModel({ postedBy: req.user._id, text, image });
       await post.save();
       res.json({
         success: true,

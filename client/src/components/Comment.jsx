@@ -4,7 +4,7 @@ import { FaHeart, FaRegHeart, FaTrashAlt } from "react-icons/fa";
 import { BsFillPeopleFill } from "react-icons/bs";
 import axios from "axios";
 import useUserDetails from "../hooks/useUserDetails";
-import Popup from "./Popup";
+import Popup from "./popup/Popup";
 import { useGetPost } from "../context/SinglePostContext";
 
 export default function Comment({ item: items, commentId, postId, index }) {
@@ -23,7 +23,7 @@ export default function Comment({ item: items, commentId, postId, index }) {
 
   const handleLike = async () => {
     if (auth) {
-      if (items.likes?.includes(auth._id)) {
+      if (item.likes?.includes(auth._id)) {
         setItem({
           ...item,
           likes: item.likes?.filter((id) => id !== auth?._id),

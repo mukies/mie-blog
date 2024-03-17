@@ -4,7 +4,7 @@ import { useState } from "react";
 import { FaHeart, FaRegHeart, FaTrash } from "react-icons/fa";
 import { MdOutlineChat } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import Popup from "./Popup";
+import Popup from "./popup/Popup";
 import { useFeed } from "../context/FeedContext";
 import { useProfilePost } from "../context/ProfilePost";
 
@@ -111,28 +111,30 @@ export default function Post({ item: items, id }) {
         </div>
 
         {/* text content  */}
-        <div className="w-[90%] bg-gray-200 p-3 rounded-md overflow-hidden md:w-[80%] duration-200 transition-all  mx-auto">
-          <p className="">
-            {text.length < 300 ? text : text.substring(0, 300) + "..."}
-            {text.length < 300 ? (
-              ""
-            ) : (
-              <span className="text-blue-700 cursor-pointer text-lg">
-                see more
-              </span>
-            )}
-          </p>
-        </div>
+        {text && (
+          <div className="w-[90%] bg-gray-200 p-3 rounded-md overflow-hidden md:w-[80%] duration-200 transition-all  mx-auto">
+            <p className="">
+              {text.length < 300 ? text : text.substring(0, 300) + "..."}
+              {text.length < 300 ? (
+                ""
+              ) : (
+                <span className="text-blue-700 cursor-pointer text-lg">
+                  see more
+                </span>
+              )}
+            </p>
+          </div>
+        )}
         {/* image content  */}
-        {!item.image && (
+        {item.image && (
           <div
             onClick={() => navigate(`/post/${item._id}`)}
             className="w-[90%] cursor-pointer rounded-2xl overflow-hidden md:w-[80%] duration-200 transition-all h-[70vh] mx-auto "
           >
             <img
               className=" w-full h-full object-cover object-center"
-              alt="Tailwind CSS Navbar component"
-              src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+              alt="image content"
+              src={item?.image}
             />
           </div>
         )}

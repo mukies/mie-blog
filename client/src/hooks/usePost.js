@@ -8,7 +8,7 @@ export const usePost = () => {
   const { setPosts } = useFeed();
   const { setPosts: setPost } = useProfilePost();
 
-  const addPost = async (text, image = null) => {
+  const addPost = async (text, image) => {
     setLoading(true);
     try {
       const { data } = await axios.post("/api/post/add", { text, image });
@@ -19,6 +19,8 @@ export const usePost = () => {
       } else {
         alert(data.message);
       }
+      // console.log("text", text);
+      // console.log("image", image);
     } catch (error) {
       console.log(error);
     } finally {

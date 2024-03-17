@@ -6,18 +6,19 @@ import { usePost } from "../hooks/usePost";
 import { useNavigate } from "react-router-dom";
 import useUserDetails from "../hooks/useUserDetails";
 import { toast } from "react-toastify";
+import usePreviewImg from "../hooks/usePreviewImg";
 
 export default function CreatePost() {
   const auth = JSON.parse(localStorage.getItem("_L"));
   const [text, setText] = useState("");
-  const [image, setImage] = useState(null);
   const [show, setShow] = useState(false);
-
   const navigate = useNavigate();
   const postRef = useRef();
 
   const { getUserDetails, loading: userLoading, user } = useUserDetails();
 
+  // preview image hook
+  const { previewImg, imgUrl, setImgUrl } = usePreviewImg();
   // add post hook
   const { loading, addPost } = usePost();
 
@@ -25,15 +26,15 @@ export default function CreatePost() {
     getUserDetails(auth?.username);
   }, [auth?.username]);
 
-  const handlePost = () => {
-    if (!text && !image) {
+  const handlePost = async () => {
+    if (!text && !imgUrl) {
       toast.error("Nothing to post");
     } else {
       // try
 
       // try
 
-      addPost(text);
+      await addPost(text, imgUrl);
       setShow(false);
       setText("");
       // console.log(image);
@@ -52,7 +53,7 @@ export default function CreatePost() {
           ) : (
             <img
               alt={user?.username}
-              className=" w-full h-full"
+              className=" object-cover object-center w-full h-full"
               src={user?.profilePic}
             />
           )}
@@ -143,7 +144,7 @@ export default function CreatePost() {
                 <span className="text-lg font-semibold">Photo</span>
 
                 <input
-                  onChange={(e) => setImage(e.target.files[0])}
+                  onChange={previewImg}
                   type="file"
                   accept="image/*"
                   className="hidden"
@@ -151,11 +152,11 @@ export default function CreatePost() {
                 />
               </label>
             </div>
-            {image ? (
+            {imgUrl ? (
               <div className=" w-full flex justify-center  rounded-lg">
                 <div className="h-[150px] relative">
                   <div
-                    onClick={() => setImage(null)}
+                    onClick={() => setImgUrl(null)}
                     className="absolute top-0 right-0 btn btn-sm btn-circle"
                   >
                     <span>
@@ -164,7 +165,9 @@ export default function CreatePost() {
                   </div>
                   <img
                     className="h-full w-[200px] object-cover"
-                    src={URL.createObjectURL(image)}
+                    // src={URL.createObjectURL(image)}
+
+                    src={imgUrl}
                     alt="photo"
                   />
                 </div>

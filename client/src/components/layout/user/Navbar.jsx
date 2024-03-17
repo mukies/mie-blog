@@ -7,12 +7,14 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useUserDetails from "../../../hooks/useUserDetails";
 import { useEffect, useState } from "react";
-import SearchPage from "../../SearchPage";
+import SearchPage from "../../popup/SearchPage";
 
 export default function Nav() {
   const auth = JSON.parse(localStorage.getItem("_L"));
   const { getUserDetails, loading, user } = useUserDetails();
+  // search bar popup
   const [searchbar, setSearchbar] = useState(false);
+
   const navigate = useNavigate();
   const logout = async () => {
     localStorage.removeItem("_L");
