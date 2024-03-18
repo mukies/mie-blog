@@ -75,7 +75,10 @@ export default function CreatePost() {
         </div>
       </div>
       <div className="w-[80%] flex justify-around mx-auto px-5">
-        <div className="flex items-center gap-2 cursor-pointer hover:bg-gray-300 rounded-lg duration-200 px-4 py-3">
+        <div
+          onClick={() => toast.info("This feature will coming soon.")}
+          className="flex items-center gap-2 cursor-pointer hover:bg-gray-300 rounded-lg duration-200 px-4 py-3"
+        >
           <IoMdVideocam size={30} color="#8b0000" />
           <span className="text-lg font-semibold">Live</span>
         </div>
@@ -89,7 +92,7 @@ export default function CreatePost() {
           className="flex items-center gap-2 cursor-pointer hover:bg-gray-300 rounded-lg duration-200 px-4 py-3"
         >
           <MdPermMedia size={30} color="#316ff6" />
-          <span className="text-lg font-semibold">Photo/Video</span>
+          <span className="text-lg font-semibold">Media</span>
         </div>
       </div>
       <div

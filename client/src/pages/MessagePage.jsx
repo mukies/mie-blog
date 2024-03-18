@@ -6,6 +6,10 @@ import { useEffect, useState } from "react";
 import useUserDetails from "../hooks/useUserDetails";
 import useSendMessage from "../hooks/useSendMessage";
 import MessageSection from "../components/MessageSection";
+import { IoMdImages } from "react-icons/io";
+import { BsFillSendFill } from "react-icons/bs";
+import { FaTimes } from "react-icons/fa";
+import usePreviewImg from "../hooks/usePreviewImg";
 
 export default function MessagePage() {
   const [text, setText] = useState("");
@@ -16,6 +20,7 @@ export default function MessagePage() {
   const { id } = useParams();
 
   const { getUserDetails, loading, user } = useUserDetails();
+  const { previewImg, imgUrl, setImgUrl } = usePreviewImg();
 
   useEffect(() => {
     // console.log("msg page", id);
@@ -25,9 +30,10 @@ export default function MessagePage() {
 
   // send message
   const handleMessage = async () => {
-    if (text) {
-      await sendMessage(id, text);
+    if (text || imgUrl) {
+      await sendMessage(id, text, imgUrl);
       setText("");
+      setImgUrl(null);
     }
   };
 
@@ -63,8 +69,8 @@ export default function MessagePage() {
       </div>
       {/* message box */}
       <MessageSection user={user} />
-      <div className=" px-5 rounded-b-lg h-[60px] gap-2 flex justify-center items-center">
-        <label className="input input-success w-full h-full flex items-center gap-2">
+      <div className=" px-5 rounded-b-lg h-[60px] gap-1 flex justify-center items-center">
+        <label className="input  input-success w-full h-full flex items-center gap-2">
           <input
             value={text}
             onKeyDown={(e) => {
@@ -78,18 +84,66 @@ export default function MessagePage() {
             placeholder="Type a message..."
           />
         </label>
+        <span className=" w-[40px]  h-auto ">
+          <label htmlFor="file" className="cursor-pointer">
+            <IoMdImages size={35} />
+            <input
+              onChange={previewImg}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              id="file"
+            />
+          </label>
+        </span>
         <button
           onClick={handleMessage}
           disabled={loading || sendLoading}
-          className="btn btn-success text-white"
+          className="btn btn-success flex items-center justify-center  text-white"
         >
           {sendLoading ? (
             <span className="loading loading-spinner"></span>
           ) : (
-            <span>send</span>
+            <span>
+              <BsFillSendFill size={20} />
+            </span>
           )}
         </button>
       </div>
+      {imgUrl && (
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center z-[222] items-center bg-[#000000b0]">
+          <div className="relative gap-2  w-full h-[80%] md:w-[40%] flex flex-col rounded-lg">
+            <div
+              onClick={() => setImgUrl(null)}
+              className="absolute top-0 right-0 btn btn-md btn-circle text-[red]"
+            >
+              <span>
+                <FaTimes />
+              </span>
+            </div>
+            <div className="h-[calc(100%-50px)] bg-black rounded-xl overflow-hidden w-full">
+              <img
+                className="object-contain h-full w-full object-center"
+                src={imgUrl}
+                alt="image-content"
+              />
+            </div>
+            <div className=" flex px-4 justify-center items-center h-[50px] ">
+              <button
+                onClick={handleMessage}
+                disabled={sendLoading}
+                className="btn btn-success text-white w-full "
+              >
+                {sendLoading ? (
+                  <span className="loading loading-spinner"></span>
+                ) : (
+                  "send"
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

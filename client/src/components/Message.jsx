@@ -1,6 +1,9 @@
 // import { useEffect } from "react";
 // import useUserDetails from "../hooks/useUserDetails";
 
+import { useState } from "react";
+import ImageViewerPopup from "./popup/ImageViewerPopup";
+
 /* eslint-disable react/prop-types */
 export default function Message({
   msg,
@@ -10,11 +13,7 @@ export default function Message({
 }) {
   const auth = JSON.parse(localStorage.getItem("_L"));
 
-  // const { getUserDetails, user, loading } = useUserDetails();
-
-  // useEffect(() => {
-  //   getUserDetails(auth?.username);
-  // }, []);
+  const [viewImg, setViewImg] = useState(false);
 
   return (
     // if my message className = 'flex-row-reverse'
@@ -29,13 +28,13 @@ export default function Message({
             <span className="loading loading-spinner"></span>
           ) : (
             <img
-              className="  object-center object-cover"
+              className=" h-full w-full object-center object-cover"
               src={
                 msg.senderID == auth._id
                   ? loginUser?.profilePic
                   : otherUser.profilePic
               }
-              alt="image-content"
+              alt="profile-pic"
             />
           )}
         </div>
@@ -43,17 +42,22 @@ export default function Message({
       </div>
       <div className="flex flex-col gap-3 max-w-[40%] ">
         {/* if my message classname = rounded-br-none bg-blue-700 */}
-        <div
-          className={
-            msg.senderID == auth._id
-              ? "p-2 text-white rounded-lg rounded-br-none bg-blue-700"
-              : "p-2 text-white rounded-lg rounded-tl-none bg-gray-700 "
-          }
-        >
-          <p className="max-w-max  text-[17px] leading-[23px]">{msg.text}</p>
-        </div>
+        {msg.text && (
+          <div
+            className={
+              msg.senderID == auth._id
+                ? "p-2 text-white rounded-lg rounded-br-none bg-blue-700"
+                : "p-2 text-white rounded-lg rounded-tl-none bg-gray-700 "
+            }
+          >
+            <p className="max-w-max  text-[17px] leading-[23px]">{msg.text}</p>
+          </div>
+        )}
         {msg.image && (
-          <div className="h-[60dvh] rounded-md overflow-hidden w-full ">
+          <div
+            onClick={() => setViewImg(true)}
+            className="h-[60dvh] cursor-pointer rounded-md overflow-hidden w-full "
+          >
             <img
               className=" h-full w-full object-center object-cover"
               src={msg.image}
@@ -61,6 +65,7 @@ export default function Message({
             />
           </div>
         )}
+        {viewImg && <ImageViewerPopup action={setViewImg} img={msg?.image} />}
       </div>
     </div>
   );

@@ -8,12 +8,13 @@ export default function useSendMessage() {
   const { setMessages, messages } = useMessage();
   const { setMsg } = useMessage();
 
-  const sendMessage = async (username, text) => {
+  const sendMessage = async (username, text, image) => {
     setLoading(true);
 
     try {
       const { data } = await axios.post(`/api/message/send/${username}`, {
         text,
+        image,
       });
       if (data.success) {
         setMessages({

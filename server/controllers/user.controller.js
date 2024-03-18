@@ -337,14 +337,13 @@ exports.changeProfileAndCover = async (req, res) => {
     if (profilePic) {
       const response = await cloudinary.uploader.upload(profilePic);
       profilePic = response.secure_url;
+      user.profilePic = profilePic;
     }
     if (coverPic) {
       const response = await cloudinary.uploader.upload(coverPic);
       coverPic = response.secure_url;
+      user.coverPic = coverPic;
     }
-
-    user.profilePic = profilePic;
-    user.coverPic = coverPic;
 
     await user.save();
 
@@ -354,6 +353,27 @@ exports.changeProfileAndCover = async (req, res) => {
     res.json({
       success: false,
       message: "Error while changing profile picture or cover picture.",
+    });
+  }
+};
+
+exports.searchUser = async (req, res) => {
+  const { key } = req.params;
+  try {
+    const users = await userModel
+      .find({
+        $or: [{ fullName: { $regex: key } }, { username: { $regex: key } }],
+      })
+      .select("fullName")
+      .select("profilePic")
+      .select("username");
+
+    res.json({ success: true, users });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success: false,
+      message: "Error while searching user.",
     });
   }
 };

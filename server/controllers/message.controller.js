@@ -1,11 +1,13 @@
 const conversationModel = require("../model/conversation.model");
 const messageModel = require("../model/message.model");
 const userModel = require("../model/user.model");
+const { v2: cloudinary } = require("cloudinary");
 
 exports.sendMessage = async (req, res) => {
   const { username } = req.params;
   const senderID = req.user._id;
-  const { text, image } = req.body;
+  const { text } = req.body;
+  let { image } = req.body;
 
   if (!text && !image) {
     return res.json({
@@ -47,8 +49,13 @@ exports.sendMessage = async (req, res) => {
       receiverID: otherUser._id,
       senderID,
       text,
-      image,
     });
+
+    if (image) {
+      const response = await cloudinary.uploader.upload(image);
+      image = response.secure_url;
+      message.image = image;
+    }
 
     // to create latest message
     await conversation.updateOne({
@@ -121,7 +128,8 @@ exports.getConversation = async (req, res) => {
     const conversations = await conversationModel
       .find({ users: userId })
       .select("users lastMessage")
-      .populate("users", "fullName username profilePic");
+      .populate("users", "fullName username profilePic")
+      .sort({ updatedAt: -1 });
 
     if (!conversations)
       return res.json({

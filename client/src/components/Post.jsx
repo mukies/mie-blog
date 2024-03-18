@@ -77,6 +77,7 @@ export default function Post({ item: items, id }) {
             >
               {item || !feedLoding ? (
                 <img
+                  className="object-cover object-center h-full w-full"
                   alt={item.postedBy?.username}
                   src={item.postedBy?.profilePic}
                 />
@@ -85,7 +86,10 @@ export default function Post({ item: items, id }) {
               )}
             </div>
             <div className="flex flex-col gap-0">
-              <h1 className="text-xl font-semibold">
+              <h1
+                onClick={() => navigate(`/profile/${item.postedBy.username}`)}
+                className="text-xl cursor-pointer capitalize font-semibold"
+              >
                 {item.postedBy.fullName}
               </h1>
               <span className="text-gray-700">Just now</span>

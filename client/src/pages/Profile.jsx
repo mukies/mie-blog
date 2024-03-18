@@ -17,6 +17,7 @@ import axios from "axios";
 import PeopleList from "../components/PeopleList";
 import ImageUploadPopup from "../components/popup/ImageUploadPopup";
 import EditProfile from "../components/EditProfile";
+import ImageViewerPopup from "../components/popup/ImageViewerPopup";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -28,6 +29,9 @@ export default function Profile() {
   const [coverUploadPopup, setCoverUploadPopup] = useState(false);
 
   const [editProfile, setEditProfile] = useState(false);
+
+  const [showProfilePic, setShowProfilePic] = useState(false);
+  const [showCoverPic, setShowCoverPic] = useState(false);
 
   // for values
   const [follower, setFollower] = useState([]);
@@ -89,7 +93,8 @@ export default function Profile() {
           {/* cover and profile  */}
           <div className="relative h-[400px]  w-full">
             <img
-              className="h-[70%] object-cover object-center w-full"
+              onClick={() => setShowCoverPic(true)}
+              className="h-[70%] cursor-pointer object-cover object-center w-full"
               src={user?.coverPic}
               alt="cover-image"
             />
@@ -112,12 +117,22 @@ export default function Profile() {
                 setPopup={setCoverUploadPopup}
               />
             )}
+            {showProfilePic && (
+              <ImageViewerPopup
+                action={setShowProfilePic}
+                img={user?.profilePic}
+              />
+            )}
+            {showCoverPic && (
+              <ImageViewerPopup action={setShowCoverPic} img={user?.coverPic} />
+            )}
 
             <div className="absolute flex flex-col items-center  translate-x-[-50%] translate-y-[-50%] left-[50%] top-[70%]">
               <div className="h-[170px] relative bg-white w-[170px]  rounded-full flex justify-center items-center border-[5px] border-gray-400">
                 {user && !detailsLoading ? (
                   <img
-                    className="h-full w-full rounded-full object-cover object-center"
+                    onClick={() => setShowProfilePic(true)}
+                    className="h-full cursor-pointer w-full rounded-full object-cover object-center"
                     alt={user?.username}
                     src={user?.profilePic}
                   />
@@ -148,6 +163,9 @@ export default function Profile() {
                     <span className="loading loading-dots"></span>
                   </>
                 )}
+                <span className="text-lg text-gray-700 font-semibold">
+                  {user?.username}
+                </span>
                 {user && (
                   <div className="flex items-center gap-3">
                     <span className="md:text-md text-sm text-gray-600 font-semibold">
@@ -260,11 +278,11 @@ export default function Profile() {
           </div>
           {/* edit profile  */}
           {username == auth?.username && (
-            <div
-              onClick={() => setEditProfile(true)}
-              className="flex items-center"
-            >
-              <button className="flex items-center text-white btn btn-error btn-sm">
+            <div className="flex items-center">
+              <button
+                onClick={() => setEditProfile(true)}
+                className="flex items-center text-white btn btn-error btn-sm"
+              >
                 <FiEdit />
                 <span>Edit Profile</span>
               </button>

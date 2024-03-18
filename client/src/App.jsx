@@ -26,14 +26,12 @@ function App() {
       {auth && !adminAuth ? <Nav /> : !auth && adminAuth ? <AdminNav /> : ""}
       <Routes>
         <Route path="/" element={auth ? <Home /> : <Login />} />
-        {/* <Route path="/" element={<Home />} /> */}
         <Route element={<ProtectedRoute />}>
           <Route path="/profile/:username" element={<Profile />} />
           <Route path="/chats" element={<ChatListPage />} />
           <Route path="/chats/:id" element={<MessagePage />} />
         </Route>
         <Route path="/post/:id" element={<PostPage />} />
-        {/* <Route path="/login" element={<Login />} /> */}
         <Route path="/mie-admin" element={<AdminLogin />} />
         <Route path="/mie-reg" element={<AdminRegister />} />
         {/* admin routes */}

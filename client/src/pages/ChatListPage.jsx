@@ -41,7 +41,7 @@ export default function ChatListPage() {
             >
               <div className=" relative flex justify-center items-center rounded-full border-[2px] border-white">
                 <img
-                  className="h-14 w-14 rounded-full"
+                  className="h-14 object-cover object-center w-14 rounded-full"
                   src={i.users[0].profilePic}
                   alt="user-profile"
                 />

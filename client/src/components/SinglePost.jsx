@@ -93,10 +93,14 @@ export default function SinglePost() {
         <div className=" flex flex-col gap-5">
           {/* title  */}
           <div className="flex items-center gap-4  justify-between ">
-            <div className="flex items-center">
+            <div className="flex gap-4 items-center">
               <div className="w-10 h-10 flex justify-center items-center overflow-hidden rounded-full">
                 {posts.postedBy ? (
-                  <img alt="user-profile" src={posts.postedBy?.profilePic} />
+                  <img
+                    className="h-full w-full object-center object-cover"
+                    alt="user-profile"
+                    src={posts.postedBy?.profilePic}
+                  />
                 ) : (
                   <span className="loading loading-spinner"></span>
                 )}
@@ -125,9 +129,11 @@ export default function SinglePost() {
           </div>
 
           {/* text content  */}
-          <div className="w-[90%] rounded-2xl overflow-hidden md:w-[80%] duration-200 transition-all  mx-auto">
-            <p className="">{posts?.text}</p>
-          </div>
+          {posts?.text && (
+            <div className="w-[90%] rounded-2xl p-3 overflow-hidden md:w-[80%] duration-200 transition-all  mx-auto">
+              <p className="">{posts?.text}</p>
+            </div>
+          )}
           {/* image content  */}
           {posts?.image && (
             <div

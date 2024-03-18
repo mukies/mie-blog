@@ -40,7 +40,7 @@ export default function MessageSection({ user }) {
         <span className="loading loading-spinner scale-125"></span>
       ) : !loading &&
         !userLoading &&
-        messages?.messages &&
+        messages?.messages.length &&
         user &&
         loginUser ? (
         messages.messages.map((item, i) => (
