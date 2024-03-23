@@ -1,10 +1,11 @@
 import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { useConversation } from "../context/ConversationContext";
 
 export function useGetConversations() {
   const [loading, setLoading] = useState(true);
-  const [conversation, setConversation] = useState([]);
+  const { conversation, setConversation } = useConversation();
 
   const getConversation = async () => {
     setLoading(true);
@@ -21,5 +22,5 @@ export function useGetConversations() {
       setLoading(false);
     }
   };
-  return { conversation, loading, getConversation };
+  return { conversation, setConversation, loading, getConversation };
 }

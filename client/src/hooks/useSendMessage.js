@@ -6,7 +6,6 @@ import { useMessage } from "../context/MessageContext";
 export default function useSendMessage() {
   const [loading, setLoading] = useState(false);
   const { setMessages, messages } = useMessage();
-  const { setMsg } = useMessage();
 
   const sendMessage = async (username, text, image) => {
     setLoading(true);
@@ -17,11 +16,7 @@ export default function useSendMessage() {
         image,
       });
       if (data.success) {
-        setMessages({
-          ...messages,
-          messages: [...messages.messages, data.message],
-        });
-        setMsg((p) => !p);
+        setMessages([...messages, data.message]);
       } else {
         toast.error(data.message);
       }

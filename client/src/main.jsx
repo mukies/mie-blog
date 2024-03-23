@@ -9,20 +9,26 @@ import { ProfileContextProvider } from "./context/ProfilePost.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { MessageProvider } from "./context/MessageContext.jsx";
+import { SocketProvider } from "./context/SocketContext.jsx";
+import { ConversationProvider } from "./context/ConversationContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
-      <FeedProvider>
-        <ProfileContextProvider>
-          <SinglePostProvider>
-            <MessageProvider>
-              <ToastContainer />
-              <App />
-            </MessageProvider>
-          </SinglePostProvider>
-        </ProfileContextProvider>
-      </FeedProvider>
+      <SocketProvider>
+        <ConversationProvider>
+          <FeedProvider>
+            <ProfileContextProvider>
+              <SinglePostProvider>
+                <MessageProvider>
+                  <ToastContainer />
+                  <App />
+                </MessageProvider>
+              </SinglePostProvider>
+            </ProfileContextProvider>
+          </FeedProvider>
+        </ConversationProvider>
+      </SocketProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

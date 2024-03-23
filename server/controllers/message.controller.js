@@ -2,6 +2,7 @@ const conversationModel = require("../model/conversation.model");
 const messageModel = require("../model/message.model");
 const userModel = require("../model/user.model");
 const { v2: cloudinary } = require("cloudinary");
+const { io, getReceiverSocketID } = require("../socket/socket");
 
 exports.sendMessage = async (req, res) => {
   const { username } = req.params;
@@ -44,7 +45,6 @@ exports.sendMessage = async (req, res) => {
         },
       });
     }
-
     const message = new messageModel({
       receiverID: otherUser._id,
       senderID,
@@ -56,7 +56,6 @@ exports.sendMessage = async (req, res) => {
       image = response.secure_url;
       message.image = image;
     }
-
     // to create latest message
     await conversation.updateOne({
       lastMessage: {
@@ -71,10 +70,16 @@ exports.sendMessage = async (req, res) => {
             : "",
       },
     });
-    await conversation.messages.push(message._id);
+    conversation.messages.push(message._id);
 
     await conversation.save();
     await message.save();
+
+    const receiverSocketID = getReceiverSocketID(otherUser._id);
+
+    if (receiverSocketID) {
+      io.to(receiverSocketID).emit("newMessage", message);
+    }
 
     res.json({ success: true, message });
   } catch (error) {

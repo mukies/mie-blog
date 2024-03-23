@@ -5,43 +5,34 @@ import { useState } from "react";
 import ImageViewerPopup from "./popup/ImageViewerPopup";
 
 /* eslint-disable react/prop-types */
-export default function Message({
-  msg,
-  otherUser,
-  loginUser,
-  userLoading: loading,
-}) {
+export default function Message({ msg, otherUser, userLoading: loading }) {
   const auth = JSON.parse(localStorage.getItem("_L"));
 
   const [viewImg, setViewImg] = useState(false);
 
   return (
-    // if my message className = 'flex-row-reverse'
     <div
       className={
         msg.senderID == auth._id ? "flex flex-row-reverse gap-5" : "flex  gap-5"
       }
     >
-      <div className="flex items-center flex-col gap-0">
-        <div className="h-10 w-10 flex justify-center items-center rounded-full overflow-hidden">
-          {loading ? (
-            <span className="loading loading-spinner"></span>
-          ) : (
-            <img
-              className=" h-full w-full object-center object-cover"
-              src={
-                msg.senderID == auth._id
-                  ? loginUser?.profilePic
-                  : otherUser.profilePic
-              }
-              alt="profile-pic"
-            />
-          )}
+      {msg.senderID !== auth._id && (
+        <div className="flex items-center flex-col gap-0">
+          <div className="h-10 w-10 flex justify-center items-center rounded-full overflow-hidden">
+            {loading ? (
+              <span className="loading loading-spinner"></span>
+            ) : (
+              <img
+                className=" h-full w-full object-center object-cover"
+                src={otherUser.profilePic}
+                alt="profile-pic"
+              />
+            )}
+          </div>
+          <span className="text-sm text-center text-nowrap">just now</span>
         </div>
-        <span className="text-sm text-center text-nowrap">just now</span>
-      </div>
+      )}
       <div className="flex flex-col gap-3 max-w-[40%] ">
-        {/* if my message classname = rounded-br-none bg-blue-700 */}
         {msg.text && (
           <div
             className={

@@ -25,7 +25,7 @@ export default function PeopleList({ title, action, data }) {
               <div className=" flex items-center gap-2 md:gap-5  ">
                 <div className="h-14 w-14 rounded-full overflow-hidden bg-gray-400">
                   <img
-                    className="  object-cover object-center "
+                    className=" h-full w-full object-cover object-center "
                     src={item.profilePic}
                     alt={item.username}
                   />

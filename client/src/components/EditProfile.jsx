@@ -101,7 +101,7 @@ export default function EditProfile({ action, data }) {
         >
           <label
             className={
-              fullName.length < 4 && error
+              fullName?.length < 4 && error
                 ? "input input-error  flex items-center gap-2"
                 : "input input-bordered  flex items-center gap-2"
             }

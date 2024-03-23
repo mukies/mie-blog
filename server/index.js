@@ -1,11 +1,11 @@
 const express = require("express");
-const app = express();
 require("dotenv").config();
 const { v2 } = require("cloudinary");
 const cookie = require("cookie-parser");
 const userRoutes = require("./routes/user.route");
 const postRoutes = require("./routes/post.route");
 const messageRoutes = require("./routes/message.route");
+const { app, server } = require("./socket/socket");
 
 // database
 require("./db/config");
@@ -27,6 +27,6 @@ app.use("/api/post", postRoutes);
 app.use("/api/message", messageRoutes);
 
 const port = process.env.PORT;
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`server running on port ${port}`);
 });

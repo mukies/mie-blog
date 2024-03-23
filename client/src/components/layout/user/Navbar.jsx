@@ -18,6 +18,7 @@ export default function Nav() {
   const navigate = useNavigate();
   const logout = async () => {
     localStorage.removeItem("_L");
+    localStorage.removeItem("_N");
     await axios.post("/api/user/logout");
     navigate("/");
     window.location.reload();

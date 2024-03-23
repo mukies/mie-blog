@@ -10,24 +10,45 @@ import { IoMdImages } from "react-icons/io";
 import { BsFillSendFill } from "react-icons/bs";
 import { FaTimes } from "react-icons/fa";
 import usePreviewImg from "../hooks/usePreviewImg";
+import { useMessage } from "../context/MessageContext";
+import { useSocket } from "../context/SocketContext";
 
 export default function MessagePage() {
   const [text, setText] = useState("");
-
+  const { onlineUsers, socket } = useSocket();
+  const auth = JSON.parse(localStorage.getItem("_L"));
   const { sendMessage, loading: sendLoading } = useSendMessage();
 
   const navigate = useNavigate();
   const { id } = useParams();
-
+  const {
+    messages,
+    loading: msgLoading,
+    getMessage,
+    setMessages,
+    conversationUser,
+  } = useMessage();
   const { getUserDetails, loading, user } = useUserDetails();
   const { previewImg, imgUrl, setImgUrl } = usePreviewImg();
-
   useEffect(() => {
     // console.log("msg page", id);
 
     getUserDetails(id);
+    getMessage(id);
   }, [id]);
-
+  if (text !== "") {
+    socket?.emit("isTyping", {
+      id: user?._id,
+      senderID: auth?._id,
+      typing: true,
+    });
+  } else {
+    socket?.emit("isTyping", {
+      id: user?._id,
+      senderID: auth?._id,
+      typing: false,
+    });
+  }
   // send message
   const handleMessage = async () => {
     if (text || imgUrl) {
@@ -60,30 +81,25 @@ export default function MessagePage() {
               >
                 {user?.fullName}
               </span>
-            )}
-            {!loading && (
+            )}{" "}
+            {!loading && onlineUsers.includes(user?._id) && (
               <span className="text-lg text-[green] capitalize">(online)</span>
             )}
           </p>
         </div>
       </div>
       {/* message box */}
-      <MessageSection user={user} />
+      {user._id && (
+        <MessageSection
+          user={user}
+          messages={messages}
+          msgLoading={msgLoading}
+          setMessages={setMessages}
+          conversationUser={conversationUser}
+        />
+      )}
+
       <div className=" px-5 rounded-b-lg h-[60px] gap-1 flex justify-center items-center">
-        <label className="input  input-success w-full h-full flex items-center gap-2">
-          <input
-            value={text}
-            onKeyDown={(e) => {
-              if (e.key == "Enter") {
-                handleMessage();
-              }
-            }}
-            onChange={(e) => setText(e.target.value)}
-            type="text"
-            className="grow"
-            placeholder="Type a message..."
-          />
-        </label>
         <span className=" w-[40px]  h-auto ">
           <label htmlFor="file" className="cursor-pointer">
             <IoMdImages size={35} />
@@ -96,6 +112,23 @@ export default function MessagePage() {
             />
           </label>
         </span>
+        <label className="input  input-success w-full h-full flex items-center gap-2">
+          <input
+            value={text}
+            onKeyDown={(e) => {
+              if (e.key == "Enter") {
+                handleMessage();
+              }
+            }}
+            onChange={(e) => {
+              setText(e.target.value);
+            }}
+            type="text"
+            className="grow"
+            placeholder="Type a message..."
+          />
+        </label>
+
         <button
           onClick={handleMessage}
           disabled={loading || sendLoading}

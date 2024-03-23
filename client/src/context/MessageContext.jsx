@@ -6,9 +6,8 @@ import { toast } from "react-toastify";
 const MessageContext = createContext();
 
 export const MessageProvider = ({ children }) => {
-  const [messages, setMessages] = useState({
-    messages: [],
-  });
+  const [messages, setMessages] = useState([]);
+  const [conversationUser, setConversationUser] = useState([]);
   const [msg, setMsg] = useState(false);
 
   const [loading, setLoading] = useState(false);
@@ -16,7 +15,10 @@ export const MessageProvider = ({ children }) => {
     try {
       const { data } = await axios.get(`/api/message/get-message/${username}`);
       if (data.success) {
-        setMessages(data.conversation);
+        setMessages(data.conversation.messages);
+        setConversationUser(data.conversation.users);
+      } else {
+        setMessages([]);
       }
     } catch (error) {
       toast.error(error);
@@ -27,7 +29,15 @@ export const MessageProvider = ({ children }) => {
 
   return (
     <MessageContext.Provider
-      value={{ messages, setMessages, getMessage, loading, msg, setMsg }}
+      value={{
+        messages,
+        setMessages,
+        getMessage,
+        loading,
+        msg,
+        setMsg,
+        conversationUser,
+      }}
     >
       {children}
     </MessageContext.Provider>

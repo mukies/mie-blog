@@ -21,6 +21,7 @@ import ImageViewerPopup from "../components/popup/ImageViewerPopup";
 
 export default function Profile() {
   const navigate = useNavigate();
+
   // popups
   const [followerList, setFollowerList] = useState(false);
   const [followingList, setFollowingList] = useState(false);
