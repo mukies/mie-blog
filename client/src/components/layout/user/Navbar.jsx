@@ -69,7 +69,10 @@ export default function Nav() {
           >
             <IoChatbubbleEllipsesSharp size={30} color="#316FF6" />
           </span>
-          <span className="btn hidden md:flex btn-circle">
+          <span
+            onClick={() => navigate("/user-suggestion")}
+            className="btn hidden md:flex btn-circle"
+          >
             <BsFillPeopleFill size={30} color="#316FF6" />
           </span>
           <span

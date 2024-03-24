@@ -377,3 +377,28 @@ exports.searchUser = async (req, res) => {
     });
   }
 };
+
+exports.userSuggestion = async (req, res) => {
+  try {
+    const users = await userModel
+      .find({ _id: { $ne: req.user._id } })
+      .select("-password");
+
+    if (!users) return res.json({ success: false, message: "User not" });
+
+    const filteredUser = users.filter(
+      (item) => !item.followers.includes(req.user._id)
+    );
+
+    res.json({
+      success: true,
+      suggestion: filteredUser,
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success: false,
+      message: "Error while suggestioning user.",
+    });
+  }
+};

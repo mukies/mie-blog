@@ -10,7 +10,7 @@ export const MessageProvider = ({ children }) => {
   const [conversationUser, setConversationUser] = useState([]);
   const [msg, setMsg] = useState(false);
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const getMessage = async (username) => {
     try {
       const { data } = await axios.get(`/api/message/get-message/${username}`);

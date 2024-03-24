@@ -3,16 +3,18 @@ import { useGetConversations } from "../hooks/useGetConversations";
 import { useEffect, useState } from "react";
 import { useSocket } from "../context/SocketContext";
 import { useConversation } from "../context/ConversationContext";
+import "../App.css";
+import useFollowers from "../hooks/useFollowers";
 
 export default function ChatListPage() {
   const navigate = useNavigate();
   const auth = JSON.parse(localStorage.getItem("_L"));
-  const { onlineUsers, socket } = useSocket();
   const [isTyping, setIsTyping] = useState(false);
   const [userId, setUserId] = useState("");
   const { conversation, loading, getConversation } = useGetConversations();
+  const { followers, getFollowers } = useFollowers();
+  const { onlineUsers, socket } = useSocket();
   const { msgID, setMsgID } = useConversation();
-
   const msgIdList = JSON.parse(localStorage.getItem("_N"));
 
   useEffect(() => {
@@ -35,14 +37,16 @@ export default function ChatListPage() {
       setIsTyping(isTyping.typing);
       setUserId(isTyping.id);
     });
+
+    getFollowers(auth?.username);
     return () => {
       socket?.off("newMessage");
       socket?.off("isTyping");
     };
-  }, [socket, msgIdList?.length]);
+  }, [socket]);
 
   return (
-    <div className="max-w-[768px] py-5  mx-auto">
+    <div className="max-w-[768px]  py-5  mx-auto">
       <div className="bg-[#316ff6] rounded-lg h-[60px] relative flex justify-center items-center text-white ">
         <span className="text-2xl font-semibold">Conversations</span>
         <button
@@ -52,6 +56,38 @@ export default function ChatListPage() {
           back
         </button>
       </div>
+      {/* user followers list  */}
+      <div className="followers p-3 overflow-auto">
+        <div className=" flex gap-5 items-center ">
+          {/* first person  */}
+          {followers.length
+            ? followers.map((item) => (
+                <div
+                  onClick={() => navigate(`/chats/${item.username}`)}
+                  key={item._id}
+                  className="flex flex-col justify-center items-center cursor-pointer"
+                >
+                  <div className=" relative  bg-[#316ff6] rounded-full  flex justify-center items-center">
+                    <img
+                      src={item.profilePic}
+                      className="w-[80px] h-[80px] rounded-full object-cover object-center"
+                      alt="user"
+                    />
+                    {onlineUsers.includes(item._id) && (
+                      <div className="absolute right-0 bottom-0 h-[15px] w-[15px] rounded-full bg-[green]"></div>
+                    )}
+                  </div>
+                  <span className="text-[17px] capitalize text-nowrap">
+                    {item.fullName.length > 5
+                      ? `${item.fullName.substring(0, 5)}...`
+                      : item.fullName}
+                  </span>
+                </div>
+              ))
+            : ""}
+        </div>
+      </div>
+
       <div
         className={
           loading
@@ -67,14 +103,14 @@ export default function ChatListPage() {
             <div
               onClick={() => {
                 navigate(`/chats/${i.users[0].username}`);
-                if (msgIdList.includes(i.users[0]._id)) {
+                if (msgIdList?.includes(i.users[0]._id)) {
                   const filteredList = msgIdList.filter(
                     (itm) => itm.length == 24
                   );
                   const ids = filteredList.filter(
                     (itm) => itm !== i.users[0]._id
                   );
-                  console.log("ids", ids);
+
                   localStorage.removeItem("_N");
                   localStorage.setItem("_N", JSON.stringify(ids));
                 }

@@ -89,10 +89,12 @@ export default function MessagePage() {
         </div>
       </div>
       {/* message box */}
+
       {user._id && (
         <MessageSection
           user={user}
           messages={messages}
+          loading={loading}
           msgLoading={msgLoading}
           setMessages={setMessages}
           conversationUser={conversationUser}

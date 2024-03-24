@@ -10,6 +10,7 @@ const {
   getFollowers,
   changeProfileAndCover,
   searchUser,
+  userSuggestion,
 } = require("../controllers/user.controller");
 const { protectedRoute } = require("../middlewares/protectedRoute");
 
@@ -22,8 +23,8 @@ router.put("/follow-unfollow/:id", protectedRoute, followUnfollow);
 router.put("/update-profile", protectedRoute, updateProfile);
 router.put("/change-profile-and-cover", protectedRoute, changeProfileAndCover);
 router.put("/change-password", protectedRoute, changePassword);
-router.get("/:id", protectedRoute, getUser);
 router.get("/followers/:id", protectedRoute, getFollowers);
 router.get("/search-user/:key", protectedRoute, searchUser);
-
+router.get("/user-suggestion", protectedRoute, userSuggestion);
+router.get("/get-user/:id", protectedRoute, getUser);
 module.exports = router;

@@ -6,9 +6,8 @@ export default function useUserDetails() {
   const [user, setUser] = useState([]);
 
   const getUserDetails = async (username) => {
-    setLoading(true);
     try {
-      const { data } = await axios.get(`/api/user/${username}`);
+      const { data } = await axios.get(`/api/user/get-user/${username}`);
       if (data.success) {
         setUser(data.user);
       } else {
