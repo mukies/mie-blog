@@ -34,7 +34,7 @@ export default function Nav() {
       <div className="flex-1 gap-4 md:justify-between  ">
         <span
           onClick={() => navigate("/")}
-          className="nav-title cursor-pointer text-3xl font-bold text-[#316FF6]"
+          className="nav-title cursor-pointer text-2xl sm:text-3xl font-bold text-[#316FF6]"
         >
           Mie!
         </span>
@@ -47,7 +47,7 @@ export default function Nav() {
             type="text"
             maxLength={10}
             className="md:grow h-full w-full  p-[16px] "
-            placeholder="Find a friend"
+            placeholder="Search People..."
           />
           <IoSearchOutline
             onClick={() => setSearchbar((p) => !p)}
@@ -62,22 +62,24 @@ export default function Nav() {
         )}
       </div>
       <div className="flex-1 justify-end gap-5  md:gap-10">
-        <div className="flex flex-none  gap-4 md:gap-10">
+        <div className="flex flex-none  gap-2 md:gap-10">
           <span
-            onClick={() => navigate("/chats")}
-            className="btn hidden md:flex btn-circle"
+            onClick={() => {
+              navigate("/chats");
+            }}
+            className="btn  scale-75 md:scale-100 btn-circle"
           >
             <IoChatbubbleEllipsesSharp size={30} color="#316FF6" />
           </span>
           <span
             onClick={() => navigate("/user-suggestion")}
-            className="btn hidden md:flex btn-circle"
+            className="btn hidden sm:flex scale-75 md:scale-100 btn-circle"
           >
             <BsFillPeopleFill size={30} color="#316FF6" />
           </span>
           <span
             onClick={() => setSearchbar((p) => !p)}
-            className="btn btn-md  flex justify-center items-center  btn-circle md:hidden"
+            className="btn btn-md scale-75 flex justify-center items-center  btn-circle md:hidden"
           >
             <IoSearchOutline size={30} color="#316FF6" />
           </span>
@@ -100,12 +102,30 @@ export default function Nav() {
             tabIndex={0}
             className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-200 rounded-box w-52"
           >
-            <li onClick={() => navigate(`/profile/${auth?.username}`)}>
+            <li
+              onClick={() => {
+                const elem = document.activeElement;
+                if (elem) {
+                  elem?.blur();
+                }
+                navigate(`/profile/${auth?.username}`);
+              }}
+            >
               <a className="justify-between">Profile</a>
             </li>
-            <li>
-              <a>Settings</a>
+            <li
+              onClick={() => {
+                const elem = document.activeElement;
+                if (elem) {
+                  elem?.blur();
+                }
+                navigate("/user-suggestion");
+              }}
+              className="sm:hidden"
+            >
+              <a>Friends Suggestion</a>
             </li>
+
             <li onClick={logout}>
               <a>Logout</a>
             </li>

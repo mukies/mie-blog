@@ -192,7 +192,7 @@ export default function SinglePost() {
               />
               <span className="font-semibold ">Comment</span>
             </div>
-            <div className=" hidden md:flex items-center gap-1">
+            <div className=" hidden sm:flex items-center gap-1">
               <input
                 value={text}
                 onChange={(e) => setText(e.target.value)}
@@ -218,6 +218,26 @@ export default function SinglePost() {
       <span className="text-2xl font-semibold border-b-2 border-red-400 inline-block">
         Comments
       </span>
+      <div className=" flex sm:hidden px-4 justify-center items-center gap-1">
+        <input
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          type="text"
+          className="input input-accent w-[50%] input-md"
+          placeholder="write a comment"
+        />
+        <button
+          disabled={loading}
+          onClick={handleComment}
+          className="btn btn-md btn-primary"
+        >
+          {loading ? (
+            <span className="loading loading-spinner"></span>
+          ) : (
+            <span>send</span>
+          )}
+        </button>
+      </div>
       {/* comments  */}
       <div ref={commentRef} className="flex mt-4 flex-col gap-5">
         {posts?.comments?.length ? (

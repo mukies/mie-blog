@@ -5,6 +5,7 @@ const cookie = require("cookie-parser");
 const userRoutes = require("./routes/user.route");
 const postRoutes = require("./routes/post.route");
 const messageRoutes = require("./routes/message.route");
+const adminRoutes = require("./routes/admin.route");
 const { app, server } = require("./socket/socket");
 
 // database
@@ -25,6 +26,7 @@ v2.config({
 app.use("/api/user", userRoutes);
 app.use("/api/post", postRoutes);
 app.use("/api/message", messageRoutes);
+app.use("/api/admin", adminRoutes);
 
 const port = process.env.PORT;
 server.listen(port, () => {

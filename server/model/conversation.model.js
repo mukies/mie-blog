@@ -15,6 +15,7 @@ const conversationSchema = new mongoose.Schema(
         required: true,
       },
       text: { type: String, default: "" },
+      seen: { type: Boolean, default: false },
     },
   },
   { timestamps: true }

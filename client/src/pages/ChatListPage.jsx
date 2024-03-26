@@ -5,6 +5,8 @@ import { useSocket } from "../context/SocketContext";
 import { useConversation } from "../context/ConversationContext";
 import "../App.css";
 import useFollowers from "../hooks/useFollowers";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 export default function ChatListPage() {
   const navigate = useNavigate();
@@ -45,13 +47,24 @@ export default function ChatListPage() {
     };
   }, [socket]);
 
+  const seenMessage = async (convo) => {
+    if (convo.lastMessage.senderID !== auth?._id) {
+      const { data } = await axios.put(
+        `/api/message/seen-message/${convo._id}`
+      );
+      if (!data.success) {
+        toast.error(data.message);
+      }
+    }
+  };
+
   return (
     <div className="max-w-[768px]  py-5  mx-auto">
       <div className="bg-[#316ff6] rounded-lg h-[60px] relative flex justify-center items-center text-white ">
         <span className="text-2xl font-semibold">Conversations</span>
         <button
           onClick={() => navigate("/")}
-          className="absolute top-[25%] left-[5px] btn btn-warning btn-sm"
+          className="absolute top-[25%] left-[5px] btn btn-sm btn-outline btn-active"
         >
           back
         </button>
@@ -78,7 +91,7 @@ export default function ChatListPage() {
                     )}
                   </div>
                   <span className="text-[17px] capitalize text-nowrap">
-                    {item.fullName.length > 5
+                    {item.fullName?.length > 5
                       ? `${item.fullName.substring(0, 5)}...`
                       : item.fullName}
                   </span>
@@ -114,6 +127,7 @@ export default function ChatListPage() {
                   localStorage.removeItem("_N");
                   localStorage.setItem("_N", JSON.stringify(ids));
                 }
+                seenMessage(i);
               }}
               key={id}
               className="flex gap-5 cursor-pointer hover:bg-gray-300 border-[1px] rounded-sm border-gray-300 p-2  items-center"
@@ -134,7 +148,9 @@ export default function ChatListPage() {
                 </span>
                 {isTyping && i.users[0]?._id == userId ? (
                   <span className="loading loading-dots">Typing</span>
-                ) : msgID?.includes(i.users[0]._id) ? (
+                ) : (i.lastMessage.senderID == i.users[0]._id &&
+                    !i.lastMessage.seen) ||
+                  msgID?.includes(i.users[0]._id) ? (
                   <span className="text-lg font-bold">New message</span>
                 ) : (
                   <span className="capitalize text-gray-500 text-sm">

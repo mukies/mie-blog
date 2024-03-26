@@ -25,12 +25,21 @@ export default function useFollowers() {
         const offlineFollowings = data.user.followings?.filter(
           (i) => !onlineUsers?.includes(i._id)
         );
-        setFollowers([
+
+        const newArray = [
           ...onlineFollowers,
           ...onlineFollowings,
           ...offlineFollowers,
           ...offlineFollowings,
-        ]);
+        ];
+
+        //remove duplicates users
+        const users = newArray.filter(
+          (obj, index, self) =>
+            index === self.findIndex((o) => o._id === obj._id)
+        );
+
+        setFollowers(users);
       } else {
         toast.error(data.message);
       }

@@ -2,25 +2,24 @@
 /* eslint-disable react/prop-types */
 import axios from "axios";
 import { createContext, useContext, useState } from "react";
+import { toast } from "react-toastify";
 
 const ProfileContext = createContext();
 
 const ProfileContextProvider = ({ children }) => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState([]);
 
-  const getProfilePost = async (id) => {
-    setLoading(true);
-
+  const getProfilePost = async (username) => {
     try {
-      const { data } = await axios.get(`/api/post/profile-post/${id}`);
+      const { data } = await axios.get(`/api/post/profile-post/${username}`);
       if (data.success) {
         setPosts(data.posts);
       } else {
-        alert("error while fetching feed post.");
+        toast.error("error while fetching feed post.");
       }
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     } finally {
       setLoading(false);
     }

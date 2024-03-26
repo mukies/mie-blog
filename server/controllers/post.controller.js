@@ -351,6 +351,7 @@ exports.userDeleteComment = async (req, res) => {
     });
   }
 };
+
 exports.adminDeleteComment = async (req, res) => {
   const { postID, id } = req.params;
   try {

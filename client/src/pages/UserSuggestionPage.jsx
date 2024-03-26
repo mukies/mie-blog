@@ -65,7 +65,7 @@ export default function UserSuggestionPage() {
                 {/* top  */}
                 <div
                   onClick={() => navigate(`/profile/${user?.username}`)}
-                  className=" bg-[#316ff6] h-[250px] sm:h-[200px] cursor-pointer w-full  overflow-hidden"
+                  className="  h-[250px] sm:h-[200px] cursor-pointer w-full  overflow-hidden"
                 >
                   <img
                     className="h-full md:hover:scale-105 md:duration-200 w-full object-cover object-center"

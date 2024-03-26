@@ -157,3 +157,36 @@ exports.getConversation = async (req, res) => {
     });
   }
 };
+
+exports.seenMessage = async (req, res) => {
+  const { conversationId } = req.params;
+
+  try {
+    const conversation = await conversationModel.findById(conversationId);
+    if (!conversation)
+      return res.json({ success: false, message: "Conversation not found." });
+    if (
+      conversation.lastMessage.senderID.toString() !== req.user._id.toString()
+    ) {
+      conversation.lastMessage.seen = true;
+      conversation.save();
+
+      res.json({
+        success: true,
+        message: "Message seen successfully.",
+        conversation,
+      });
+    } else {
+      res.json({
+        success: false,
+        message: "You can't seen your own message.",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success: false,
+      message: "try catch error while message seen.",
+    });
+  }
+};

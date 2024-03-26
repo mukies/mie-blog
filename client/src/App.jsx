@@ -18,6 +18,7 @@ import Nav from "./components/layout/user/Navbar";
 import ChatListPage from "./pages/ChatListPage";
 import MessagePage from "./pages/MessagePage";
 import UserSuggestionPage from "./pages/UserSuggestionPage";
+import PhotosPage from "./pages/PhotosPage";
 
 function App() {
   const auth = JSON.parse(localStorage.getItem("_L"));
@@ -27,12 +28,24 @@ function App() {
     <div>
       {auth && !adminAuth ? <Nav /> : !auth && adminAuth ? <AdminNav /> : ""}
       <Routes>
-        <Route path="/" element={auth ? <Home /> : <Login />} />
+        <Route
+          path="/"
+          element={
+            auth && !adminAuth ? (
+              <Home />
+            ) : adminAuth && !auth ? (
+              <AdminHome />
+            ) : (
+              <Login />
+            )
+          }
+        />
         <Route element={<ProtectedRoute />}>
           <Route path="/profile/:username" element={<Profile />} />
           <Route path="/chats" element={<ChatListPage />} />
           <Route path="/user-suggestion" element={<UserSuggestionPage />} />
           <Route path="/chats/:id" element={<MessagePage />} />
+          <Route path="/photos" element={<PhotosPage />} />
         </Route>
         <Route path="/post/:id" element={<PostPage />} />
         <Route path="/mie-admin" element={<AdminLogin />} />

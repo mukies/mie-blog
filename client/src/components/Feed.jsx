@@ -2,9 +2,12 @@ import { useEffect } from "react";
 import CreatePost from "./CreatePost";
 import Post from "./Post";
 import { useFeed } from "../context/FeedContext";
-// import PostLoading from "./loading/PostLoading";
+import { FaPeopleGroup } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 
 export default function Feed() {
+  const navigate = useNavigate();
+
   // call feed post hooks
   const { getFeedPost, loading, posts } = useFeed();
 
@@ -26,9 +29,19 @@ export default function Feed() {
           ) : posts?.length ? (
             posts?.map((item, id) => <Post key={id} id={id} item={item} />)
           ) : (
-            <div>
-              {" "}
-              <p>Follow some people to view some posts.</p>{" "}
+            <div className="h-[40dvh] flex justify-center items-center flex-col gap-3">
+              <p className="text-xl font-semibold ">
+                Follow some people to view their posts.
+              </p>
+              <button
+                onClick={() => navigate("/user-suggestion")}
+                className="btn btn-info flex items-center text-white"
+              >
+                <span>
+                  <FaPeopleGroup />
+                </span>
+                <span>Find a friend</span>
+              </button>
             </div>
           )}
         </div>

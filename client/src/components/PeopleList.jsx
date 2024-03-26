@@ -6,10 +6,16 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useState } from "react";
 
-export default function PeopleList({ title, action, data }) {
+export default function PeopleList({
+  title,
+  action,
+  data,
+  setUnfollowed,
+  unfollowed,
+}) {
   //   console.log("first", data);
   const navigate = useNavigate();
-  const [unfollowed, setUnfollowed] = useState([]);
+
   const [unfollowLoading, setUnfollowLoading] = useState(false);
 
   const followUnfollow = async (user) => {

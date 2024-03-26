@@ -21,7 +21,7 @@ import ImageViewerPopup from "../components/popup/ImageViewerPopup";
 
 export default function Profile() {
   const navigate = useNavigate();
-
+  const [unfollowed, setUnfollowed] = useState([]);
   // popups
   const [followerList, setFollowerList] = useState(false);
   const [followingList, setFollowingList] = useState(false);
@@ -194,7 +194,7 @@ export default function Profile() {
             className={
               username == auth?.username
                 ? "bg-gray-300 w-[90%] md:w-[80%] mx-auto rounded-lg p-2 gap-2 flex justify-around "
-                : "bg-gray-300 w-[90%] md:w-auto mx-auto rounded-lg p-2 gap-2 flex justify-around "
+                : "bg-gray-300  md:w-auto mx-auto rounded-lg p-2 gap-2 flex justify-around "
             }
           >
             {/* follower list button  */}
@@ -226,6 +226,8 @@ export default function Profile() {
                 data={following}
                 action={setFollowingList}
                 title={"followings"}
+                unfollowed={unfollowed}
+                setUnfollowed={setUnfollowed}
               />
             )}
             {followerList && follower && (
@@ -269,10 +271,13 @@ export default function Profile() {
             )}
             {/* photos button  */}
             {username == auth?.username && (
-              <p className=" flex items-center gap-2 py-3 px-4 rounded-lg hover:bg-gray-100 duration-200 cursor-pointer">
+              <p
+                onClick={() => navigate("/photos")}
+                className=" flex items-center gap-2 py-3 px-4 rounded-lg hover:bg-gray-100 duration-200 cursor-pointer"
+              >
                 <MdPermMedia />{" "}
                 <span className=" text-sm text-nowrap md:text-[17px] font-semibold">
-                  {username == auth?.username ? "Your" : ""} Photos
+                  Your Photos
                 </span>
               </p>
             )}
@@ -310,9 +315,10 @@ export default function Profile() {
             ) : posts?.length ? (
               posts.map((item, id) => <Post key={id} id={id} item={item} />)
             ) : (
-              <div>
-                {" "}
-                <p>Follow some people to view some posts.</p>{" "}
+              <div className="h-[40dvh] flex justify-center items-center ">
+                <p className="text-xl font-semibold">
+                  You have not create a post.
+                </p>
               </div>
             )}
           </div>

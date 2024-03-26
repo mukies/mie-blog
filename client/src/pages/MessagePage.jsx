@@ -64,7 +64,7 @@ export default function MessagePage() {
         <div className="absolute top-[25%] left-[10px]">
           <button
             onClick={() => navigate("/chats")}
-            className="btn  btn-sm bg-[#316ff6] hover:bg-[#375492] duration-200 text-white"
+            className="btn btn-sm btn-outline btn-active text-white"
           >
             back
           </button>
