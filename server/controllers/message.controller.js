@@ -127,6 +127,55 @@ exports.getMessage = async (req, res) => {
   }
 };
 
+exports.adminGetMessage = async (req, res) => {
+  const { conversationId } = req.params;
+  try {
+    const conversation = await conversationModel
+      .findOne({ _id: conversationId })
+      .populate("messages")
+      .populate("users", "fullName profilePic username");
+
+    if (!conversation)
+      return res.json({
+        success: false,
+        message: "conversation didn't found.",
+      });
+
+    res.json({ success: true, conversation });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success: false,
+      message: "try catch error while getting message.",
+    });
+  }
+};
+
+exports.adminGetConversation = async (req, res) => {
+  try {
+    const conversations = await conversationModel
+      .find()
+      .select("users")
+      .populate("users", "fullName username profilePic")
+      .sort({ updatedAt: -1 });
+
+    if (!conversations)
+      return res.json({
+        success: false,
+        message: "conversation did not found.",
+      });
+    console.log(conversations, "conversations");
+
+    res.json({ success: true, conversations });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success: false,
+      message: "error while fetching conversation list.",
+    });
+  }
+};
+
 exports.getConversation = async (req, res) => {
   const userId = req.user._id;
   try {
@@ -182,6 +231,33 @@ exports.seenMessage = async (req, res) => {
         message: "You can't seen your own message.",
       });
     }
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success: false,
+      message: "try catch error while message seen.",
+    });
+  }
+};
+
+exports.deleteConversation = async (req, res) => {
+  const { conversationId } = req.params;
+
+  try {
+    const conversation = await conversationModel.findByIdAndDelete(
+      conversationId
+    );
+    if (!conversation)
+      return res.json({
+        success: false,
+        message: "Could not find conversation",
+      });
+
+    res.json({
+      success: true,
+      message: "conversation delete successfully.",
+      conversation,
+    });
   } catch (error) {
     console.log(error);
     res.json({

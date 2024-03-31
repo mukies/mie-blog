@@ -211,6 +211,29 @@ exports.getOnePost = async (req, res) => {
   }
 };
 
+exports.adminGetOnePost = async (req, res) => {
+  const { id: postID } = req.params;
+  try {
+    const post = await postModel
+      .findById(postID)
+      .populate("postedBy", "fullName username profilePic")
+      .populate("comments.commentedBy", "fullName username profilePic")
+      .populate("likes", "fullName username profilePic");
+
+    res.json({
+      success: true,
+      message: "post found.",
+      post,
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success: false,
+      message: "try catch error on getting one post.",
+    });
+  }
+};
+
 exports.getFeedPost = async (req, res) => {
   const user = await userModel.findById(req.user._id);
   try {
@@ -242,10 +265,42 @@ exports.getProfilePost = async (req, res) => {
 
   try {
     const user = await userModel.findOne({ username });
+
+    if (!user) return res.json({ success: false, message: "user not found" });
+
     const posts = await postModel
       .find({ postedBy: user?._id })
       .populate("postedBy", "fullName username profilePic")
       .populate("comments.commentedBy", "fullName username profilePic")
+      .sort({ createdAt: -1 });
+
+    res.json({
+      success: true,
+      message: "post found successfully.",
+      posts,
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      success: false,
+      message: "try catch error on getting profile post.",
+    });
+  }
+};
+
+exports.adminGetProfilePost = async (req, res) => {
+  const { username } = req.params;
+
+  try {
+    const user = await userModel.findOne({ username });
+
+    if (!user) return res.json({ success: false, message: "user not found" });
+
+    const posts = await postModel
+      .find({ postedBy: user?._id })
+      .populate("postedBy", "fullName username profilePic")
+      .populate("comments.commentedBy", "fullName username profilePic")
+      .populate("likes", "fullName username profilePic")
       .sort({ createdAt: -1 });
 
     res.json({

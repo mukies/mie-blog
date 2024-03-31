@@ -1,12 +1,62 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 export default function AdminRegister() {
   const [show, setShow] = useState(false);
   const [showPass, setShowPass] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [name, setName] = useState("");
+
+  const handleRegister = async () => {
+    if (!name || !email || !password || !confirmPassword) {
+      toast.error("Please fill all the fields");
+      setShow((p) => !p);
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
+      setShow((p) => !p);
+      return;
+    }
+
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters long");
+      setShow((p) => !p);
+      return;
+    }
+
+    const { data } = await axios.post("/api/admin/register", {
+      name,
+      email,
+      password,
+    });
+
+    if (data.success) {
+      toast.success(data.message);
+      const { data: loginData } = await axios.post("/api/admin/login", {
+        email,
+        password,
+      });
+
+      if (loginData.success) {
+        localStorage.setItem("_A", JSON.stringify(loginData.user));
+        window.location.href = "/";
+      } else {
+        toast.error(loginData.message);
+      }
+    } else {
+      toast.error(data.message);
+      setShow((p) => !p);
+    }
+  };
+
   return (
     <div className=" h-[100dvh] py-5  bg-base-300 flex md:flex-row gap-14 md:gap-20 px-5 flex-col justify-center items-center">
       <div className="md:h-[70%] md:w-[35%] h-auto gap-3 flex justify-center  items-center md:items-start flex-col">
@@ -24,29 +74,52 @@ export default function AdminRegister() {
           className="form-control gap-2 md:h-[70%]  md:w-[60%]"
         >
           <label className="input input-bordered flex items-center gap-2">
-            <input type="text" className="grow" placeholder="Username" />
+            <input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              type="text"
+              className="grow"
+              placeholder="Fullname"
+            />
           </label>
           <label className="input input-bordered flex items-center gap-2">
-            <input type="email" className="grow" placeholder="Email" />
+            <input
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              type="email"
+              className="grow"
+              placeholder="Email"
+            />
           </label>
 
           <label className="input input-bordered flex items-center gap-2">
             <input
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               type={showPass ? "text" : "password"}
               className="grow"
               placeholder="Password"
+            />
+          </label>
+          <label className="input input-bordered flex items-center gap-2">
+            <input
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              type={showPass ? "text" : "password"}
+              className="grow"
+              placeholder="Confirm Password"
             />
             <span>
               {showPass ? (
                 <FaEyeSlash
                   className="cursor-pointer "
-                  onMouseLeave={() => setShowPass((p) => !p)}
+                  onClick={() => setShowPass((p) => !p)}
                   size={22}
                 />
               ) : (
                 <FaEye
                   className="cursor-pointer"
-                  onMouseEnter={() => setShowPass((p) => !p)}
+                  onClick={() => setShowPass((p) => !p)}
                   size={20}
                 />
               )}
@@ -59,7 +132,7 @@ export default function AdminRegister() {
           >
             Register
           </button>
-          <p>
+          {/* <p>
             Already have an account ?{" "}
             <Link
               to="/mie-admin"
@@ -67,7 +140,7 @@ export default function AdminRegister() {
             >
               Login
             </Link>{" "}
-          </p>
+          </p> */}
         </form>
       </div>
       <div
@@ -95,7 +168,10 @@ export default function AdminRegister() {
               </button>
             </div>
             <div>
-              <button className="btn btn-sm btn-success text-white">
+              <button
+                onClick={handleRegister}
+                className="btn btn-sm btn-success text-white"
+              >
                 Register
               </button>
             </div>

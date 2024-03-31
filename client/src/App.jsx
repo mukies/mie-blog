@@ -8,10 +8,8 @@ import PageNotFound from "./pages/PageNotFound";
 import AdminHome from "./pages/admin/AdminHome";
 import ManageChats from "./pages/admin/ManageChats";
 import ManageUsers from "./pages/admin/ManageUsers";
-import UserDetails from "./components/layout/admin/UserDetails";
+import UserDetails from "./pages/admin/UserDetails";
 import UserFriendsPage from "./pages/admin/UserFriendsPage";
-import AdminLogin from "./pages/admin/AdminLogin";
-import AdminRegister from "./pages/admin/AdminRegister";
 import ProtectedRoute from "./protectedRoute/ProtectedRoute";
 import AdminNav from "./components/layout/admin/Nav";
 import Nav from "./components/layout/user/Navbar";
@@ -19,6 +17,11 @@ import ChatListPage from "./pages/ChatListPage";
 import MessagePage from "./pages/MessagePage";
 import UserSuggestionPage from "./pages/UserSuggestionPage";
 import PhotosPage from "./pages/PhotosPage";
+import { AdminAuthentication } from "./pages/admin/AdminAuthentication";
+import AdminProtectedRoute from "./protectedRoute/AdminProtectedRoute";
+import SinglePostPage from "./pages/admin/SinglePostPage";
+import UserPhotoPage from "./pages/admin/UserPhotoPage";
+import UserMessagePage from "./pages/admin/UsersMessagePage";
 
 function App() {
   const auth = JSON.parse(localStorage.getItem("_L"));
@@ -48,14 +51,17 @@ function App() {
           <Route path="/photos" element={<PhotosPage />} />
         </Route>
         <Route path="/post/:id" element={<PostPage />} />
-        <Route path="/mie-admin" element={<AdminLogin />} />
-        <Route path="/mie-reg" element={<AdminRegister />} />
         {/* admin routes */}
-        <Route path="/admin" element={<AdminHome />} />
-        <Route path="/admin/chats" element={<ManageChats />} />
-        <Route path="/admin/users" element={<ManageUsers />} />
-        <Route path="/admin/users/:id" element={<UserDetails />} />
-        <Route path="/admin/users/friend-list" element={<UserFriendsPage />} />
+        <Route path="/mie-admin" element={<AdminAuthentication />} />
+        <Route path="/admin" element={<AdminProtectedRoute />}>
+          <Route path="chats" element={<ManageChats />} />
+          <Route path="users" element={<ManageUsers />} />
+          <Route path="users/:id" element={<UserDetails />} />
+          <Route path="post/:postID" element={<SinglePostPage />} />
+          <Route path="users/friend-list" element={<UserFriendsPage />} />
+          <Route path="user/photos/:username" element={<UserPhotoPage />} />
+          <Route path="chats/:id" element={<UserMessagePage />} />
+        </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </div>

@@ -1,8 +1,15 @@
+/* eslint-disable react/prop-types */
 import { FaTrashCan } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import { useSocket } from "../../context/SocketContext";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import axios from "axios";
 
-export default function User() {
+export default function User({ user, setUsers }) {
   const navigate = useNavigate();
+  const { onlineUsers } = useSocket();
+  const [loading, setLoading] = useState(false);
 
   const handleClick = () => {
     const elem = document.activeElement;
@@ -11,26 +18,56 @@ export default function User() {
     }
   };
 
+  const deleteUser = async (id) => {
+    if (!loading) {
+      setLoading(true);
+      try {
+        const { data } = await axios.delete(`/api/admin/delete-user/${id}`);
+        if (data.success) {
+          setUsers((p) => p.filter((usr) => usr._id !== id));
+        } else {
+          toast.error(data.message);
+        }
+      } catch (error) {
+        toast.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
   return (
     <div className="flex justify-between items-center p-2 rounded-lg border-2 border-gray-400">
       <div className="flex items-center gap-3">
-        <div className="h-[80px] relative w-[80px] rounded-full ">
+        <div className=" h-[50px] w-[50px] sm:h-[80px] relative sm:w-[80px] rounded-full ">
           <img
-            className="object-cover rounded-full object-center"
-            alt="Tailwind CSS Navbar component"
-            src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+            onClick={() => navigate(`/admin/users/${user.username}`)}
+            className="object-cover h-full w-full rounded-full object-center cursor-pointer"
+            alt="user-profile"
+            src={user.profilePic}
           />
-          <div className="absolute h-[20px] w-[20px] rounded-full bg-green-600 border-[3px] border-white top-0 right-0"></div>
+          {onlineUsers.includes(user._id) ? (
+            <div className="absolute h-[20px] w-[20px] rounded-full bg-green-600 border-[3px] border-white top-0 right-0"></div>
+          ) : (
+            ""
+          )}
         </div>
         <div className="flex flex-col">
-          <h1 className="text-xl font-semibold ">Mukesh Bhattarai</h1>
-          <span className="text-lg text-gray-600">created at: 2024 jan 12</span>
+          <h1
+            onClick={() => navigate(`/admin/users/${user.username}`)}
+            className="text-xl font-semibold cursor-pointer "
+          >
+            {user.fullName}
+          </h1>
+          <span className=" text-sm sm:text-lg text-gray-600">
+            {user.createdAt.slice(0, 10)}
+          </span>
         </div>
       </div>
       <div className="flex gap-2 items-center">
         <div>
           <button
-            onClick={() => navigate("/admin/users/mukesh")}
+            onClick={() => navigate(`/admin/users/${user.username}`)}
             className="btn btn-outline btn-sm"
           >
             details
@@ -49,7 +86,12 @@ export default function User() {
               <span>Are you sure ?</span>
               <div className="flex items-center gap-3">
                 <div>
-                  <button className="btn btn-sm btn-error">delete</button>
+                  <button
+                    onClick={() => deleteUser(user._id)}
+                    className="btn btn-sm btn-error"
+                  >
+                    delete
+                  </button>
                 </div>
                 <div>
                   <button onClick={handleClick} className="btn btn-sm btn-info">

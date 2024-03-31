@@ -1,65 +1,123 @@
+/* eslint-disable react/prop-types */
 import { FaHeart } from "react-icons/fa";
-import { IoIosMore } from "react-icons/io";
 import { MdOutlineChat } from "react-icons/md";
+import { FaTrash } from "react-icons/fa";
+import { useState } from "react";
+import Popup from "../popup/Popup";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import FriendListPopup from "./FriendListPopup";
 
-export default function UserPost() {
-  const text2 =
-    "hello wowrsjkjds dj fs fkssjfkskfkf d djkdj skdjsdj jsdsdkjfs hsjhfhjdjfhgdjfgdjfdgjfhdfjdfhfdjfjhdfhf dfjdfjhsdfj jh kjhkjhdkfh kjdfjhfkjdfh jhfjkdk jfkjdfkjkjs jk sjdkskjsfk  s fs fkssjfkskfkf d djkdj skdjsdj jsdsdkjfs sjdkskjsfk  s fs fkssjfkskfkf d djkdj skdjsdj jsdsdkjfs sjdkskjsfk  s fs fkssjfkskfkf99";
+export default function UserPost({ post, setPosts }) {
+  const navigate = useNavigate();
+  const [deletePopup, setDeletePopup] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [likeListPopup, setLikeListPopup] = useState(false);
 
+  const handleDelete = async () => {
+    if (!deleteLoading) {
+      setDeleteLoading(true);
+      try {
+        const { data } = await axios.delete(
+          `/api/post/admin-delete-post/${post._id}`
+        );
+        if (data.success) {
+          setPosts((p) => p.filter((pst) => pst._id !== post._id));
+        } else {
+          toast.error("Failed to delete post");
+        }
+      } catch (error) {
+        toast.error("Failed to delete post");
+      } finally {
+        setDeletePopup(false);
+        setDeleteLoading(false);
+      }
+    }
+  };
   return (
     <div className=" flex flex-col gap-3 border-2 rounded-xl bg-white w-full px-4 py-5 ">
       <div className=" flex flex-col gap-5">
         {/* title  */}
         <div className="flex  justify-between items-center gap-4">
           <div className="flex items-center gap-4">
-            <div className="w-10 overflow-hidden rounded-full">
+            <div className="w-10 h-10 overflow-hidden rounded-full">
               <img
-                alt="Tailwind CSS Navbar component"
-                src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                className="h-full w-full object-cover object-center"
+                alt="user-profile"
+                src={post.postedBy.profilePic}
               />
             </div>
             <div className="flex flex-col gap-0">
-              <h1 className="text-xl font-semibold">Mukesh Bhattarai</h1>
-              <span className="text-gray-700">Just now</span>
+              <h1 className="text-xl font-semibold capitalize">
+                {post.postedBy.fullName}
+              </h1>
+              <span className="text-gray-700">{post.createdAt}</span>
             </div>
           </div>
-          <div className="cursor-pointer p-2 hover:bg-slate-200 rounded-xl duration-150">
-            <IoIosMore size={30} />
+          <div onClick={() => setDeletePopup(true)} className="btn btn-circle ">
+            <FaTrash size={20} color="red" />
           </div>
         </div>
+        {deletePopup && (
+          <Popup handleDelete={handleDelete} cancel={setDeletePopup} />
+        )}
 
         {/* text content  */}
-        <div>
-          <p className="">
-            {text2.length < 300 ? text2 : text2.substring(0, 300) + "..."}
-            {text2.length < 300 ? (
-              ""
-            ) : (
-              <span className="text-blue-700 cursor-pointer text-lg">
-                see more
-              </span>
-            )}
-          </p>
-        </div>
+        {post.text.length ? (
+          <div onClick={() => navigate(`/admin/post/${post._id}`)}>
+            <p className="">
+              {post.text.length < 300
+                ? post.text
+                : post.text.substring(0, 300) + "..."}
+              {post.text.length < 300 ? (
+                ""
+              ) : (
+                <span className="text-blue-700 cursor-pointer text-lg">
+                  see more
+                </span>
+              )}
+            </p>
+          </div>
+        ) : (
+          ""
+        )}
         {/* image content  */}
-        <div className="w-[99%] rounded-2xl overflow-hidden md:w-[90%] duration-200 transition-all h-[80vh] mx-auto ">
-          <img
-            className=" w-full h-full object-cover object-center"
-            alt="Tailwind CSS Navbar component"
-            src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-          />
-        </div>
+        {post.image ? (
+          <div
+            onClick={() => navigate(`/admin/post/${post._id}`)}
+            className="w-[99%] rounded-2xl overflow-hidden md:w-[90%] cursor-pointer duration-200 transition-all h-[80vh] mx-auto "
+          >
+            <img
+              className=" w-full h-full object-cover object-center"
+              alt="image-content"
+              src={post.image}
+            />
+          </div>
+        ) : (
+          ""
+        )}
       </div>
       <div className="flex items-center gap-5 w-[90%] mx-auto">
-        <div className="flex items-center gap-3">
+        <div
+          onClick={() => setLikeListPopup(true)}
+          className="flex cursor-pointer items-center gap-3"
+        >
           <FaHeart size={15} color="#316ff6" />
-          <span>5 likes</span>
+          <span>{post.likes?.length} likes</span>
         </div>
         <div className="flex items-center gap-3">
           <MdOutlineChat size={17} color="#316ff6" />
-          <span>3 comments</span>
+          <span>{post.comments?.length} comments</span>
         </div>
       </div>
+      {likeListPopup && (
+        <FriendListPopup
+          title={"likes"}
+          data={post?.likes}
+          action={setLikeListPopup}
+        />
+      )}
     </div>
   );
 }

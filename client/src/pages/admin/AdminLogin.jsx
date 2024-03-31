@@ -1,7 +1,31 @@
 /* eslint-disable react/no-unescaped-entities */
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
 export default function AdminLogin() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = async () => {
+    if (!email || !password) {
+      toast.error("Please fill all the fields");
+      return;
+    }
+
+    const { data } = await axios.post("/api/admin/login", {
+      email,
+      password,
+    });
+
+    if (data.success) {
+      toast.success(data.message);
+      localStorage.setItem("_A", JSON.stringify(data.user));
+      window.location.href = "/";
+    } else {
+      toast.error(data.message);
+    }
+  };
   return (
     <div className=" h-[100dvh] py-5  bg-base-300 flex md:flex-row gap-14 md:gap-20 px-5 flex-col justify-center items-center">
       <div className="md:h-[70%] md:w-[35%] h-auto gap-3 flex justify-center  items-center md:items-start flex-col">
@@ -28,7 +52,13 @@ export default function AdminLogin() {
               <path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" />
               <path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
             </svg>
-            <input type="email" className="grow" placeholder="Email" />
+            <input
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              type="email"
+              className="grow"
+              placeholder="Email"
+            />
           </label>
 
           <label className="input input-bordered flex items-center gap-2">
@@ -44,21 +74,36 @@ export default function AdminLogin() {
                 clipRule="evenodd"
               />
             </svg>
-            <input type="password" className="grow" placeholder="Password" />
+            <input
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              type="password"
+              className="grow"
+              placeholder="Password"
+            />
           </label>
 
-          <button className="btn bg-[#316FF6] hover:bg-[#283e6b] text-white font-semibold">
+          <button
+            onClick={handleLogin}
+            className="btn bg-[#316FF6] hover:bg-[#283e6b] text-white font-semibold"
+          >
             Login
           </button>
-          <p>
-            Didn't have an account ?{" "}
-            <Link
-              to="/mie-reg"
-              className="cursor-pointer text-[#316ff6] font-bold"
-            >
-              Sign Up
-            </Link>{" "}
-          </p>
+          {/* {loading ? (
+            <span className="loading loading-dots "></span>
+          ) : !loading && !admin ? (
+            <p>
+              Didn't have an account ?{" "}
+              <Link
+                to="/mie-reg"
+                className="cursor-pointer text-[#316ff6] font-bold"
+              >
+                Sign Up
+              </Link>{" "}
+            </p>
+          ) : (
+            ""
+          )} */}
         </form>
       </div>
     </div>

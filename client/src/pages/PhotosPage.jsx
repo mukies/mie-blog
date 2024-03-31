@@ -7,7 +7,7 @@ import { useProfilePost } from "../context/ProfilePost";
 export default function PhotosPage() {
   const auth = JSON.parse(localStorage.getItem("_L"));
   const navigate = useNavigate();
-  const [showPic, setShowPic] = useState(false);
+  const [showPic, setShowPic] = useState(null);
 
   // hooks
   const { getProfilePost, loading, posts } = useProfilePost();
@@ -44,7 +44,7 @@ export default function PhotosPage() {
             .map((post) => (
               <div key={post._id}>
                 <div
-                  onClick={() => setShowPic(true)}
+                  onClick={() => setShowPic(post.image)}
                   className=" h-[200px] sm:h-[250px] md:h-[300px]  min-w-[100px] md:min-w-[185px] bg-gray-500 cursor-pointer rounded-md overflow-hidden"
                 >
                   <img
@@ -55,7 +55,7 @@ export default function PhotosPage() {
                 </div>
 
                 {showPic && (
-                  <ImageViewerPopup action={setShowPic} img={post.image} />
+                  <ImageViewerPopup action={setShowPic} img={showPic} />
                 )}
               </div>
             ))

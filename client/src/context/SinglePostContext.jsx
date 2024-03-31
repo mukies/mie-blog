@@ -12,7 +12,7 @@ const SinglePostProvider = ({ children }) => {
   const getPost = async (id) => {
     setLoading(true);
     try {
-      const { data } = await axios.get(`/api/post/${id}`);
+      const { data } = await axios.get(`/api/post/single-post/${id}`);
       if (data.success) {
         setPosts(data.post);
       } else {

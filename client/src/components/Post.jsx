@@ -90,12 +90,12 @@ export default function Post({ item: items, id }) {
                 onClick={() => navigate(`/profile/${item.postedBy.username}`)}
                 className="text-xl cursor-pointer capitalize font-semibold"
               >
-                {item.postedBy.fullName}
+                {item.postedBy?.fullName}
               </h1>
               <span className="text-gray-700">Just now</span>
             </div>
           </div>
-          {item.postedBy._id == auth?._id && (
+          {item.postedBy?._id == auth?._id && (
             <div
               onClick={() => setShowPopup((p) => !p)}
               className=" btn btn-circle "

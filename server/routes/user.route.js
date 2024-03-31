@@ -11,6 +11,7 @@ const {
   changeProfileAndCover,
   searchUser,
   userSuggestion,
+  adminGetAllUsers,
 } = require("../controllers/user.controller");
 const { protectedRoute } = require("../middlewares/protectedRoute");
 
@@ -26,5 +27,6 @@ router.put("/change-password", protectedRoute, changePassword);
 router.get("/followers/:id", protectedRoute, getFollowers);
 router.get("/search-user/:key", protectedRoute, searchUser);
 router.get("/user-suggestion", protectedRoute, userSuggestion);
-router.get("/get-user/:id", protectedRoute, getUser);
+router.get("/get-user/:username", protectedRoute, getUser);
+
 module.exports = router;

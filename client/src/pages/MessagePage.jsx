@@ -114,7 +114,7 @@ export default function MessagePage() {
             />
           </label>
         </span>
-        <label className="input  input-success w-full h-full flex items-center gap-2">
+        <label className="input  input-success w-full  flex items-center gap-2">
           <input
             value={text}
             onKeyDown={(e) => {

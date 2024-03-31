@@ -1,10 +1,39 @@
+/* eslint-disable react/prop-types */
 import { FaTrashCan } from "react-icons/fa6";
+import { useSocket } from "../../context/SocketContext";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-export default function Conversation() {
+export default function Conversation({ chat, setChats }) {
+  const { onlineUsers } = useSocket();
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
   const handleClick = () => {
     const elem = document.activeElement;
     if (elem) {
       elem?.blur();
+    }
+  };
+  const handleDelete = async () => {
+    if (!loading) {
+      setLoading(true);
+      try {
+        const { data } = await axios.delete(
+          `/api/message/admin-delete-conversation/${chat._id}`
+        );
+        if (data.success) {
+          setChats((p) => p.filter((ch) => ch._id !== chat._id));
+        } else {
+          toast.error(data.message);
+        }
+      } catch (error) {
+        toast.error(error);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -14,33 +43,40 @@ export default function Conversation() {
         <div className="flex  items-center gap-1">
           <div className="h-[40px] relative w-[40px] rounded-full ">
             <img
-              className="object-cover rounded-full object-center"
-              alt="Tailwind CSS Navbar component"
-              src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+              className="object-cover h-full w-full rounded-full object-center"
+              alt="user-profile"
+              src={chat.users[0].profilePic}
             />
-            <div className="absolute h-[10px] w-[10px] rounded-full bg-green-600 border-[1px] border-white top-0 right-0"></div>
+            {onlineUsers.includes(chat.users[0]._id) && (
+              <div className="absolute h-[10px] w-[10px] rounded-full bg-green-600 border-[1px] border-white top-0 right-0"></div>
+            )}
           </div>
           <div className="flex flex-col">
-            <h1 className="text-xl font-semibold ">Mukesh Bhattarai</h1>
+            <h1 className="text-xl font-semibold ">{chat.users[0].fullName}</h1>
           </div>
         </div>
+        {/* second */}
         <div className="flex  items-center gap-1">
-          <div className="h-[40px] relative w-[40px] rounded-full ">
+          <div className="  h-[40px] relative w-[40px] rounded-full ">
             <img
-              className="object-cover rounded-full object-center"
-              alt="Tailwind CSS Navbar component"
-              src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+              className="object-cover h-full w-full rounded-full object-center"
+              alt="user-profile"
+              src={chat.users[1].profilePic}
             />
-            <div className="absolute h-[10px] w-[10px] rounded-full bg-green-600 border-[1px] border-white top-0 right-0"></div>
+            {onlineUsers.includes(chat.users[1]._id) && (
+              <div className="absolute h-[10px] w-[10px] rounded-full bg-green-600 border-[1px] border-white top-0 right-0"></div>
+            )}
           </div>
           <div className="flex flex-col">
-            <h1 className="text-xl font-semibold ">Bimal Acharya</h1>
+            <h1 className="text-xl font-semibold ">{chat.users[1].fullName}</h1>
           </div>
         </div>
       </div>
       <div className="flex gap-2 items-center">
-        <div>
-          <button className="btn btn-outline btn-sm">View messages</button>
+        <div onClick={() => navigate(`/admin/chats/${chat._id}`)}>
+          <button className="btn btn-outline btn-sm text-xs sm:text-sm">
+            View messages
+          </button>
         </div>
         <div role="button" tabIndex={0} className="dropdown dropdown-end">
           <button className="btn btn-sm  hover:bg-red-900 bg-red-600 text-white">
@@ -54,7 +90,7 @@ export default function Conversation() {
             <div className="flex flex-col items-center gap-5">
               <span>Are you sure ?</span>
               <div className="flex items-center gap-3">
-                <div>
+                <div onClick={handleDelete}>
                   <button className="btn btn-sm btn-error">delete</button>
                 </div>
                 <div>

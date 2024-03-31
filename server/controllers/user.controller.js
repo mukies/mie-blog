@@ -1,11 +1,9 @@
-const mongoose = require("mongoose");
 const userModel = require("../model/user.model");
 const slugify = require("slugify");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { getToken } = require("../utils/getToken");
 const { v2: cloudinary } = require("cloudinary");
-
 exports.login = async (req, res) => {
   const { username, password } = req.body;
   const slug = slugify(username, "-");
@@ -30,7 +28,7 @@ exports.login = async (req, res) => {
         const isMatched = await bcrypt.compare(password, isRegister.password);
 
         if (isMatched) {
-          // get jwt token and send cookie
+          // get token and send cookie
           getToken(isRegister._id, res);
 
           res.json({
@@ -282,9 +280,9 @@ exports.changePassword = async (req, res) => {
 };
 
 exports.getUser = async (req, res) => {
-  const { id } = req.params;
+  const { username } = req.params;
   try {
-    const user = await userModel.findOne({ username: id }).select("-password");
+    const user = await userModel.findOne({ username }).select("-password");
 
     if (!user) {
       return res.json({ success: false, message: "user not found." });
@@ -402,3 +400,5 @@ exports.userSuggestion = async (req, res) => {
     });
   }
 };
+
+// admin routes

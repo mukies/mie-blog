@@ -12,6 +12,8 @@ const {
   adminDeletePost,
   adminDeleteComment,
   getProfilePost,
+  adminGetProfilePost,
+  adminGetOnePost,
 } = require("../controllers/post.controller");
 const { protectedRoute } = require("../middlewares/protectedRoute");
 const { adminProtection } = require("../middlewares/adminProtection");
@@ -20,7 +22,13 @@ const router = express.Router();
 router.get("/all", adminProtection, getAllPost);
 router.get("/feed", protectedRoute, getFeedPost);
 router.get("/profile-post/:username", protectedRoute, getProfilePost);
-router.get("/:id", getOnePost);
+router.get(
+  "/admin-profile-post/:username",
+  adminProtection,
+  adminGetProfilePost
+);
+router.get("/single-post/:id", getOnePost);
+router.get("/admin-single-post/:id", adminProtection, adminGetOnePost);
 // post routes
 router.post("/add", protectedRoute, addPost);
 router.post("/add-comment/:id", protectedRoute, addComment);
@@ -39,10 +47,10 @@ router.delete(
   protectedRoute,
   userDeleteComment
 );
-router.delete("/admin-delete-post/:id", protectedRoute, adminDeletePost);
+router.delete("/admin-delete-post/:id", adminProtection, adminDeletePost);
 router.delete(
   "/:postID/admin-delete-comment/:id",
-  protectedRoute,
+  adminProtection,
   adminDeleteComment
 );
 
