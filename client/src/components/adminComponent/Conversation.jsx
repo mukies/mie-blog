@@ -61,14 +61,16 @@ export default function Conversation({ chat, setChats }) {
             <img
               className="object-cover h-full w-full rounded-full object-center"
               alt="user-profile"
-              src={chat.users[1].profilePic}
+              src={chat.users[1]?.profilePic}
             />
-            {onlineUsers.includes(chat.users[1]._id) && (
+            {onlineUsers.includes(chat.users[1]?._id) && (
               <div className="absolute h-[10px] w-[10px] rounded-full bg-green-600 border-[1px] border-white top-0 right-0"></div>
             )}
           </div>
           <div className="flex flex-col">
-            <h1 className="text-xl font-semibold ">{chat.users[1].fullName}</h1>
+            <h1 className="text-xl font-semibold ">
+              {chat.users[1]?.fullName}
+            </h1>
           </div>
         </div>
       </div>

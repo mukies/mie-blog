@@ -39,14 +39,14 @@ export default function UserSuggestionPage() {
   };
 
   return (
-    <div className="max-w-[768px]  py-5  mx-auto flex flex-col">
+    <div className="max-w-[768px] h-[calc(100dvh-69px)] bg-white py-5  mx-auto flex flex-col">
       <span className="text-2xl font-semibold mx-auto capitalize">
         People you may know.
       </span>
       <span className=" divider divider-success "></span>
       <div
         className={
-          loading
+          loading || !suggestion.length
             ? "flex justify-center items-center h-[50dvh] "
             : "grid grid-cols-1 sm:grid-cols-2 px-5 md:grid-cols-3  gap-5 mx-auto md:mx-0  "
         }
@@ -119,7 +119,9 @@ export default function UserSuggestionPage() {
         ) : loading ? (
           <span className="loading loading-spinner scale-150"></span>
         ) : (
-          ""
+          <span className="text-2xl font-semibold">
+            No friend suggestion available right now.
+          </span>
         )}
       </div>
     </div>

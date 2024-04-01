@@ -50,12 +50,12 @@ export default function AdminNav() {
             size={25}
           />
         </label>
-        {searchbar && (
-          <div className="fixed z-[100] top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-[#000000af] ">
-            <SearchUserPopup action={setSearchbar} />
-          </div>
-        )}
       </div>
+      {searchbar && (
+        <div className="fixed z-[100] top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-[#000000af] ">
+          <SearchUserPopup action={setSearchbar} />
+        </div>
+      )}
       <div className="flex-1  flex justify-start  sm:justify-end gap-5  md:gap-10">
         <div className="flex  flex-none justify-between sm:justify-end w-full sm:gap-4 md:gap-10">
           <span

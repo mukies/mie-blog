@@ -1,13 +1,14 @@
 /* eslint-disable react/prop-types */
 import Comment from "./Comment";
 import { MdOutlineChat } from "react-icons/md";
-import { FaHeart, FaRegHeart, FaTrash } from "react-icons/fa";
+import { FaHeart, FaRegHeart, FaTrash, FaUserFriends } from "react-icons/fa";
 import { useRef, useState } from "react";
 import axios from "axios";
 import { useGetPost } from "../context/SinglePostContext";
 import ImageViewerPopup from "./popup/ImageViewerPopup";
 import { useNavigate } from "react-router-dom";
 import Popup from "./popup/Popup";
+import { timeAgo } from "../helper/dateFormater";
 
 export default function SinglePost() {
   const auth = JSON.parse(localStorage.getItem("_L"));
@@ -80,10 +81,10 @@ export default function SinglePost() {
   return (
     <div className="max-w-[768px] mx-auto flex flex-col gap-3 py-3">
       {auth && (
-        <div className=" sticky z-10  top-[70px] ">
+        <div className=" sticky z-10 px-2 top-[70px]  ">
           <button
             onClick={() => history.back()}
-            className="btn  btn-sm btn-outline text-[#316ff6]"
+            className="btn btn-sm btn-outline btn-active text-white"
           >
             back
           </button>
@@ -109,7 +110,10 @@ export default function SinglePost() {
                 <h1 className="text-xl font-semibold">
                   {posts?.postedBy?.fullName}
                 </h1>
-                <span className="text-gray-700">Just now</span>
+                <span className="text-gray-700  flex items-center gap-2">
+                  {timeAgo(new Date(posts?.createdAt))}
+                  <FaUserFriends />
+                </span>
               </div>
             </div>
 

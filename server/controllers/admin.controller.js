@@ -1,6 +1,5 @@
 const adminModel = require("../model/admin.model");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const { getToken } = require("../utils/getToken");
 const userModel = require("../model/user.model");
 
@@ -134,7 +133,8 @@ exports.adminGetAllUsers = async (req, res) => {
       .select("username")
       .select("fullName")
       .select("profilePic")
-      .select("createdAt");
+      .select("createdAt")
+      .select("isFrozen");
     res.json({
       success: true,
       message: "Users fetched successfully",
@@ -213,18 +213,57 @@ exports.freezeAccount = async (req, res) => {
   try {
     const user = await userModel.findOne({ username: req.params.id });
     if (!user) return res.json({ success: false, message: "User not found" });
-
-    user.isFrozen = true;
+    if (user.isFrozen) {
+      user.isFrozen = false;
+    } else {
+      user.isFrozen = true;
+    }
 
     await user.save();
     res.json({
       success: true,
-      message: "Account frozen successfully",
+      message: user.isFrozen ? "Account disabled." : "Account enabled.",
     });
   } catch (error) {
     res.json({
       success: false,
       message: "Error while freezing account",
+    });
+  }
+};
+
+exports.changePassword = async (req, res) => {
+  const { password, confirmPassword } = req.body;
+  // validation
+  if (!confirmPassword || !password)
+    return res.json({
+      success: false,
+      message: "All the input fields are required.",
+    });
+
+  if (password !== confirmPassword)
+    return res.json({ success: false, message: "password mismatch." });
+
+  if (password.length < 6)
+    return res.json({
+      success: false,
+      message: "password must be at least 6 characters.",
+    });
+
+  try {
+    const admin = await adminModel.findById(req.user._id);
+    if (!admin)
+      return res.json({ success: false, message: "admin not found." });
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    admin.password = hashedPassword;
+    admin.save();
+    res.json({ success: true, message: "Admin password has been changed." });
+  } catch (error) {
+    res.json({
+      success: false,
+      message: "Error while changing password.",
     });
   }
 };

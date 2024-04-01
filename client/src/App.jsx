@@ -22,13 +22,14 @@ import AdminProtectedRoute from "./protectedRoute/AdminProtectedRoute";
 import SinglePostPage from "./pages/admin/SinglePostPage";
 import UserPhotoPage from "./pages/admin/UserPhotoPage";
 import UserMessagePage from "./pages/admin/UsersMessagePage";
+import NewsFeed from "./pages/admin/NewsFeed";
 
 function App() {
   const auth = JSON.parse(localStorage.getItem("_L"));
   const adminAuth = JSON.parse(localStorage.getItem("_A"));
 
   return (
-    <div>
+    <div className="bg-gray-100">
       {auth && !adminAuth ? <Nav /> : !auth && adminAuth ? <AdminNav /> : ""}
       <Routes>
         <Route
@@ -60,6 +61,7 @@ function App() {
           <Route path="post/:postID" element={<SinglePostPage />} />
           <Route path="users/friend-list" element={<UserFriendsPage />} />
           <Route path="user/photos/:username" element={<UserPhotoPage />} />
+          <Route path="news-feed" element={<NewsFeed />} />
           <Route path="chats/:id" element={<UserMessagePage />} />
         </Route>
         <Route path="*" element={<PageNotFound />} />

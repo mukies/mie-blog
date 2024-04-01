@@ -164,7 +164,6 @@ exports.adminGetConversation = async (req, res) => {
         success: false,
         message: "conversation did not found.",
       });
-    console.log(conversations, "conversations");
 
     res.json({ success: true, conversations });
   } catch (error) {

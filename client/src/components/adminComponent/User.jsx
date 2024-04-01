@@ -5,6 +5,7 @@ import { useSocket } from "../../context/SocketContext";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { FaLock, FaLockOpen } from "react-icons/fa";
 
 export default function User({ user, setUsers }) {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ export default function User({ user, setUsers }) {
   };
 
   return (
-    <div className="flex justify-between items-center p-2 rounded-lg border-2 border-gray-400">
+    <div className="flex justify-between items-center p-2 relative rounded-lg border-2 border-gray-400">
       <div className="flex items-center gap-3">
         <div className=" h-[50px] w-[50px] sm:h-[80px] relative sm:w-[80px] rounded-full ">
           <img
@@ -47,7 +48,7 @@ export default function User({ user, setUsers }) {
             src={user.profilePic}
           />
           {onlineUsers.includes(user._id) ? (
-            <div className="absolute h-[20px] w-[20px] rounded-full bg-green-600 border-[3px] border-white top-0 right-0"></div>
+            <div className="absolute h-[15px] w-[15px] sm:h-[20px] sm:w-[20px] rounded-full bg-green-600 border-[2px] sm:border-[3px] border-white top-0 right-0"></div>
           ) : (
             ""
           )}
@@ -102,6 +103,13 @@ export default function User({ user, setUsers }) {
             </div>
           </div>
         </div>
+      </div>
+      <div className=" absolute flex justify-center items-center top-0 right-[5px] ">
+        {user.isFrozen ? (
+          <FaLock title="disabled" color="red" />
+        ) : (
+          <FaLockOpen title="active" color="green" />
+        )}
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { FaHeart } from "react-icons/fa";
+import { FaHeart, FaUserFriends } from "react-icons/fa";
 import { MdOutlineChat } from "react-icons/md";
 import { FaTrash } from "react-icons/fa";
 import { useState } from "react";
@@ -8,6 +8,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import FriendListPopup from "./FriendListPopup";
+import { timeAgo } from "../../helper/dateFormater";
 
 export default function UserPost({ post, setPosts }) {
   const navigate = useNavigate();
@@ -45,14 +46,16 @@ export default function UserPost({ post, setPosts }) {
               <img
                 className="h-full w-full object-cover object-center"
                 alt="user-profile"
-                src={post.postedBy.profilePic}
+                src={post.postedBy?.profilePic}
               />
             </div>
             <div className="flex flex-col gap-0">
               <h1 className="text-xl font-semibold capitalize">
-                {post.postedBy.fullName}
+                {post.postedBy?.fullName}
               </h1>
-              <span className="text-gray-700">{post.createdAt}</span>
+              <span className="text-gray-700 flex items-center gap-2">
+                {timeAgo(new Date(post.createdAt))} <FaUserFriends />
+              </span>
             </div>
           </div>
           <div onClick={() => setDeletePopup(true)} className="btn btn-circle ">

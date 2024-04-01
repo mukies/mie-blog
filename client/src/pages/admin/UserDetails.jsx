@@ -18,6 +18,7 @@ export default function UserDetails() {
   const [user, setUser] = useState([]);
   const [followerListPopup, setFollowerListPopup] = useState(false);
   const [followingListPopup, setFollowingListPopup] = useState(false);
+  const [isFrozen, setIsFrozen] = useState(false);
 
   useEffect(() => {
     getUserDetails();
@@ -29,6 +30,7 @@ export default function UserDetails() {
       const { data } = await axios.get(`/api/admin/get-single-user/${id}`);
       if (data.success) {
         setUser(data.user);
+        setIsFrozen(data.user.isFrozen);
       } else {
         alert(data.message);
       }
@@ -57,12 +59,12 @@ export default function UserDetails() {
   const handleFreeze = async () => {
     if (!freezeLoading) {
       try {
-        console.log(id);
         setFreezeLoading(true);
         const { data } = await axios.put(`/api/admin/freeze-account/${id}`);
-        console.log("first", data);
+
         if (data.success) {
           toast.success(data.message);
+          setIsFrozen(!isFrozen);
         } else {
           toast.error(data.message);
         }
@@ -105,17 +107,17 @@ export default function UserDetails() {
               <button
                 onClick={handleFreeze}
                 className={
-                  user?.isFrozen
+                  isFrozen
                     ? " btn btn-sm btn-success capitalize max-w-max text-white mt-2"
                     : " btn btn-sm btn-error capitalize max-w-max text-white mt-2"
                 }
               >
                 {freezeLoading ? (
                   <span className="loading loading-spinner"></span>
-                ) : user?.isFrozen ? (
-                  "unfreeze account"
+                ) : isFrozen ? (
+                  "enable account"
                 ) : (
-                  "freeze account"
+                  "disable account"
                 )}
               </button>
             </div>

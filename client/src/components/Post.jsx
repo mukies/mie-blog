@@ -1,12 +1,13 @@
 /* eslint-disable react/prop-types */
 import axios from "axios";
 import { useState } from "react";
-import { FaHeart, FaRegHeart, FaTrash } from "react-icons/fa";
+import { FaHeart, FaRegHeart, FaTrash, FaUserFriends } from "react-icons/fa";
 import { MdOutlineChat } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import Popup from "./popup/Popup";
 import { useFeed } from "../context/FeedContext";
 import { useProfilePost } from "../context/ProfilePost";
+import { timeAgo } from "../helper/dateFormater";
 
 export default function Post({ item: items, id }) {
   const auth = JSON.parse(localStorage.getItem("_L"));
@@ -92,7 +93,10 @@ export default function Post({ item: items, id }) {
               >
                 {item.postedBy?.fullName}
               </h1>
-              <span className="text-gray-700">Just now</span>
+              <span className="text-gray-700 flex items-center gap-2">
+                {timeAgo(new Date(item.createdAt))}
+                <FaUserFriends />
+              </span>
             </div>
           </div>
           {item.postedBy?._id == auth?._id && (

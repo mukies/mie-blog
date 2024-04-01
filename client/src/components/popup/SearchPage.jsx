@@ -12,6 +12,7 @@ export default function SearchPage({ action }) {
   const [key, setKey] = useState("");
   const [users, setUsers] = useState(null);
   const [loading, setLoading] = useState(false);
+  const auth = JSON.parse(localStorage.getItem("_L"));
 
   useEffect(() => {
     const data = setTimeout(() => {
@@ -114,7 +115,7 @@ export default function SearchPage({ action }) {
                     />
                   </div>
                   <span className="text-xl font-semibold capitalize">
-                    {item.fullName}
+                    {item._id == auth?._id ? "You" : item.fullName}
                   </span>
                 </div>
               ))

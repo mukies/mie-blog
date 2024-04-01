@@ -22,9 +22,8 @@ export default function Feed() {
         <div className="divider m-0 p-0"></div>
         <div className="flex flex-col mb-3 gap-5">
           {loading ? (
-            <div className="flex h-[30dvh] items-center justify-center">
-              {" "}
-              <span className="loading scale-150 loading-spinner"></span>{" "}
+            <div className="fixed top-0 left-0 right-0 z-[98] bottom-0 bg-white flex justify-center items-center">
+              <span className="loading loading-spinner scale-150 "></span>
             </div>
           ) : posts?.length ? (
             posts?.map((item, id) => <Post key={id} id={id} item={item} />)

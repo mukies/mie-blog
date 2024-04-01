@@ -44,8 +44,8 @@ export default function ManageChats() {
         }
       >
         {loading ? (
-          <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center z-[222] bg-[#000000c7]">
-            <span className="loading loading-spinner text-white scale-125"></span>
+          <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center z-[97] bg-white">
+            <span className="loading loading-spinner  scale-125"></span>
           </div>
         ) : !loading && chats.length ? (
           chats.map((chat) => (

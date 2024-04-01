@@ -59,7 +59,7 @@ export default function ChatListPage() {
   };
 
   return (
-    <div className="max-w-[768px]  py-5  mx-auto">
+    <div className="max-w-[768px]  h-[calc(100dvh-69px)] bg-white mx-auto">
       <div className="bg-[#316ff6] rounded-lg h-[60px] relative flex justify-center items-center text-white ">
         <span className="text-2xl font-semibold">Conversations</span>
         <button
@@ -83,11 +83,11 @@ export default function ChatListPage() {
                   <div className=" relative  bg-[#316ff6] rounded-full  flex justify-center items-center">
                     <img
                       src={item.profilePic}
-                      className="w-[80px] h-[80px] rounded-full object-cover object-center"
+                      className=" h-[60px] w-[60px] sm:w-[80px] sm:h-[80px] rounded-full object-cover object-center"
                       alt="user"
                     />
                     {onlineUsers.includes(item._id) && (
-                      <div className="absolute right-0 bottom-0 h-[15px] w-[15px] rounded-full bg-[green]"></div>
+                      <div className="absolute right-0 bottom-0 h-[15px] w-[15px] sm:bottom-[5px] rounded-full bg-[green]"></div>
                     )}
                   </div>
                   <span className="text-[17px] capitalize text-nowrap">

@@ -1,6 +1,5 @@
 import { MdPermMedia } from "react-icons/md";
 import { FaTimes } from "react-icons/fa";
-import { IoMdVideocam } from "react-icons/io";
 import { useEffect, useRef, useState } from "react";
 import { usePost } from "../hooks/usePost";
 import { useNavigate } from "react-router-dom";
@@ -30,20 +29,15 @@ export default function CreatePost() {
     if (!text && !imgUrl) {
       toast.error("Nothing to post");
     } else {
-      // try
-
-      // try
-
       await addPost(text, imgUrl);
       setShow(false);
       setText("");
-      // console.log(image);
     }
   };
 
   return (
-    <div className=" flex py-2 justify-center flex-col gap-2">
-      <div className="flex bg-white rounded-3xl justify-between mx-auto gap-3  w-[80%] py-2 md:p-5 items-center">
+    <div className=" flex py-2 px-5 justify-center rounded-3xl flex-col gap-2  ">
+      <div className="flex bg-white w-full max-w-[550px] rounded-2xl mx-auto  justify-between  gap-3  py-2 md:p-5 items-center">
         <div
           onClick={() => navigate(`/profile/${user?.username}`)}
           className="w-[50px] h-[50px] bg-gray-200 rounded-full flex justify-center items-center overflow-hidden cursor-pointer "
@@ -70,17 +64,8 @@ export default function CreatePost() {
           <input
             type="text"
             placeholder="What's on your mind..."
-            className="input w-full bg-gray-200 input-md  rounded-3xl"
+            className="input w-full mx-auto bg-gray-200 input-md  rounded-3xl"
           />
-        </div>
-      </div>
-      <div className="w-[80%] flex justify-around mx-auto px-5">
-        <div
-          onClick={() => toast.info("This feature will coming soon.")}
-          className="flex items-center gap-2 cursor-pointer hover:bg-gray-300 rounded-lg duration-200 px-4 py-3"
-        >
-          <IoMdVideocam size={30} color="#8b0000" />
-          <span className="text-lg font-semibold">Live</span>
         </div>
         <div
           onClick={() => {
@@ -92,9 +77,9 @@ export default function CreatePost() {
           className="flex items-center gap-2 cursor-pointer hover:bg-gray-300 rounded-lg duration-200 px-4 py-3"
         >
           <MdPermMedia size={30} color="#316ff6" />
-          <span className="text-lg font-semibold">Media</span>
         </div>
       </div>
+
       <div
         className={
           show

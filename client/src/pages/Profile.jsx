@@ -270,21 +270,10 @@ export default function Profile() {
               </button>
             )}
             {/* photos button  */}
-            {username == auth?.username && (
-              <p
-                onClick={() => navigate("/photos")}
-                className=" flex items-center gap-2 py-3 px-4 rounded-lg hover:bg-gray-100 duration-200 cursor-pointer"
-              >
-                <MdPermMedia />{" "}
-                <span className=" text-sm text-nowrap md:text-[17px] font-semibold">
-                  Your Photos
-                </span>
-              </p>
-            )}
           </div>
           {/* edit profile  */}
           {username == auth?.username && (
-            <div className="flex items-center">
+            <div className="flex px-4 items-center">
               <button
                 onClick={() => setEditProfile(true)}
                 className="flex items-center text-white btn btn-error btn-sm"
@@ -304,7 +293,20 @@ export default function Profile() {
 
           {/* create post  */}
           {auth?.username == username && <CreatePost />}
-          <span className="text-xl font-semibold">Posts</span>
+          <div className="  flex justify-between items-center px-3">
+            <span className="text-xl font-semibold">Posts</span>
+            {username == auth?.username && (
+              <p
+                onClick={() => navigate("/photos")}
+                className=" flex items-center gap-2 py-3 px-4 rounded-lg hover:bg-gray-300 duration-200 cursor-pointer"
+              >
+                <MdPermMedia size={20} />{" "}
+                <span className=" text-xl text-nowrap md:text-[17px] font-semibold">
+                  Your Photos
+                </span>
+              </p>
+            )}
+          </div>
           {/* <Post /> */}
           <div className="flex flex-col mb-3 gap-5">
             {loading ? (

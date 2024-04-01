@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import useUserDetails from "../../../hooks/useUserDetails";
 import { useEffect, useState } from "react";
 import SearchPage from "../../popup/SearchPage";
+import { FaHome } from "react-icons/fa";
 
 export default function Nav() {
   const auth = JSON.parse(localStorage.getItem("_L"));
@@ -32,14 +33,10 @@ export default function Nav() {
   return (
     <div
       onClick={() => console.log("first", user)}
-      className="navbar nav-bar sticky top-0 bg-base-300 px-10 z-[99] "
+      className=" nav-bar sticky top-0 bg-base-300 px-10 z-[99]"
     >
-      {loading ? (
-        <div className=" fixed top-0 left-0 bottom-0 right-0 flex justify-center items-center z-[222] bg-[#000000ce]">
-          <span className="loading loading-spinner scale-150 text-white"></span>
-        </div>
-      ) : !loading && user.isFrozen ? (
-        <div className="fixed top-0 left-0 bottom-0 right-0 flex justify-center items-center z-[222] bg-[#000000ce]">
+      {!loading && user.isFrozen ? (
+        <div className="fixed top-0 left-0 bottom-0 right-0 flex justify-center items-center z-[222] bg-black">
           <div className="bg-white flex flex-col p-5 gap-3 rounded-xl ">
             <p>You are temporarily suspended by the admin. Try again later.</p>
             <button className="btn btn-secondary btn-sm max-w-max ">
@@ -48,9 +45,9 @@ export default function Nav() {
           </div>
         </div>
       ) : (
-        <div className="navbar sticky top-0 bg-base-300 px-10 z-[99]">
+        <div className="navbar ">
           {" "}
-          <div className="flex-1 gap-4 md:justify-between  ">
+          <div className="flex-1 gap-4 hidden sm:flex md:justify-between  ">
             <span
               onClick={() => navigate("/")}
               className="nav-title cursor-pointer text-2xl sm:text-3xl font-bold text-[#316FF6]"
@@ -69,19 +66,27 @@ export default function Nav() {
                 placeholder="Search People..."
               />
               <IoSearchOutline
-                onClick={() => setSearchbar((p) => !p)}
+                onClick={() => setSearchbar(true)}
                 className="cursor-pointer absolute right-[5%]"
                 size={25}
               />
             </label>
-            {searchbar && (
-              <div className="fixed z-[100] top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-[#000000af] ">
-                <SearchPage action={setSearchbar} />
-              </div>
-            )}
           </div>
-          <div className="flex-1 justify-end gap-5  md:gap-10">
-            <div className="flex flex-none  gap-2 md:gap-10">
+          {searchbar && (
+            <div className="fixed z-[100] top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-[#000000af] ">
+              <SearchPage action={setSearchbar} />
+            </div>
+          )}
+          <div className="sm:flex-1 w-full sm:justify-end gap-5 flex  justify-between md:gap-10">
+            <div className="flex sm:flex-none flex-auto justify-between gap-2 md:gap-10">
+              <span
+                onClick={() => {
+                  navigate("/");
+                }}
+                className="btn sm:hidden scale-75 md:scale-100 btn-circle"
+              >
+                <FaHome size={30} color="#316FF6" />
+              </span>
               <span
                 onClick={() => {
                   navigate("/chats");
@@ -92,12 +97,12 @@ export default function Nav() {
               </span>
               <span
                 onClick={() => navigate("/user-suggestion")}
-                className="btn hidden sm:flex scale-75 md:scale-100 btn-circle"
+                className="btn  scale-75 md:scale-100 btn-circle"
               >
                 <BsFillPeopleFill size={30} color="#316FF6" />
               </span>
               <span
-                onClick={() => setSearchbar((p) => !p)}
+                onClick={() => setSearchbar(true)}
                 className="btn btn-md scale-75 flex justify-center items-center  btn-circle md:hidden"
               >
                 <IoSearchOutline size={30} color="#316FF6" />
@@ -109,7 +114,7 @@ export default function Nav() {
                 role="button"
                 className="btn btn-ghost btn-circle  avatar"
               >
-                <div className="w-10 h-10 flex justify-center items-center rounded-full">
+                <div className=" h-9 w-9  sm:w-10 sm:h-10 flex justify-center items-center rounded-full">
                   {user && !loading ? (
                     <img alt={user?.username} src={user?.profilePic} />
                   ) : (

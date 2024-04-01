@@ -173,7 +173,8 @@ exports.getAllPost = async (req, res) => {
       .find()
       .populate("postedBy", "fullName username profilePic")
       .populate("comments.commentedBy", "fullName username profilePic")
-      .populate("likes", "fullName username profilePic");
+      .populate("likes", "fullName username profilePic")
+      .sort({ createdAt: -1 });
 
     res.json({
       success: true,

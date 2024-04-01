@@ -3,6 +3,7 @@
 
 import { useState } from "react";
 import ImageViewerPopup from "./popup/ImageViewerPopup";
+import { timeAgo } from "../helper/dateFormater";
 
 /* eslint-disable react/prop-types */
 export default function Message({ msg, otherUser, userLoading: loading }) {
@@ -13,11 +14,11 @@ export default function Message({ msg, otherUser, userLoading: loading }) {
   return (
     <div
       className={
-        msg.senderID == auth._id ? "flex flex-row-reverse gap-5" : "flex  gap-5"
+        msg.senderID == auth._id ? "flex flex-row-reverse gap-4" : "flex  gap-4"
       }
     >
       {msg.senderID !== auth._id && (
-        <div className="flex items-center flex-col gap-0">
+        <div className="flex items-center  flex-col gap-0">
           <div className="h-10 w-10 flex justify-center items-center rounded-full overflow-hidden">
             {loading ? (
               <span className="loading loading-spinner"></span>
@@ -29,10 +30,12 @@ export default function Message({ msg, otherUser, userLoading: loading }) {
               />
             )}
           </div>
-          <span className="text-sm text-center text-nowrap">just now</span>
+          <span className="text-[10px] text-center text-nowrap">
+            {timeAgo(new Date(msg.createdAt))}
+          </span>
         </div>
       )}
-      <div className="flex flex-col gap-3 max-w-[40%] ">
+      <div className="flex  flex-col gap-3 max-w-[40%] ">
         {msg.text && (
           <div
             className={
