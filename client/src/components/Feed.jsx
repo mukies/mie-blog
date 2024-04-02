@@ -16,7 +16,7 @@ export default function Feed() {
   }, [posts.length]);
 
   return (
-    <div className=" ">
+    <div className={!posts.length ? "h-[calc(100dvh-69px)]" : ""}>
       <div>
         <CreatePost />
         <div className="divider m-0 p-0"></div>

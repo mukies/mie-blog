@@ -79,7 +79,7 @@ export default function SinglePost() {
   };
 
   return (
-    <div className="max-w-[768px] mx-auto flex flex-col gap-3 py-3">
+    <div className="max-w-[768px] mx-auto min-h-[calc(100dvh-69px)] flex flex-col gap-3 py-3">
       {auth && (
         <div className=" sticky z-10 px-2 top-[70px]  ">
           <button
@@ -134,8 +134,8 @@ export default function SinglePost() {
 
           {/* text content  */}
           {posts?.text && (
-            <div className="w-[90%] rounded-2xl p-3 overflow-hidden md:w-[80%] duration-200 transition-all  mx-auto">
-              <p className="">{posts?.text}</p>
+            <div className="w-[90%] bg-gray-200 p-3 rounded-md overflow-hidden md:w-[80%] duration-200 transition-all  mx-auto">
+              <p className=" ">{posts?.text}</p>
             </div>
           )}
           {/* image content  */}

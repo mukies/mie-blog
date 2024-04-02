@@ -114,8 +114,15 @@ export default function AdminHome() {
                   />
                 </div>
                 <div className="form-control mt-6">
-                  <button onClick={changePassword} className="btn btn-primary">
-                    Save
+                  <button
+                    onClick={changePassword}
+                    className="btn btn-primary capitalize"
+                  >
+                    {passwordLoading ? (
+                      <span className="loading loading-spinner"></span>
+                    ) : (
+                      <span>save</span>
+                    )}
                   </button>
                 </div>
                 {err ? (

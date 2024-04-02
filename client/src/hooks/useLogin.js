@@ -11,7 +11,6 @@ export const useLogin = () => {
         username,
         password,
       });
-      console.log(data);
 
       if (data.success) {
         localStorage.setItem("_L", JSON.stringify(data.data));

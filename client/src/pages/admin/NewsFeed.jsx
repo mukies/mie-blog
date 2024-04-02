@@ -37,7 +37,7 @@ export default function NewsFeed() {
           className={
             posts.length
               ? "flex flex-col gap-3"
-              : "flex justify-center items-center h-[40dvh]"
+              : "flex justify-center items-center h-[calc(100dvh-69px)]"
           }
         >
           {posts.length ? (

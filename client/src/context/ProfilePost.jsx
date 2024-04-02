@@ -11,6 +11,7 @@ const ProfileContextProvider = ({ children }) => {
   const [posts, setPosts] = useState([]);
 
   const getProfilePost = async (username) => {
+    // console.log("second", username);
     try {
       const { data } = await axios.get(`/api/post/profile-post/${username}`);
       if (data.success) {

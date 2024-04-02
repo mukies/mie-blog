@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import CreatePost from "../components/CreatePost";
-import Post from "../components/Post";
-import { useEffect, useState } from "react";
+// import CreatePost from "../components/CreatePost";
+// import Post from "../components/Post";
+import { useEffect, useRef, useState } from "react";
 // react icons
 import { MdPermMedia } from "react-icons/md";
-import { FaFacebookMessenger, FaUserFriends } from "react-icons/fa";
+import { FaFacebookMessenger, FaTimes, FaUserFriends } from "react-icons/fa";
 import { RiUserFollowFill } from "react-icons/ri";
 import { IoPersonAdd } from "react-icons/io5";
 import { BiSolidImageAdd } from "react-icons/bi";
@@ -12,12 +12,15 @@ import { FiEdit } from "react-icons/fi";
 
 import { useNavigate, useParams } from "react-router-dom";
 import useUserDetails from "../hooks/useUserDetails";
-import { useProfilePost } from "../context/ProfilePost";
+// import { useProfilePost } from "../context/ProfilePost";
 import axios from "axios";
 import PeopleList from "../components/PeopleList";
 import ImageUploadPopup from "../components/popup/ImageUploadPopup";
 import EditProfile from "../components/EditProfile";
 import ImageViewerPopup from "../components/popup/ImageViewerPopup";
+import { toast } from "react-toastify";
+import ProfilePost from "../components/ProfilePost";
+import usePreviewImg from "../hooks/usePreviewImg";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -38,19 +41,29 @@ export default function Profile() {
   const [follower, setFollower] = useState([]);
   const [following, setFollowing] = useState([]);
 
+  const [profilePostLoading, setProfilePostLoading] = useState(true);
+  const [posts, setPosts] = useState([]);
+
+  // create post
+  const [text, setText] = useState("");
+  const [show, setShow] = useState(false);
+  const postRef = useRef();
+  const { previewImg, imgUrl, setImgUrl } = usePreviewImg();
+  const [postingLoading, setPostingLoading] = useState(false);
+
   // hooks
-  const { getProfilePost, posts, loading } = useProfilePost();
   const {
     getUserDetails,
     loading: detailsLoading,
     user,
     setUser,
   } = useUserDetails();
+
   const auth = JSON.parse(localStorage.getItem("_L"));
   const { username } = useParams();
 
   useEffect(() => {
-    getProfilePost(username);
+    getProfilePost();
     getUserDetails(username);
     if (username == auth?.username) {
       getFollowers();
@@ -61,6 +74,22 @@ export default function Profile() {
     user.followers?.length,
     user.followings?.length,
   ]);
+
+  // profile post
+  const getProfilePost = async () => {
+    try {
+      const { data } = await axios.get(`/api/post/profile-post/${username}`);
+      if (data.success) {
+        setPosts(data.posts);
+      } else {
+        toast.error("error while fetching feed post.");
+      }
+    } catch (error) {
+      toast.error(error);
+    } finally {
+      setProfilePostLoading(false);
+    }
+  };
 
   const getFollowers = async () => {
     const { data } = await axios.get(`/api/user/followers/${username}`);
@@ -87,6 +116,37 @@ export default function Profile() {
     }
   };
 
+  const handlePost = async () => {
+    if (!postingLoading) {
+      if (!text && !imgUrl) {
+        toast.error("Nothing to post");
+      } else {
+        //
+        setPostingLoading(true);
+        try {
+          const { data } = await axios.post("/api/post/add", {
+            text,
+            image: imgUrl,
+          });
+          if (data.success) {
+            window.location.reload();
+            // setPosts((p) => [...p, data.post]);
+          } else {
+            toast.error(data.message);
+          }
+        } catch (error) {
+          toast.error(error);
+        } finally {
+          setPostingLoading(false);
+        }
+
+        //
+        // await addPost(text, imgUrl);
+        setShow(false);
+        setText("");
+      }
+    }
+  };
   return (
     <div className="  bg-base-200">
       <div>
@@ -96,7 +156,7 @@ export default function Profile() {
             <img
               onClick={() => setShowCoverPic(true)}
               className="h-[70%] cursor-pointer object-cover object-center w-full"
-              src={user?.coverPic}
+              src={user?.coverPic ? user?.coverPic : "/coverIMG.jpg"}
               alt="cover-image"
             />
 
@@ -193,7 +253,7 @@ export default function Profile() {
           <div
             className={
               username == auth?.username
-                ? "bg-gray-300 w-[90%] md:w-[80%] mx-auto rounded-lg p-2 gap-2 flex justify-around "
+                ? "bg-gray-300 w-[90%] sm:max-w-max mx-auto rounded-lg p-2 gap-2 flex justify-around "
                 : "bg-gray-300  md:w-auto mx-auto rounded-lg p-2 gap-2 flex justify-around "
             }
           >
@@ -292,7 +352,150 @@ export default function Profile() {
           )}
 
           {/* create post  */}
-          {auth?.username == username && <CreatePost />}
+          {auth?.username == username && (
+            <div className=" flex py-2  justify-center rounded-3xl flex-col gap-2  ">
+              <div className="flex bg-white w-full max-w-[550px] rounded-2xl mx-auto px-2 justify-between  gap-3  py-2 md:p-5 items-center">
+                <div className="w-[50px] h-[50px] bg-gray-200 rounded-full flex justify-center items-center overflow-hidden cursor-pointer ">
+                  <img
+                    alt={user?.username}
+                    className=" object-cover object-center w-full h-full"
+                    src={user?.profilePic}
+                  />
+                </div>
+                <div
+                  onClick={() => {
+                    setShow((p) => !p);
+                    setTimeout(() => {
+                      postRef.current.focus();
+                    }, 1);
+                  }}
+                  className="flex-1"
+                >
+                  <input
+                    type="text"
+                    placeholder="What's on your mind..."
+                    className="input w-full mx-auto bg-gray-200 input-md  rounded-3xl"
+                  />
+                </div>
+                <div
+                  onClick={() => {
+                    setShow((p) => !p);
+                    setTimeout(() => {
+                      postRef.current.focus();
+                    }, 1);
+                  }}
+                  className="flex items-center gap-2 cursor-pointer hover:bg-gray-300 rounded-lg duration-200 px-4 py-3"
+                >
+                  <MdPermMedia size={30} color="#316ff6" />
+                </div>
+              </div>
+
+              <div
+                className={
+                  show
+                    ? "fixed top-0 left-0 right-0 bottom-0 flex z-[100] justify-center items-center bg-[#000000b4]"
+                    : "fixed top-0 left-0 right-0 bottom-0 hidden z-[100] justify-center items-center bg-[#000000b4]"
+                }
+              >
+                <div className="bg-white relative md:rounded-lg justify-center items-center  p-3 flex h-auto w-full md:h-auto md:w-[60%]  lg:w-[50%] flex-col ">
+                  <div
+                    onClick={() => setShow((p) => !p)}
+                    className="absolute btn btn-circle top-[2px] cursor-pointer right-[2px]"
+                  >
+                    <span>
+                      <FaTimes size={28} color="#316ff6" />
+                    </span>
+                  </div>
+                  <div className="flex flex-col w-full gap-2">
+                    <span className="text-center text-3xl font-semibold">
+                      Create a post
+                    </span>
+                    <span className="divider p-0 m-0"></span>
+                    {/* user name and image  */}
+                    <div className=" flex mb-2 items-center gap-3">
+                      <img
+                        className="h-[30px] w-[30px] rounded-full object-cover object-center cursor-pointer"
+                        src={user?.profilePic}
+                        alt={user?.username}
+                      />
+                      <span className="text-lg font-semibold ">
+                        Mukesh Bhattarai
+                      </span>
+                    </div>
+
+                    <div className="h-[30%]">
+                      <div className="h-full px-5">
+                        <textarea
+                          ref={postRef}
+                          onChange={(e) => setText(e.target.value)}
+                          value={text}
+                          type="text"
+                          placeholder="What's on your mind..."
+                          className="textarea textarea-bordered  w-full h-full  bg-gray-200    rounded-3xl"
+                        />
+                      </div>
+                    </div>
+                    <div className=" flex justify-around mx-auto px-5">
+                      <label
+                        htmlFor="file"
+                        className="flex items-center gap-2 cursor-pointer hover:bg-gray-300 rounded-lg duration-200 px-4 py-3"
+                      >
+                        <MdPermMedia size={30} color="#316ff6" />
+                        <span className="text-lg font-semibold">Photo</span>
+
+                        <input
+                          onChange={previewImg}
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          id="file"
+                        />
+                      </label>
+                    </div>
+                    {imgUrl ? (
+                      <div className=" w-full flex justify-center  rounded-lg">
+                        <div className="h-[150px] relative">
+                          <div
+                            onClick={() => setImgUrl(null)}
+                            className="absolute top-0 right-0 btn btn-sm btn-circle"
+                          >
+                            <span>
+                              <FaTimes size={20} color="#316ff6" />
+                            </span>
+                          </div>
+                          <img
+                            className="h-full w-[200px] object-cover"
+                            // src={URL.createObjectURL(image)}
+
+                            src={imgUrl}
+                            alt="photo"
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    <button
+                      onClick={handlePost}
+                      className="flex items-center  btn btn-success justify-center text-white "
+                    >
+                      {/* <IoMdVideocam size={30} color="#8b0000" /> */}
+                      {postingLoading ? (
+                        <>
+                          <span className="loading loading-spinner"></span>
+                        </>
+                      ) : (
+                        <>
+                          <span className="text-lg font-semibold">Post</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {/* create post  */}
           <div className="  flex justify-between items-center px-3">
             <span className="text-xl font-semibold">Posts</span>
             {username == auth?.username && (
@@ -309,13 +512,19 @@ export default function Profile() {
           </div>
           {/* <Post /> */}
           <div className="flex flex-col mb-3 gap-5">
-            {loading ? (
-              <div className="flex h-[30dvh] items-center justify-center">
-                {" "}
-                <span className="loading scale-150 loading-spinner"></span>{" "}
+            {profilePostLoading ? (
+              <div className="fixed top-0 left-0 right-0 bottom-0 bg-white z-[97] flex justify-center items-center">
+                <span className="loading loading-spinner scale-125"></span>
               </div>
             ) : posts?.length ? (
-              posts.map((item, id) => <Post key={id} id={id} item={item} />)
+              posts.map((item, id) => (
+                <ProfilePost
+                  key={item._id}
+                  id={id}
+                  setPosts={setPosts}
+                  item={item}
+                />
+              ))
             ) : (
               <div className="h-[40dvh] flex justify-center items-center ">
                 <p className="text-xl font-semibold">

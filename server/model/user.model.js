@@ -7,8 +7,12 @@ const userSchema = new mongoose.Schema(
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     gender: { type: String, required: true },
-    profilePic: { type: String, default: "../assets/img.jpg" },
-    coverPic: { type: String, default: "../assets/img.jpg" },
+    profilePic: { type: String, default: "" },
+    coverPic: {
+      type: String,
+      default:
+        "https://res.cloudinary.com/dptavwasj/image/upload/v1712030990/yuhf0pgwl351wofd1ydr.jpg",
+    },
     followers: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "User",

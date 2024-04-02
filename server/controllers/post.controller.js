@@ -20,8 +20,13 @@ exports.addPost = async (req, res) => {
 
         image = response.secure_url;
       }
-      const post = new postModel({ postedBy: req.user._id, text, image });
+      const post = new postModel({
+        postedBy: req.user._id,
+        text,
+        image,
+      });
       await post.save();
+
       res.json({
         success: true,
         message: "A new post was posted to your timeline.",

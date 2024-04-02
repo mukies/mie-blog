@@ -31,10 +31,7 @@ export default function Nav() {
   }, [auth?.username]);
 
   return (
-    <div
-      onClick={() => console.log("first", user)}
-      className=" nav-bar sticky top-0 bg-base-300 px-10 z-[99]"
-    >
+    <div className=" nav-bar sticky top-0 bg-base-300 px-10 z-[99]">
       {!loading && user.isFrozen ? (
         <div className="fixed top-0 left-0 bottom-0 right-0 flex justify-center items-center z-[222] bg-black">
           <div className="bg-white flex flex-col p-5 gap-3 rounded-xl ">

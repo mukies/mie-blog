@@ -9,9 +9,9 @@ import usePreviewImg from "../hooks/usePreviewImg";
 
 export default function CreatePost() {
   const auth = JSON.parse(localStorage.getItem("_L"));
+  const navigate = useNavigate();
   const [text, setText] = useState("");
   const [show, setShow] = useState(false);
-  const navigate = useNavigate();
   const postRef = useRef();
 
   const { getUserDetails, loading: userLoading, user } = useUserDetails();
@@ -36,14 +36,16 @@ export default function CreatePost() {
   };
 
   return (
-    <div className=" flex py-2 px-5 justify-center rounded-3xl flex-col gap-2  ">
-      <div className="flex bg-white w-full max-w-[550px] rounded-2xl mx-auto  justify-between  gap-3  py-2 md:p-5 items-center">
+    <div className=" flex py-2  justify-center rounded-3xl flex-col gap-2  ">
+      <div className="flex bg-white w-full max-w-[550px] rounded-2xl mx-auto px-2 justify-between  gap-3  py-2 md:p-5 items-center">
         <div
           onClick={() => navigate(`/profile/${user?.username}`)}
           className="w-[50px] h-[50px] bg-gray-200 rounded-full flex justify-center items-center overflow-hidden cursor-pointer "
         >
           {userLoading ? (
-            <span className=" text-black  loading loading-spinner"></span>
+            <div className="fixed top-0 left-0 right-0 z-[98] bottom-0 bg-white flex justify-center items-center">
+              <span className="loading loading-spinner scale-150 "></span>
+            </div>
           ) : (
             <img
               alt={user?.username}

@@ -21,3 +21,7 @@
 ::-webkit-scrollbar-track {
   background: #555;
 }
+.admin {
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url("./assets/bg.webp");
+}

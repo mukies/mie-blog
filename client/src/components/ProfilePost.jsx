@@ -6,24 +6,25 @@ import { MdOutlineChat } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import Popup from "./popup/Popup";
 import { useFeed } from "../context/FeedContext";
-import { useProfilePost } from "../context/ProfilePost";
+// import { useProfilePost } from "../context/ProfilePost";
 import { timeAgo } from "../helper/dateFormater";
+import { toast } from "react-toastify";
 
-export default function Post({ item: items, id }) {
+export default function ProfilePost({ item: items, id, setPosts }) {
   const auth = JSON.parse(localStorage.getItem("_L"));
+  // const [pst, setPst] = useState(data);
   const [item, setItem] = useState(items);
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
   const text = item.text;
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
-  const { setPosts, loading: feedLoding } = useFeed();
-  const { setPosts: setPost } = useProfilePost();
+  const { loading: feedLoding } = useFeed();
+  //   const { setPosts: setPost } = useProfilePost();
   const [like, setLike] = useState(item.likes.includes(auth._id));
 
   // like and unlike
   const handleLike = async () => {
-    console.log("like", like);
     if (item.likes.includes(auth._id)) {
       setItem({ ...item, likes: item.likes.filter((id) => id !== auth._id) });
       // const updated = posts.map((p) => {
@@ -65,10 +66,10 @@ export default function Post({ item: items, id }) {
         });
         setComment("");
       } else {
-        alert(data.message);
+        toast.error(data.message);
       }
     } catch (error) {
-      alert(error.message);
+      toast.error(error.message);
     } finally {
       setLoading(false);
     }
@@ -78,8 +79,8 @@ export default function Post({ item: items, id }) {
       `/api/post/user-delete-post/${item._id}`
     );
     if (data.success) {
+      //   setPosts((p) => p.filter((i, index) => index != id));
       setPosts((p) => p.filter((i, index) => index != id));
-      setPost((p) => p.filter((i, index) => index != id));
     }
   };
 
@@ -138,10 +139,7 @@ export default function Post({ item: items, id }) {
 
         {/* text content  */}
         {text && (
-          <div
-            onClick={() => navigate(`/post/${item._id}`)}
-            className="w-[90%] bg-gray-200 p-3 rounded-md overflow-hidden md:w-[80%] duration-200 transition-all  mx-auto"
-          >
+          <div className="w-[90%] bg-gray-200 p-3 rounded-md overflow-hidden md:w-[80%] duration-200 transition-all  mx-auto">
             <p className="">
               {text.length < 300 ? text : text.substring(0, 300) + "..."}
               {text.length < 300 ? (
@@ -177,7 +175,7 @@ export default function Post({ item: items, id }) {
               : "Be the first to Like."}
           </span>
         </div>
-        {item.comments.length ? (
+        {item?.comments.length ? (
           <div className="flex items-center gap-3">
             <MdOutlineChat size={17} color="#316ff6" />
             <span className="text-sm">{item.comments.length} comments</span>

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { FaTimes } from "react-icons/fa";
 import { useRegister } from "../hooks/useRegister.js";
+import { toast } from "react-toastify";
 
 export default function Register({ setRegister }) {
   // hooks call for register
@@ -14,22 +15,38 @@ export default function Register({ setRegister }) {
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [gender, setGender] = useState(null);
+  const [err, setErr] = useState(false);
 
   // form submit
   const handleSubmit = () => {
-    if (!fullName || !username || !email || !password || !confirm || !gender) {
-      alert("fill all the fields.");
-    } else {
-      if (password == confirm) {
-        register(fullName, username, email, password, gender, setRegister);
-      } else {
-        alert("password didn't match");
+    if (!loading) {
+      if (
+        !fullName ||
+        !username ||
+        !email ||
+        !password ||
+        !confirm ||
+        !gender
+      ) {
+        setErr(true);
+        return toast.error("All fields are required.");
       }
+      if (password !== confirm) {
+        setErr(true);
+        return toast.error("Password didn't match.");
+      }
+
+      if (password.length < 6) {
+        setErr(true);
+        return toast.error("Password must be at least 6 characters.");
+      }
+
+      register(fullName, username, email, password, gender, setRegister);
     }
   };
 
   return (
-    <div className="md:h-[70%] relative lg:h-[80%] h-auto  py-4 w-[19rem] sm:w-[22rem] md:w-[25rem] flex   bg-white rounded-xl flex-col  md:gap-7 gap-5 justify-center items-center  ">
+    <div className="md:h-[70%] relative lg:h-[80%] h-screen  py-4 w-screen sm:w-[22rem] sm:h-[90%] md:w-[25rem] flex  bg-white  sm:bg-[#ffffffcd] sm:rounded-xl flex-col  md:gap-7 gap-5 justify-center items-center  ">
       <div
         onClick={() => setRegister((p) => !p)}
         className="absolute top-[3px] right-[3px] bg-[#316ff6] rounded-lg md:p-1"
@@ -44,19 +61,24 @@ export default function Register({ setRegister }) {
       <p className="text-3xl font-bold">
         Register to <span className="text-[#316ff6]">Mie!</span>
       </p>
+      {err ? (
+        <span className="text-sm text-[red]">Form Validation Error.</span>
+      ) : (
+        ""
+      )}
       <form
         onSubmit={(e) => {
           e.preventDefault();
           handleSubmit();
         }}
-        className="form-control gap-2 md:h-[80%] w-[90%] md:w-[80%]"
+        className="form-control  w-[60%] sm:w-[70%]  gap-2 md:h-[80%] max-w-[400px] md:w-[80%]"
       >
         <label className="input input-bordered flex items-center gap-2">
           <input
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
             type="text"
-            className="grow"
+            className="grow placeholder:text-gray-500"
             placeholder="Full Name"
           />
         </label>
@@ -66,7 +88,7 @@ export default function Register({ setRegister }) {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             type="text"
-            className="grow"
+            className="grow placeholder:text-gray-500"
             placeholder="Username"
           />
         </label>
@@ -75,7 +97,7 @@ export default function Register({ setRegister }) {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             type="email"
-            className="grow"
+            className="grow placeholder:text-gray-500"
             placeholder="Email"
           />
         </label>
@@ -85,7 +107,7 @@ export default function Register({ setRegister }) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             type="password"
-            className="grow"
+            className="grow placeholder:text-gray-500"
             placeholder="Password"
           />
         </label>
@@ -94,7 +116,7 @@ export default function Register({ setRegister }) {
             value={confirm}
             onChange={(e) => setConfirm(e.target.value)}
             type="password"
-            className="grow"
+            className="grow placeholder:text-gray-500"
             placeholder="Confirm Password"
           />
         </label>
@@ -122,10 +144,7 @@ export default function Register({ setRegister }) {
           </label>
         </div>
 
-        <button
-          disabled={loading}
-          className="btn mt-3 btn-md bg-[#316FF6] hover:bg-[#283e6b] text-white font-semibold"
-        >
+        <button className="btn mt-3 btn-md bg-[#316FF6] hover:bg-[#283e6b] text-white font-semibold">
           {loading ? (
             <>
               <span className="loading loading-spinner"></span>

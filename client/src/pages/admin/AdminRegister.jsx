@@ -4,6 +4,7 @@ import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
+import "../../index.css";
 
 export default function AdminRegister() {
   const [show, setShow] = useState(false);
@@ -58,55 +59,50 @@ export default function AdminRegister() {
   };
 
   return (
-    <div className=" h-[100dvh] py-5  bg-base-300 flex md:flex-row gap-14 md:gap-20 px-5 flex-col justify-center items-center">
-      <div className="md:h-[70%] md:w-[35%] h-auto gap-3 flex justify-center  items-center md:items-start flex-col">
-        <h1 className="text-[#316ff6]  font-bold text-5xl">Mie!</h1>
-        <p className="w-[20rem] text-center md:text-left  md:w-[20rem] lg:w-[27rem] text-xl lg:text-3xl font-semibold md:px-0 px-3 ">
-          Connect with friends and the world around you on Mie!
-        </p>
-      </div>
-      <div className="md:h-[60%] xl:h-[23rem]  py-4 w-[19rem] sm:w-[22rem] md:w-[25rem] flex bg-white rounded-xl flex-col  md:gap-10 gap-5 justify-center items-center  ">
+    <div className=" admin h-[100dvh] py-5  bg-base-300 flex md:flex-row gap-14 md:gap-20 px-5 flex-col justify-center items-center">
+      <div className="md:h-[60%] xl:h-[23rem]  py-4 w-[19rem] sm:w-[22rem] md:w-[25rem] flex bg-[#ffffffa8] rounded-xl flex-col  md:gap-10 gap-5 justify-center items-center  ">
         <p className="text-2xl font-bold">
-          Admin Registration to <span className="text-[#316ff6]">Mie!</span>
+          <span className="text-[red]">Admin</span> Registration to{" "}
+          <span className="text-[#316ff6]">Mie!</span>
         </p>
         <form
           onSubmit={(e) => e.preventDefault()}
           className="form-control gap-2 md:h-[70%]  md:w-[60%]"
         >
-          <label className="input input-bordered flex items-center gap-2">
+          <label className="input input-accent flex items-center gap-2">
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
               type="text"
-              className="grow"
+              className="grow placeholder:text-gray-500"
               placeholder="Fullname"
             />
           </label>
-          <label className="input input-bordered flex items-center gap-2">
+          <label className="input input-accent flex items-center gap-2">
             <input
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               type="email"
-              className="grow"
+              className="grow placeholder:text-gray-500"
               placeholder="Email"
             />
           </label>
 
-          <label className="input input-bordered flex items-center gap-2">
+          <label className="input input-accent flex items-center gap-2">
             <input
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               type={showPass ? "text" : "password"}
-              className="grow"
+              className="grow placeholder:text-gray-500"
               placeholder="Password"
             />
           </label>
-          <label className="input input-bordered flex items-center gap-2">
+          <label className="input input-accent flex items-center gap-2">
             <input
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               type={showPass ? "text" : "password"}
-              className="grow"
+              className="grow placeholder:text-gray-500"
               placeholder="Confirm Password"
             />
             <span>
@@ -132,15 +128,6 @@ export default function AdminRegister() {
           >
             Register
           </button>
-          {/* <p>
-            Already have an account ?{" "}
-            <Link
-              to="/mie-admin"
-              className="cursor-pointer text-[#316ff6] font-bold"
-            >
-              Login
-            </Link>{" "}
-          </p> */}
         </form>
       </div>
       <div
