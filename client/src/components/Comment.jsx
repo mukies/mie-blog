@@ -6,10 +6,11 @@ import axios from "axios";
 import useUserDetails from "../hooks/useUserDetails";
 import Popup from "./popup/Popup";
 import { useGetPost } from "../context/SinglePostContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Comment({ item: items, commentId, postId, index }) {
   const { setPosts, posts } = useGetPost();
-
+  const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const { getUserDetails, loading } = useUserDetails();
   const auth = JSON.parse(localStorage.getItem("_L"));
@@ -48,14 +49,17 @@ export default function Comment({ item: items, commentId, postId, index }) {
   };
 
   return (
-    <div className="flex flex-col gap-5">
-      <div className="flex items-center max-w-[50%] justify-between">
+    <div className="flex flex-col border-[1px] p-3 rounded-lg border-gray-300 gap-5">
+      <div className="flex items-center w-full sm:max-w-[50%] justify-between">
         <div className="flex items-center gap-4">
-          <div className="w-8 h-8 flex justify-center items-center overflow-hidden rounded-full">
+          <div
+            onClick={() => navigate(`/profile/${item.commentedBy?.username}`)}
+            className="w-8 h-8 cursor-pointer flex justify-center items-center overflow-hidden rounded-full"
+          >
             {item && !loading ? (
               <img
                 className="h-full w-full object-center object-cover"
-                alt={item.commentedBy?.fullName}
+                alt="user-image"
                 src={item.commentedBy?.profilePic}
               />
             ) : (
@@ -63,7 +67,10 @@ export default function Comment({ item: items, commentId, postId, index }) {
             )}
           </div>
           <div className="flex flex-col gap-0 ">
-            <h1 className="text-xl font-semibold">
+            <h1
+              onClick={() => navigate(`/profile/${item.commentedBy?.username}`)}
+              className="text-xl capitalize cursor-pointer font-semibold"
+            >
               {item.commentedBy?.fullName}
             </h1>
             {/* <span className="text-gray-700">Just now</span> */}
@@ -84,11 +91,11 @@ export default function Comment({ item: items, commentId, postId, index }) {
           />
         )}
       </div>
-      <div className="p-1 flex flex-col gap-3 ml-8 rounded-tr-2xl rounded-br-2xl rounded-bl-2xl rounded-tl-0 text-white bg-gray-800 max-w-[250px]">
+      <div className="p-1 flex flex-col gap-3 ml-8 rounded-tr-2xl rounded-br-2xl rounded-bl-2xl rounded-tl-0  border-2 border-gray-800 max-w-[250px]">
         <div className="px-3">
-          <p className="py-2">{item.content}</p>
+          <p className="py-2 text-xl font-semibold">{item.content}</p>
         </div>
-        <div className="divider h-[1px] bg-white m-0 p-0"></div>
+        <div className="divider h-[1px] bg-black m-0 p-0"></div>
         <div className=" flex items-center gap-4 p-3  rounded-md">
           {cmntLike || item.likes?.includes(auth?._id) ? (
             <FaHeart
