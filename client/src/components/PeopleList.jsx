@@ -40,7 +40,7 @@ export default function PeopleList({
 
   return (
     <div className="fixed top-0 left-0 right-0 bottom-0 bg-[#000000a8] z-[110] flex justify-center items-center">
-      <div className=" h-full w-full md:h-[90%] overflow-auto relative md:w-[80%] lg:w-[50%] flex flex-col gap-1 p-3 rounded-lg bg-white">
+      <div className=" h-full w-full md:h-[90%] overflow-auto relative md:w-[80%] lg:w-[50%] flex flex-col gap-1 p-3 sm:rounded-lg bg-white">
         <span className="text-2xl font-semibold text-center capitalize text-black">
           {title} {data.length > 0 && `(${data.length})`}
         </span>

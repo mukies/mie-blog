@@ -98,6 +98,9 @@ export default function SinglePost() {
               <div className="w-10 h-10 flex justify-center items-center overflow-hidden rounded-full">
                 {posts.postedBy ? (
                   <img
+                    onClick={() =>
+                      navigate(`/profile/${posts?.postedBy?.username}`)
+                    }
                     className="h-full w-full object-center object-cover"
                     alt="user-profile"
                     src={posts.postedBy?.profilePic}
@@ -107,7 +110,12 @@ export default function SinglePost() {
                 )}
               </div>
               <div className="flex flex-col gap-0">
-                <h1 className="text-xl text-black font-semibold">
+                <h1
+                  onClick={() =>
+                    navigate(`/profile/${posts?.postedBy?.username}`)
+                  }
+                  className="text-xl text-black font-semibold"
+                >
                   {posts?.postedBy?.fullName}
                 </h1>
                 <span className="text-gray-700  flex items-center gap-2">
