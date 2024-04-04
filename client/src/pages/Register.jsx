@@ -46,7 +46,7 @@ export default function Register({ setRegister }) {
   };
 
   return (
-    <div className="md:h-[70%] relative lg:h-[80%] h-screen  py-4 w-screen sm:w-[22rem] sm:h-[90%] md:w-[25rem] flex  bg-white  sm:bg-[#ffffffcd] sm:rounded-xl flex-col  md:gap-7 gap-5 justify-center items-center  ">
+    <div className="md:h-[70%] h-[100dvh] relative lg:h-[80%]   py-4 w-screen sm:w-[22rem] sm:h-[90%] md:w-[25rem] flex  bg-white  sm:bg-[#ffffffcd] sm:rounded-xl flex-col  md:gap-7 gap-5 justify-center items-center  ">
       <div
         onClick={() => setRegister((p) => !p)}
         className="absolute top-[3px] right-[3px] bg-[#316ff6] rounded-lg md:p-1"
