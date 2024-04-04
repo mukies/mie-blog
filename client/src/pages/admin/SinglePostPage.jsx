@@ -61,8 +61,8 @@ export default function SinglePostPage() {
   return (
     <div>
       {initialLoading ? (
-        <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center z-[222] bg-[#000000cd]">
-          <span className="loading loading-spinner scale-150 text-white"></span>
+        <div className="fixed top-0 left-0 right-0 z-[97] bottom-0 bg-white flex justify-center items-center">
+          <span className="loading loading-spinner scale-150 "></span>
         </div>
       ) : (
         <div className="max-w-[768px] mx-auto flex flex-col gap-3 py-3">

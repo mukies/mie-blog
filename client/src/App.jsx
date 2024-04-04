@@ -29,7 +29,7 @@ function App() {
   const adminAuth = JSON.parse(localStorage.getItem("_A"));
 
   return (
-    <div className="bg-gray-100">
+    <div className="bg-gray-100 ">
       {auth && !adminAuth ? <Nav /> : !auth && adminAuth ? <AdminNav /> : ""}
       <Routes>
         <Route

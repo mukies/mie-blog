@@ -51,8 +51,11 @@ export default function Conversation({ chat, setChats }) {
               <div className="absolute h-[10px] w-[10px] rounded-full bg-green-600 border-[1px] border-white top-0 right-0"></div>
             )}
           </div>
+
           <div className="flex flex-col">
-            <h1 className="text-xl font-semibold ">{chat.users[0].fullName}</h1>
+            <h1 className="text-xl font-semibold capitalize ">
+              {chat.users[0].fullName}
+            </h1>
           </div>
         </div>
         {/* second */}
@@ -68,7 +71,7 @@ export default function Conversation({ chat, setChats }) {
             )}
           </div>
           <div className="flex flex-col">
-            <h1 className="text-xl font-semibold ">
+            <h1 className="text-xl font-semibold capitalize">
               {chat.users[1]?.fullName}
             </h1>
           </div>

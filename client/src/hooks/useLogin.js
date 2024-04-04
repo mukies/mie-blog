@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 export const useLogin = () => {
   const [loading, setLoading] = useState(false);
@@ -16,10 +17,10 @@ export const useLogin = () => {
         localStorage.setItem("_L", JSON.stringify(data.data));
         window.location.reload();
       } else {
-        alert(data.message);
+        toast.error(data.message);
       }
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     } finally {
       setLoading(false);
     }

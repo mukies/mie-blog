@@ -39,8 +39,8 @@ export default function AdminCommentSection({
   };
 
   return (
-    <div className="flex flex-col gap-5">
-      <div className="flex items-center max-w-[50%] justify-between">
+    <div className="flex flex-col border-[1px] p-3 rounded-lg border-gray-300 gap-5">
+      <div className="flex items-center w-full sm:max-w-[50%] justify-between ">
         <div className="flex items-center gap-4">
           <div className="w-8 h-8 flex justify-center items-center overflow-hidden rounded-full">
             <img
@@ -70,11 +70,11 @@ export default function AdminCommentSection({
           />
         )}
       </div>
-      <div className="p-1 flex flex-col gap-3 ml-8 rounded-tr-2xl rounded-br-2xl rounded-bl-2xl rounded-tl-0 text-white bg-gray-800 max-w-[250px]">
+      <div className="p-1 flex flex-col gap-3 ml-8 rounded-tr-2xl rounded-br-2xl rounded-bl-2xl rounded-tl-0 border-2 border-gray-800 max-w-[250px]">
         <div className="px-3">
-          <p className="py-2">{comment.content}</p>
+          <p className="py-2 text-xl font-semibold">{comment.content}</p>
         </div>
-        <div className="divider h-[1px] bg-white m-0 p-0"></div>
+        <div className="divider h-[1px] bg-black m-0 p-0"></div>
         <div className=" flex items-center gap-4 p-3  rounded-md">
           <div className="flex items-center gap-7">
             {/* <span className="text-lg font-semibold">Like</span> */}

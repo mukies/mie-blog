@@ -20,12 +20,16 @@ exports.addPost = async (req, res) => {
 
         image = response.secure_url;
       }
-      const post = new postModel({
+      let post = new postModel({
         postedBy: req.user._id,
         text,
         image,
       });
       await post.save();
+
+      post = await postModel
+        .findById(post._id)
+        .populate("postedBy", "profilePic username fullName");
 
       res.json({
         success: true,

@@ -17,11 +17,11 @@ export default function PhotosPage() {
   }, []);
 
   return (
-    <div className=" max-w-[768px] mx-auto min-h-[calc(100dvh-65px)] border-[1px] border-[#316ff6]">
+    <div className=" max-w-[768px] mx-auto min-h-[calc(100vh-65px)] border-[1px] border-[#316ff6]">
       <div className="sticky top-[65px] z-[222] bg-[#316dd6] p-4 justify-between items-center flex">
         <button
           onClick={() => navigate(`/profile/${auth?.username}`)}
-          className=" btn btn-sm btn-outline btn-active "
+          className=" btn btn-sm btn-outline btn-active flex justify-center items-center text-white "
         >
           back
         </button>
@@ -33,7 +33,7 @@ export default function PhotosPage() {
         className={
           loading || !posts.length
             ? " h-[calc(100dvh-150px)] flex justify-center items-center"
-            : " p-1 grid grid-cols-3 md:grid-cols-3 box-border gap-1 w-full"
+            : " p-1 grid grid-cols-3  md:grid-cols-3 box-border gap-1 w-full"
         }
       >
         {loading ? (
@@ -45,7 +45,7 @@ export default function PhotosPage() {
               <div key={post._id}>
                 <div
                   onClick={() => setShowPic(post.image)}
-                  className=" h-[200px] sm:h-[250px] md:h-[300px]  min-w-[100px] md:min-w-[185px] bg-gray-500 cursor-pointer rounded-md overflow-hidden"
+                  className=" h-[100px] sm:h-[250px] md:h-[300px] min-w-[100px] sm:min-w-[100px] md:min-w-[185px] bg-gray-500 cursor-pointer rounded-md overflow-hidden"
                 >
                   <img
                     className="h-full w-full object-cover object-center hover:scale-105 duration-300"

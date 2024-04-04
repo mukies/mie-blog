@@ -3,6 +3,7 @@ import { useState } from "react";
 import Register from "./Register";
 import { useLogin } from "../hooks/useLogin";
 import "../index.css";
+import { toast } from "react-toastify";
 
 export default function Login() {
   const [register, setRegister] = useState(false);
@@ -15,7 +16,7 @@ export default function Login() {
 
   const handleLogin = () => {
     if (!username || !password) {
-      alert("enter username and password to login.");
+      toast.error("enter username and password to login.");
     } else {
       login(username, password);
     }
@@ -24,7 +25,9 @@ export default function Login() {
   return (
     <div className=" admin h-[100dvh] py-5  bg-base-300 flex md:flex-row gap-14 md:gap-20 px-5 flex-col justify-center items-center">
       <div className="md:h-[70%] md:w-[35%] h-auto gap-3 flex justify-center  items-center md:items-start flex-col">
-        <h1 className="text-[#316ff6]  font-bold text-5xl ">Mie!</h1>
+        <mark className="text-white bg-[#316ff6] p-1 rounded-lg font-bold text-5xl ">
+          Mie!
+        </mark>
         <p className="w-[20rem] text-center md:text-left text-white md:w-[20rem] lg:w-[27rem] text-xl lg:text-3xl font-semibold md:px-0 px-3 ">
           Connect with friends and the world around you on Mie!
         </p>

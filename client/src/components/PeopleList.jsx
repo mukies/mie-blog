@@ -40,8 +40,8 @@ export default function PeopleList({
 
   return (
     <div className="fixed top-0 left-0 right-0 bottom-0 bg-[#000000a8] z-[110] flex justify-center items-center">
-      <div className=" h-full w-full md:h-[90%] relative md:w-[80%] lg:w-[50%] flex flex-col gap-1 p-3 rounded-lg bg-white">
-        <span className="text-2xl font-semibold text-center capitalize">
+      <div className=" h-full w-full md:h-[90%] overflow-auto relative md:w-[80%] lg:w-[50%] flex flex-col gap-1 p-3 rounded-lg bg-white">
+        <span className="text-2xl font-semibold text-center capitalize text-black">
           {title} {data.length > 0 && `(${data.length})`}
         </span>
         <span className="divider m-0 p-0"></span>
@@ -59,7 +59,7 @@ export default function PeopleList({
                     alt={item.username}
                   />
                 </div>
-                <span className="text-xl font-semibold capitalize">
+                <span className=" text-sm whitespace-nowrap sm:text-xl font-semibold capitalize text-black">
                   {item.fullName}
                 </span>
               </div>
@@ -85,17 +85,17 @@ export default function PeopleList({
                     }}
                     className={
                       unfollowed.includes(item._id)
-                        ? "btn btn-info flex items-center gap-1 btn-xs text-white"
+                        ? "btn btn-info flex items-center  gap-1 btn-xs text-white"
                         : "btn btn-error flex items-center gap-1 btn-xs text-white"
                     }
                   >
-                    {!unfollowed.includes(item._id) && (
-                      <HiMiniXMark size={18} />
-                    )}
                     {unfollowed.includes(item._id) ? (
                       <span>Follow</span>
                     ) : (
-                      <span>Unfollow</span>
+                      <span className="flex items-center gap-1">
+                        {" "}
+                        <HiMiniXMark size={18} /> Unfollow
+                      </span>
                     )}
                   </button>
                 )}

@@ -28,10 +28,6 @@ export default function MessageSection({
     msgRef.current?.scrollIntoView({ behavior: "smooth" });
   }, 10);
 
-  // ---
-
-  // ---
-
   useEffect(() => {
     getUserDetails(auth?.username);
     socket?.on("newMessage", (message) => {
@@ -54,12 +50,14 @@ export default function MessageSection({
     <div
       className={
         loading || userLoading || !messages?.length
-          ? "border-l-2 border-b-2 rounded-b-md border-r-2 border-gray-300 flex justify-center items-center h-[calc(100%-120px)] p-3 overflow-auto "
-          : "border-l-2 border-b-2 rounded-b-md border-r-2 relative border-gray-300 flex flex-col gap-5 h-[calc(100%-120px)] p-3 overflow-auto "
+          ? "border-l-2 border-b-2 rounded-b-md border-r-2 flex-col gap-3 border-gray-300 flex justify-center items-center sm:min-h-[calc(100%-120px)] min-h-[calc(100vh-100px)] p-3 overflow-auto "
+          : "border-l-2 border-b-2 border-r-2 relative  flex flex-col gap-5 h-[calc(100%-120px+62px)] sm:h-[calc(100%-120px)] p-3 overflow-auto "
       }
     >
       {loading || userLoading ? (
-        <span className="loading loading-spinner scale-125"></span>
+        <div className="fixed top-0 left-0 right-0 z-[97] bottom-0 bg-white flex justify-center items-center">
+          <span className="loading loading-spinner scale-150 "></span>
+        </div>
       ) : !loading &&
         !userLoading &&
         messages?.length > 0 &&
@@ -76,12 +74,12 @@ export default function MessageSection({
           </div>
         ))
       ) : (
-        <span className="text-2xl font-semibold">
+        <span className="  text-xl sm:text-2xl font-semibold">
           Say hi to start conversation.
         </span>
       )}
       {/* for typing animation  */}
-      {isTyping && conversationUser[0]?._id == userId && (
+      {isTyping && conversationUser[0]?._id == userId && messages?.length && (
         <div className="sticky bottom-0 left-0 bg-gray-300  max-w-max  flex  gap-3 items-center p-2 rounded-2xl">
           <span className="font-semibold">Typing</span>{" "}
           <span className="loading loading-dots">Typing</span>

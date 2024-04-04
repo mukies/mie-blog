@@ -4,7 +4,7 @@ import { IoSearchOutline } from "react-icons/io5";
 import { BsFillPeopleFill } from "react-icons/bs";
 import "../../../index.css";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import useUserDetails from "../../../hooks/useUserDetails";
 import { useEffect, useState } from "react";
 import SearchPage from "../../popup/SearchPage";
@@ -13,9 +13,10 @@ import { FaHome } from "react-icons/fa";
 export default function Nav() {
   const auth = JSON.parse(localStorage.getItem("_L"));
   const { getUserDetails, loading, user } = useUserDetails();
+  const { pathname } = useLocation();
   // search bar popup
   const [searchbar, setSearchbar] = useState(false);
-
+  const isInTheChatPage = pathname.startsWith("/chats/@");
   const navigate = useNavigate();
   const logout = async () => {
     localStorage.removeItem("_L");
@@ -31,12 +32,24 @@ export default function Nav() {
   }, [auth?.username]);
 
   return (
-    <div className=" nav-bar sticky top-0 bg-base-300 px-10 z-[99]">
+    <div
+      className={
+        isInTheChatPage
+          ? " nav-bar bg-white sm:flex hidden sticky top-0 px-1 sm:px-10 z-[99]"
+          : " nav-bar bg-white sticky top-0 px-1 sm:px-10 z-[99]"
+      }
+    >
       {!loading && user.isFrozen ? (
         <div className="fixed top-0 left-0 bottom-0 right-0 flex justify-center items-center z-[222] bg-black">
           <div className="bg-white flex flex-col p-5 gap-3 rounded-xl ">
-            <p>You are temporarily suspended by the admin. Try again later.</p>
-            <button className="btn btn-secondary btn-sm max-w-max ">
+            <p className="text-xs sm:text-sm md:text-lg font-semibold ">
+              You&apos;r account has been temporarily disabled due to unusual
+              activity.<br></br> Try logging in later.
+            </p>
+            <button
+              onClick={logout}
+              className="btn btn-secondary btn-sm max-w-max "
+            >
               Logout
             </button>
           </div>
@@ -80,7 +93,7 @@ export default function Nav() {
                 onClick={() => {
                   navigate("/");
                 }}
-                className="btn sm:hidden scale-75 md:scale-100 btn-circle"
+                className="btn sm:hidden bg-white border-gray-200 scale-75 md:scale-100 btn-circle"
               >
                 <FaHome size={30} color="#316FF6" />
               </span>
@@ -88,19 +101,19 @@ export default function Nav() {
                 onClick={() => {
                   navigate("/chats");
                 }}
-                className="btn  scale-75 md:scale-100 btn-circle"
+                className="btn bg-white border-gray-200 scale-75 md:scale-100 btn-circle"
               >
                 <IoChatbubbleEllipsesSharp size={30} color="#316FF6" />
               </span>
               <span
                 onClick={() => navigate("/user-suggestion")}
-                className="btn  scale-75 md:scale-100 btn-circle"
+                className="btn bg-white border-gray-200 scale-75 md:scale-100 btn-circle"
               >
                 <BsFillPeopleFill size={30} color="#316FF6" />
               </span>
               <span
                 onClick={() => setSearchbar(true)}
-                className="btn btn-md scale-75 flex justify-center items-center  btn-circle md:hidden"
+                className="btn btn-md bg-white border-gray-200 scale-75 flex justify-center items-center  btn-circle md:hidden"
               >
                 <IoSearchOutline size={30} color="#316FF6" />
               </span>
@@ -121,7 +134,7 @@ export default function Nav() {
               </div>
               <ul
                 tabIndex={0}
-                className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-200 rounded-box w-52"
+                className="mt-3 z-[1] bg-gray-100 p-2 shadow menu menu-sm dropdown-content rounded-box w-52"
               >
                 <li
                   onClick={() => {
@@ -133,18 +146,6 @@ export default function Nav() {
                   }}
                 >
                   <a className="justify-between">Profile</a>
-                </li>
-                <li
-                  onClick={() => {
-                    const elem = document.activeElement;
-                    if (elem) {
-                      elem?.blur();
-                    }
-                    navigate("/user-suggestion");
-                  }}
-                  className="sm:hidden"
-                >
-                  <a>Friends Suggestion</a>
                 </li>
 
                 <li onClick={logout}>

@@ -129,8 +129,8 @@ export default function Profile() {
             image: imgUrl,
           });
           if (data.success) {
-            window.location.reload();
-            // setPosts((p) => [...p, data.post]);
+            // window.location.reload();
+            setPosts((p) => [...p, data.post]);
           } else {
             toast.error(data.message);
           }
@@ -148,11 +148,11 @@ export default function Profile() {
     }
   };
   return (
-    <div className="  bg-base-200">
+    <div className="  bg-white">
       <div>
-        <div className="flex flex-col ">
+        <div className="flex flex-col mb-5 sm:mb-0 ">
           {/* cover and profile  */}
-          <div className="relative h-[400px]  w-full">
+          <div className="relative sm:h-[400px] h-[300px] mb-5 sm:mb-0  w-full">
             <img
               onClick={() => setShowCoverPic(true)}
               className="h-[70%] cursor-pointer object-cover object-center w-full"
@@ -216,7 +216,7 @@ export default function Profile() {
 
               <div className=" flex flex-col items-center">
                 {user && !detailsLoading ? (
-                  <h1 className="text-2xl capitalize  text-nowrap md:text-3xl font-bold">
+                  <h1 className="text-2xl text-black capitalize whitespace-nowrap sm:text-3xl font-bold">
                     {user.fullName}
                   </h1>
                 ) : (
@@ -224,11 +224,11 @@ export default function Profile() {
                     <span className="loading loading-dots"></span>
                   </>
                 )}
-                <span className="text-lg text-gray-700 font-semibold">
+                <span className="text-[15px] text-gray-700 font-semibold">
                   {user?.username}
                 </span>
                 {user && (
-                  <div className="flex items-center gap-3">
+                  <div className="flex whitespace-nowrap items-center gap-3">
                     <span className="md:text-md text-sm text-gray-600 font-semibold">
                       {user.followers?.length} followers
                     </span>
@@ -247,7 +247,7 @@ export default function Profile() {
             <ImageUploadPopup title={"Profile"} setPopup={setUploadPopup} />
           )}
         </div>
-        <div className="divider m-0 p-0"></div>
+        <div className="divider hidden sm:block m-0 p-0"></div>
         {/* feed  */}
         <div className="max-w-[768px] flex flex-col gap-5 mx-auto">
           <div
@@ -261,7 +261,7 @@ export default function Profile() {
             {username == auth?.username && (
               <p
                 onClick={() => setFollowerList((p) => !p)}
-                className=" flex items-center gap-2 py-3 px-4 rounded-lg hover:bg-gray-100 duration-200 cursor-pointer"
+                className=" flex items-center gap-2 py-3 px-4 rounded-lg text-black hover:bg-gray-100 duration-200 cursor-pointer"
               >
                 <FaUserFriends />{" "}
                 <span className=" text-sm text-nowrap md:text-[17px] font-semibold">
@@ -273,7 +273,7 @@ export default function Profile() {
             {username == auth?.username && (
               <p
                 onClick={() => setFollowingList((p) => !p)}
-                className=" flex items-center gap-2 py-3 px-4 rounded-lg hover:bg-gray-100 duration-200 cursor-pointer"
+                className=" flex items-center text-black gap-2 py-3 px-4 rounded-lg hover:bg-gray-100 duration-200 cursor-pointer"
               >
                 <FaUserFriends />{" "}
                 <span className=" text-sm text-nowrap md:text-[17px] font-semibold">
@@ -303,7 +303,7 @@ export default function Profile() {
                 onClick={followUnfollow}
                 className={
                   user.followers?.includes(auth?._id)
-                    ? " flex items-center text-black  gap-2 btn btn-active btn-md"
+                    ? " flex items-center text-black  gap-2 btn bg-gray-300 border-gray-400 btn-md"
                     : " flex items-center text-white gap-2 btn btn-success btn-md"
                 }
               >
@@ -321,7 +321,7 @@ export default function Profile() {
             {username !== auth?.username && (
               <button
                 onClick={() => navigate(`/chats/${username}`)}
-                className="flex btn btn-primary items-center hover:text-white gap-2 py-3 px-4 "
+                className="flex btn btn-primary items-center text-white  gap-2 py-3 px-4 "
               >
                 <FaFacebookMessenger />
                 <span className=" text-sm capitalize text-nowrap md:text-[17px] font-semibold">
@@ -374,7 +374,7 @@ export default function Profile() {
                   <input
                     type="text"
                     placeholder="What's on your mind..."
-                    className="input w-full mx-auto bg-gray-200 input-md  rounded-3xl"
+                    className="input w-full mx-auto bg-gray-200 input-md text-black rounded-3xl"
                   />
                 </div>
                 <div
@@ -397,20 +397,20 @@ export default function Profile() {
                     : "fixed top-0 left-0 right-0 bottom-0 hidden z-[100] justify-center items-center bg-[#000000b4]"
                 }
               >
-                <div className="bg-white relative md:rounded-lg justify-center items-center  p-3 flex h-auto w-full md:h-auto md:w-[60%]  lg:w-[50%] flex-col ">
+                <div className="bg-white relative md:rounded-lg justify-center items-center  p-3 flex h-[100dvh] w-full md:h-auto md:w-[60%]  lg:w-[50%] flex-col ">
                   <div
                     onClick={() => setShow((p) => !p)}
-                    className="absolute btn btn-circle top-[2px] cursor-pointer right-[2px]"
+                    className="absolute btn bg-gray-200 border-none btn-circle top-[2px] cursor-pointer right-[2px]"
                   >
                     <span>
                       <FaTimes size={28} color="#316ff6" />
                     </span>
                   </div>
                   <div className="flex flex-col w-full gap-2">
-                    <span className="text-center text-3xl font-semibold">
+                    <span className="text-center mb-5 sm:mb-0 text-black text-3xl font-semibold">
                       Create a post
                     </span>
-                    <span className="divider p-0 m-0"></span>
+                    <span className="divider hidden sm:block p-0 m-0"></span>
                     {/* user name and image  */}
                     <div className=" flex mb-2 items-center gap-3">
                       <img
@@ -418,8 +418,8 @@ export default function Profile() {
                         src={user?.profilePic}
                         alt={user?.username}
                       />
-                      <span className="text-lg font-semibold ">
-                        Mukesh Bhattarai
+                      <span className="text-lg font-semibold text-black capitalize ">
+                        {user?.fullName}
                       </span>
                     </div>
 
@@ -431,14 +431,14 @@ export default function Profile() {
                           value={text}
                           type="text"
                           placeholder="What's on your mind..."
-                          className="textarea textarea-bordered  w-full h-full  bg-gray-200    rounded-3xl"
+                          className="textarea textarea-bordered  w-full h-full  bg-gray-200 text-black  rounded-3xl"
                         />
                       </div>
                     </div>
                     <div className=" flex justify-around mx-auto px-5">
                       <label
                         htmlFor="file"
-                        className="flex items-center gap-2 cursor-pointer hover:bg-gray-300 rounded-lg duration-200 px-4 py-3"
+                        className="flex items-center gap-2 cursor-pointer text-black hover:bg-gray-300 rounded-lg duration-200 px-4 py-3"
                       >
                         <MdPermMedia size={30} color="#316ff6" />
                         <span className="text-lg font-semibold">Photo</span>
@@ -486,7 +486,7 @@ export default function Profile() {
                         </>
                       ) : (
                         <>
-                          <span className="text-lg font-semibold">Post</span>
+                          <span className="text-lg  font-semibold">Post</span>
                         </>
                       )}
                     </button>
@@ -497,14 +497,16 @@ export default function Profile() {
           )}
           {/* create post  */}
           <div className="  flex justify-between items-center px-3">
-            <span className="text-xl font-semibold">Posts</span>
+            <span className="text-lg sm:text-xl text-black font-semibold">
+              Posts
+            </span>
             {username == auth?.username && (
               <p
                 onClick={() => navigate("/photos")}
-                className=" flex items-center gap-2 py-3 px-4 rounded-lg hover:bg-gray-300 duration-200 cursor-pointer"
+                className=" flex items-center gap-2 py-3 px-4 rounded-lg text-black hover:bg-gray-300 duration-200 cursor-pointer"
               >
                 <MdPermMedia size={20} />{" "}
-                <span className=" text-xl text-nowrap md:text-[17px] font-semibold">
+                <span className=" text-lg  text-nowrap sm:text-[17px] font-semibold">
                   Your Photos
                 </span>
               </p>

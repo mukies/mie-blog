@@ -59,7 +59,7 @@ export default function ChatListPage() {
   };
 
   return (
-    <div className="max-w-[768px]  h-[calc(100dvh-69px)] bg-white mx-auto">
+    <div className="max-w-[768px]  h-[calc(100vh-69px)] bg-white mx-auto">
       <div className="bg-[#316ff6] rounded-lg h-[60px] relative flex justify-center items-center text-white ">
         <span className="text-2xl font-semibold">Conversations</span>
         <button
@@ -80,17 +80,17 @@ export default function ChatListPage() {
                   key={item._id}
                   className="flex flex-col justify-center items-center cursor-pointer"
                 >
-                  <div className=" relative  bg-[#316ff6] rounded-full  flex justify-center items-center">
+                  <div className=" relative  bg-[#316ff6] rounded-full h-[60px] w-[60px] sm:w-[80px] sm:h-[80px]  flex justify-center items-center">
                     <img
                       src={item.profilePic}
-                      className=" h-[60px] w-[60px] sm:w-[80px] sm:h-[80px] rounded-full object-cover object-center"
+                      className=" h-full w-full rounded-full object-cover object-center"
                       alt="user"
                     />
                     {onlineUsers.includes(item._id) && (
-                      <div className="absolute right-0 bottom-0 h-[15px] w-[15px] sm:bottom-[5px] rounded-full bg-[green]"></div>
+                      <div className="absolute z-10 right-0 bottom-0 h-[15px] w-[15px] sm:bottom-[5px] rounded-full bg-[green]"></div>
                     )}
                   </div>
-                  <span className="text-[17px] capitalize text-nowrap">
+                  <span className="text-[17px] text-black capitalize text-nowrap">
                     {item.fullName?.length > 5
                       ? `${item.fullName.substring(0, 5)}...`
                       : item.fullName}
@@ -130,7 +130,7 @@ export default function ChatListPage() {
                 seenMessage(i);
               }}
               key={id}
-              className="flex gap-5 cursor-pointer hover:bg-gray-300 border-[1px] rounded-sm border-gray-300 p-2  items-center"
+              className="flex gap-5 cursor-pointer text-black hover:bg-gray-300 border-[1px] rounded-sm border-gray-300 p-2  items-center"
             >
               <div className=" relative flex justify-center items-center rounded-full border-[2px] border-white">
                 <img

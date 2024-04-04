@@ -60,7 +60,7 @@ export default function MessagePage() {
 
   return (
     <div className="max-w-[768px] h-[calc(100dvh-66px)]   mx-auto">
-      <div className="bg-gray-300 relative rounded-t-lg h-[60px] px-2 flex  items-center text-black">
+      <div className="bg-gray-300 sticky top-0 z-10 sm:relative rounded-t-lg h-[60px] px-2 flex  items-center text-black">
         <div className="absolute top-[25%] left-[10px]">
           <button
             onClick={() => navigate("/chats")}
@@ -69,15 +69,17 @@ export default function MessagePage() {
             back
           </button>
         </div>
-        <div className=" flex  items-center gap-3 px-5 justify-center mx-auto w-[50%]">
-          <span className="text-xl font-semibold">To:</span>
-          <p className="text-2xl text-nowrap font-semibold">
+        <div className=" flex  items-center gap-3 px-5 justify-center whitespace-nowrap mx-auto w-[50%]">
+          <span className="sm:text-xl text-lg font-semibold">To:</span>
+          <div className="text-2xl  font-semibold">
             {loading ? (
-              <span className="loading loading-bars"></span>
+              <div className="fixed top-0 left-0 right-0 z-[97] bottom-0 bg-white flex justify-center items-center">
+                <span className="loading loading-spinner scale-150 "></span>
+              </div>
             ) : (
               <span
                 onClick={() => navigate(`/profile/${id}`)}
-                className=" cursor-pointer capitalize"
+                className=" cursor-pointer text-lg sm:text-2xl whitespace-nowrap  capitalize"
               >
                 {user?.fullName}
               </span>
@@ -85,7 +87,7 @@ export default function MessagePage() {
             {!loading && onlineUsers.includes(user?._id) && (
               <span className="text-lg text-[green] capitalize">(online)</span>
             )}
-          </p>
+          </div>
         </div>
       </div>
       {/* message box */}
@@ -101,8 +103,8 @@ export default function MessagePage() {
         />
       )}
 
-      <div className=" px-5 rounded-b-lg h-[60px] gap-1 flex justify-center items-center">
-        <span className=" w-[40px]  h-auto ">
+      <div className="sticky bottom-0 px-1 sm:px-5 rounded-b-lg h-[60px] justify-between sm:gap-1 flex bg-white  sm:justify-center items-center">
+        <span className="  sm:w-[40px] w-auto  h-auto ">
           <label htmlFor="file" className="cursor-pointer">
             <IoMdImages size={35} />
             <input
@@ -114,7 +116,7 @@ export default function MessagePage() {
             />
           </label>
         </span>
-        <label className="input  input-success w-full  flex items-center gap-2">
+        <label className="input input-success bg-gray-100 w-[65%] sm:w-full  flex items-center gap-1 sm:gap-2">
           <input
             value={text}
             onKeyDown={(e) => {

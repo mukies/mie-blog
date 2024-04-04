@@ -69,7 +69,7 @@ export default function Comment({ item: items, commentId, postId, index }) {
           <div className="flex flex-col gap-0 ">
             <h1
               onClick={() => navigate(`/profile/${item.commentedBy?.username}`)}
-              className="text-xl capitalize cursor-pointer font-semibold"
+              className="text-xl capitalize text-black cursor-pointer font-semibold"
             >
               {item.commentedBy?.fullName}
             </h1>
@@ -77,7 +77,10 @@ export default function Comment({ item: items, commentId, postId, index }) {
           </div>
         </div>
         {item.commentedBy?._id == auth?._id && (
-          <div onClick={() => setShow(true)} className="btn btn-circle">
+          <div
+            onClick={() => setShow(true)}
+            className="btn bg-gray-300 border-none btn-circle"
+          >
             <span>
               <FaTrashAlt color="red" />
             </span>
@@ -93,10 +96,12 @@ export default function Comment({ item: items, commentId, postId, index }) {
       </div>
       <div className="p-1 flex flex-col gap-3 ml-8 rounded-tr-2xl rounded-br-2xl rounded-bl-2xl rounded-tl-0  border-2 border-gray-800 max-w-[250px]">
         <div className="px-3">
-          <p className="py-2 text-xl font-semibold">{item.content}</p>
+          <p className="py-2 text-xl text-black font-semibold">
+            {item.content}
+          </p>
         </div>
         <div className="divider h-[1px] bg-black m-0 p-0"></div>
-        <div className=" flex items-center gap-4 p-3  rounded-md">
+        <div className=" text-black flex items-center gap-4 p-3  rounded-md">
           {cmntLike || item.likes?.includes(auth?._id) ? (
             <FaHeart
               className="text-[red] cursor-pointer"

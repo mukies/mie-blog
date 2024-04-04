@@ -39,16 +39,16 @@ export default function UserSuggestionPage() {
   };
 
   return (
-    <div className="max-w-[768px] h-[calc(100dvh-69px)] bg-white py-5  mx-auto flex flex-col">
-      <span className="text-2xl font-semibold mx-auto capitalize">
+    <div className="max-w-[768px] min-h-[calc(100dvh-69px)] bg-white py-5 px-2 sm:px-0  mx-auto flex flex-col">
+      <span className="text-2xl font-semibold text-black mx-auto capitalize">
         People you may know.
       </span>
       <span className=" divider divider-success "></span>
       <div
         className={
           loading || !suggestion.length
-            ? "flex justify-center items-center h-[50dvh] "
-            : "grid grid-cols-1 sm:grid-cols-2 px-5 md:grid-cols-3  gap-5 mx-auto md:mx-0  "
+            ? "flex justify-center items-center h-[calc(100vh-65px)] "
+            : "grid grid-cols-1 sm:grid-cols-2 px-1 sm:px-5 md:grid-cols-3 gap-5 mx-auto md:mx-0  "
         }
       >
         {/* first person  */}
@@ -65,7 +65,7 @@ export default function UserSuggestionPage() {
                 {/* top  */}
                 <div
                   onClick={() => navigate(`/profile/${user?.username}`)}
-                  className="  h-[250px] sm:h-[200px] cursor-pointer w-full  overflow-hidden"
+                  className="  h-[250px] sm:h-[200px] cursor-pointer w-full overflow-hidden"
                 >
                   <img
                     className="h-full md:hover:scale-105 md:duration-200 w-full object-cover object-center"
@@ -78,7 +78,7 @@ export default function UserSuggestionPage() {
                   <div className="flex justify-center">
                     <span
                       onClick={() => navigate(`/profile/${user?.username}`)}
-                      className="capitalize cursor-pointer text-lg font-semibold text-center"
+                      className="capitalize cursor-pointer text-black text-lg font-semibold text-center"
                     >
                       {user.fullName}
                     </span>
@@ -119,8 +119,8 @@ export default function UserSuggestionPage() {
         ) : loading ? (
           <span className="loading loading-spinner scale-150"></span>
         ) : (
-          <span className="text-2xl font-semibold">
-            No friend suggestion available right now.
+          <span className="text-lg sm:text-2xl font-semibold">
+            No friend suggestion <br></br> available right now.
           </span>
         )}
       </div>

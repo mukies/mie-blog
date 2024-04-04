@@ -26,12 +26,14 @@ export default function CreatePost() {
   }, [auth?.username]);
 
   const handlePost = async () => {
-    if (!text && !imgUrl) {
-      toast.error("Nothing to post");
-    } else {
-      await addPost(text, imgUrl);
-      setShow(false);
-      setText("");
+    if (!loading) {
+      if (!text && !imgUrl) {
+        toast.error("Nothing to post");
+      } else {
+        await addPost(text, imgUrl);
+        setShow(false);
+        setText("");
+      }
     }
   };
 
@@ -43,7 +45,7 @@ export default function CreatePost() {
           className="w-[50px] h-[50px] bg-gray-200 rounded-full flex justify-center items-center overflow-hidden cursor-pointer "
         >
           {userLoading ? (
-            <div className="fixed top-0 left-0 right-0 z-[98] bottom-0 bg-white flex justify-center items-center">
+            <div className="fixed top-0 left-0 right-0 z-[97] bottom-0 bg-white flex justify-center items-center">
               <span className="loading loading-spinner scale-150 "></span>
             </div>
           ) : (
@@ -92,14 +94,14 @@ export default function CreatePost() {
         <div className="bg-white relative md:rounded-lg justify-center items-center  p-3 flex h-auto w-full md:h-auto md:w-[60%]  lg:w-[50%] flex-col ">
           <div
             onClick={() => setShow((p) => !p)}
-            className="absolute btn btn-circle top-[2px] cursor-pointer right-[2px]"
+            className="absolute btn btn-circle top-[2px] cursor-pointer bg-gray-200 border-none right-[2px]"
           >
             <span>
               <FaTimes size={28} color="#316ff6" />
             </span>
           </div>
           <div className="flex flex-col w-full gap-2">
-            <span className="text-center text-3xl font-semibold">
+            <span className="text-center text-3xl text-black font-semibold">
               Create a post
             </span>
             <span className="divider p-0 m-0"></span>
@@ -110,7 +112,9 @@ export default function CreatePost() {
                 src={user?.profilePic}
                 alt={user?.username}
               />
-              <span className="text-lg font-semibold ">Mukesh Bhattarai</span>
+              <span className="text-lg text-black font-semibold capitalize">
+                {user?.fullName}
+              </span>
             </div>
 
             <div className="h-[30%]">
@@ -121,14 +125,14 @@ export default function CreatePost() {
                   value={text}
                   type="text"
                   placeholder="What's on your mind..."
-                  className="textarea textarea-bordered  w-full h-full  bg-gray-200    rounded-3xl"
+                  className="textarea textarea-bordered text-black w-full h-full  bg-gray-200    rounded-3xl"
                 />
               </div>
             </div>
             <div className=" flex justify-around mx-auto px-5">
               <label
                 htmlFor="file"
-                className="flex items-center gap-2 cursor-pointer hover:bg-gray-300 rounded-lg duration-200 px-4 py-3"
+                className="flex items-center gap-2 cursor-pointer text-black hover:bg-gray-300 rounded-lg duration-200 px-4 py-3"
               >
                 <MdPermMedia size={30} color="#316ff6" />
                 <span className="text-lg font-semibold">Photo</span>
@@ -147,7 +151,7 @@ export default function CreatePost() {
                 <div className="h-[150px] relative">
                   <div
                     onClick={() => setImgUrl(null)}
-                    className="absolute top-0 right-0 btn btn-sm btn-circle"
+                    className="absolute top-0 right-0 btn btn-sm btn-circle bg-gray-200 border-none"
                   >
                     <span>
                       <FaTimes size={20} color="#316ff6" />
@@ -166,7 +170,6 @@ export default function CreatePost() {
               ""
             )}
             <button
-              disabled={loading}
               onClick={handlePost}
               className="flex items-center  btn btn-success justify-center text-white "
             >

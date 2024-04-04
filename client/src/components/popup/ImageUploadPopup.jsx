@@ -11,37 +11,45 @@ export default function ImageUploadPopup({ setPopup, title }) {
   const { previewImg, imgUrl, setImgUrl } = usePreviewImg();
 
   const imageUpload = async () => {
-    setLoading(true);
-    try {
-      if (title == "Profile") {
-        const { data } = await axios.put("/api/user/change-profile-and-cover", {
-          profilePic: imgUrl,
-        });
-        if (data.success) {
-          window.location.reload();
+    if (imgUrl && !loading) {
+      setLoading(true);
+      try {
+        if (title == "Profile") {
+          const { data } = await axios.put(
+            "/api/user/change-profile-and-cover",
+            {
+              profilePic: imgUrl,
+            }
+          );
+          if (data.success) {
+            window.location.reload();
+          } else {
+            toast.error(data.message);
+          }
         } else {
-          toast.error(data.message);
+          const { data } = await axios.put(
+            "/api/user/change-profile-and-cover",
+            {
+              coverPic: imgUrl,
+            }
+          );
+          if (data.success) {
+            window.location.reload();
+          } else {
+            toast.error(data.message);
+          }
         }
-      } else {
-        const { data } = await axios.put("/api/user/change-profile-and-cover", {
-          coverPic: imgUrl,
-        });
-        if (data.success) {
-          window.location.reload();
-        } else {
-          toast.error(data.message);
-        }
+      } catch (error) {
+        toast.error(error);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      toast.error(error);
-    } finally {
-      setLoading(false);
     }
   };
 
   return (
     <div className="fixed z-[100] top-0 left-0 right-0 bottom-0 flex  justify-center items-center bg-[#000000af] ">
-      <div className="  h-full w-full md:h-auto  flex flex-col gap-5 p-5 md:w-[80%] lg:w-[50%] md:rounded-lg bg-white relative ">
+      <div className="  h-full w-full md:h-auto flex flex-col gap-1 sm:gap-5 p-5 md:w-[80%] lg:w-[50%] md:rounded-lg bg-white justify-center items-center relative ">
         <div
           onClick={() => setPopup((p) => !p)}
           className="absolute top-0 right-0 btn btn-md btn-circle"
@@ -50,7 +58,7 @@ export default function ImageUploadPopup({ setPopup, title }) {
             <FaTimes />
           </span>
         </div>
-        <span className="text-2xl font-semibold text-center">
+        <span className="text-xl sm:text-2xl font-semibold capitalize text-black text-center">
           Upload new {title} Picture.
         </span>
         <div className="flex h-full justify-center flex-col gap-5 items-center">
@@ -59,7 +67,7 @@ export default function ImageUploadPopup({ setPopup, title }) {
               onChange={previewImg}
               type="file"
               accept="image/*"
-              className="file-input file-input-bordered file-input-primary w-full max-w-xs"
+              className="file-input text-white file-input-bordered file-input-primary w-full max-w-xs"
             />
           </div>
           {imgUrl && (
@@ -82,8 +90,7 @@ export default function ImageUploadPopup({ setPopup, title }) {
 
           <button
             onClick={imageUpload}
-            disabled={!imgUrl || loading}
-            className="btn w-[60%] btn-success font-bold"
+            className="btn w-[60%] btn-success text-white font-bold"
           >
             {loading ? (
               <span className="loading loading-spinner"></span>

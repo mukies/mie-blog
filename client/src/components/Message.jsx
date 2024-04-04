@@ -4,11 +4,12 @@
 import { useState } from "react";
 import ImageViewerPopup from "./popup/ImageViewerPopup";
 import { timeAgo } from "../helper/dateFormater";
+import { useNavigate } from "react-router-dom";
 
 /* eslint-disable react/prop-types */
 export default function Message({ msg, otherUser, userLoading: loading }) {
   const auth = JSON.parse(localStorage.getItem("_L"));
-
+  const navigate = useNavigate();
   const [viewImg, setViewImg] = useState(false);
 
   return (
@@ -24,6 +25,7 @@ export default function Message({ msg, otherUser, userLoading: loading }) {
               <span className="loading loading-spinner"></span>
             ) : (
               <img
+                onClick={() => navigate(`/profile/${otherUser?.username}`)}
                 className=" h-full w-full object-center object-cover"
                 src={otherUser.profilePic}
                 alt="profile-pic"
@@ -35,7 +37,7 @@ export default function Message({ msg, otherUser, userLoading: loading }) {
           </span>
         </div>
       )}
-      <div className="flex  flex-col gap-3 max-w-[40%] ">
+      <div className="flex  flex-col gap-3 max-w-[50%] sm:max-w-[40%] ">
         {msg.text && (
           <div
             className={
@@ -50,7 +52,7 @@ export default function Message({ msg, otherUser, userLoading: loading }) {
         {msg.image && (
           <div
             onClick={() => setViewImg(true)}
-            className="h-[60dvh] cursor-pointer rounded-md overflow-hidden w-full "
+            className="h-[40dvh] sm:h-[60dvh] cursor-pointer rounded-md overflow-hidden w-full "
           >
             <img
               className=" h-full w-full object-center object-cover"

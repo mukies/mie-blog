@@ -81,10 +81,10 @@ export default function EditProfile({ action, data }) {
   };
 
   return (
-    <div className="bg-white h-full w-full md:h-[90%] md:w-[50%] lg:w-[30%]  md:rounded-lg flex justify-center p-5   relative">
+    <div className="bg-white h-[80vh] overflow-auto w-full md:h-[90%] md:w-[50%] lg:w-[30%]  md:rounded-lg flex justify-center p-5  relative">
       <div
         onClick={() => action((p) => !p)}
-        className="absolute top-0 right-0 btn btn-md btn-circle"
+        className="absolute bg-gray-200 border-none top-[10px] sm:top-0 right-0 btn btn-md btn-circle"
       >
         <span>
           <FaTimes color="red" />
@@ -92,7 +92,7 @@ export default function EditProfile({ action, data }) {
       </div>
 
       <div className="flex flex-col gap-3">
-        <span className="capitalize text-center text-xl font-semibold">
+        <span className="capitalize text-center text-black text-xl font-semibold">
           Change your details
         </span>
         <form
@@ -102,23 +102,23 @@ export default function EditProfile({ action, data }) {
           <label
             className={
               fullName?.length < 4 && error
-                ? "input input-error  flex items-center gap-2"
-                : "input input-bordered  flex items-center gap-2"
+                ? "input input-error bg-gray-100 flex items-center gap-2"
+                : "input input-bordered bg-gray-100  flex items-center gap-2"
             }
           >
             <input
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               type="text"
-              className="grow"
+              className="grow placeholder:text-gray-400 text-gray-500"
               placeholder="Full Name"
             />
           </label>
-          <label className="input input-disabled  flex items-center gap-2">
+          <label className="input input-disabled flex items-center gap-2">
             <input
               defaultValue={data.username}
               type="text"
-              className="grow"
+              className="grow "
               placeholder="Username"
             />
           </label>
@@ -142,14 +142,14 @@ export default function EditProfile({ action, data }) {
             )}
           </button>
         </form>
-        <span className="capitalize text-center text-xl font-semibold">
+        <span className="capitalize text-black text-center text-xl font-semibold">
           Change your Password
         </span>
         <form
           onSubmit={(e) => e.preventDefault()}
           className="flex flex-col gap-2"
         >
-          <label className="input input-bordered flex items-center gap-2">
+          <label className="input input-bordered bg-gray-100 flex items-center gap-2">
             <input
               value={old}
               onChange={(e) => setOld(e.target.value)}
@@ -158,7 +158,7 @@ export default function EditProfile({ action, data }) {
               placeholder="Old Password"
             />
           </label>
-          <label className="input input-bordered flex items-center gap-2">
+          <label className="input input-bordered bg-gray-100 flex items-center gap-2">
             <input
               value={newPass}
               onChange={(e) => setNewPass(e.target.value)}
@@ -167,7 +167,7 @@ export default function EditProfile({ action, data }) {
               placeholder="New Password"
             />
           </label>
-          <label className="input input-bordered flex items-center gap-2">
+          <label className="input input-bordered bg-gray-100 flex items-center gap-2">
             <input
               value={confirmPass}
               onChange={(e) => setConfirmPass(e.target.value)}

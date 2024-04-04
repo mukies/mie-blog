@@ -28,7 +28,7 @@ export default function ManageChats() {
   };
 
   return (
-    <div className="max-w-[768px] mx-auto p-3 flex flex-col gap-5 ">
+    <div className="max-w-[768px] mx-auto p-3 min-h-[calc(100dvh-69px)] flex flex-col gap-5 ">
       {!loading ? (
         <span className="text-xl font-semibold">
           All Conversations ({chats.length})

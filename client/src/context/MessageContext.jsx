@@ -8,7 +8,6 @@ const MessageContext = createContext();
 export const MessageProvider = ({ children }) => {
   const [messages, setMessages] = useState([]);
   const [conversationUser, setConversationUser] = useState([]);
-  const [msg, setMsg] = useState(false);
 
   const [loading, setLoading] = useState(true);
   const getMessage = async (username) => {
@@ -34,8 +33,7 @@ export const MessageProvider = ({ children }) => {
         setMessages,
         getMessage,
         loading,
-        msg,
-        setMsg,
+
         conversationUser,
       }}
     >

@@ -80,8 +80,8 @@ export default function UserDetails() {
     <div className="max-w-[768px] mx-auto">
       {userDetailLoading || postLoading ? (
         <>
-          <div className="fixed top-0 left-0 right-0 z-[222] bottom-0 bg-[#000000cf] flex justify-center items-center">
-            <span className="loading loading-spinner scale-150 text-white"></span>
+          <div className="fixed top-0 left-0 right-0 z-[97] bottom-0 bg-white flex justify-center items-center">
+            <span className="loading loading-spinner scale-150 "></span>
           </div>
         </>
       ) : !userDetailLoading && !postLoading && user ? (

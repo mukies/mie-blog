@@ -28,7 +28,7 @@ export default function ManageUsers() {
   };
 
   return (
-    <div className="max-w-[768px] mx-auto p-3 flex flex-col gap-5 ">
+    <div className="max-w-[768px]  mx-auto p-3 flex flex-col gap-5 ">
       {users && (
         <span className="text-xl font-semibold">
           All users ({users.length})
@@ -38,7 +38,7 @@ export default function ManageUsers() {
         className={
           loading || !users.length
             ? "flex h-[calc(100dvh-150px)] justify-center items-center"
-            : "flex flex-col gap-3 min-h-[calc(100dvh-150px)]"
+            : "flex flex-col gap-3 min-h-[calc(100dvh-69px)]"
         }
       >
         {loading ? (

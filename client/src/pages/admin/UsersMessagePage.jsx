@@ -4,6 +4,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useSocket } from "../../context/SocketContext";
 import ImageViewerPopup from "../../components/popup/ImageViewerPopup";
+import { timeAgo } from "../../helper/dateFormater";
 
 export default function UserMessagePage() {
   const [loading, setLoading] = useState(true);
@@ -41,8 +42,8 @@ export default function UserMessagePage() {
   return (
     <div className="max-w-[768px] h-[calc(100dvh-66px)]   mx-auto">
       {loading ? (
-        <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-[#000000da] z-[222]">
-          <span className="loading loading-spinner scale-125 text-white"></span>
+        <div className="fixed top-0 left-0 right-0 z-[97] bottom-0 bg-white flex justify-center items-center">
+          <span className="loading loading-spinner scale-150 "></span>
         </div>
       ) : (
         <div>
@@ -78,6 +79,7 @@ export default function UserMessagePage() {
                     {users[1]?.fullName}
                   </span>
                 </div>
+                <span>&bull;</span>
 
                 {/* person 2  */}
                 <div className="flex gap-2 items-center">
@@ -137,8 +139,8 @@ export default function UserMessagePage() {
                       />
                     )}
                   </div>
-                  <span className="text-sm text-center text-nowrap">
-                    just now
+                  <span className="text-[10px] text-center text-nowrap">
+                    {timeAgo(new Date(msg.createdAt))}
                   </span>
                 </div>
 

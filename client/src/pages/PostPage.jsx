@@ -16,9 +16,8 @@ export default function PostPage() {
   return (
     <div>
       {loading ? (
-        <div className="flex h-[calc(100dvh-65px)] items-center justify-center">
-          {" "}
-          <span className="loading scale-150 loading-spinner"></span>{" "}
+        <div className="fixed top-0 left-0 right-0 z-[97] bottom-0 bg-white flex justify-center items-center">
+          <span className="loading loading-spinner scale-150 "></span>
         </div>
       ) : (
         <SinglePost />

@@ -85,11 +85,11 @@ export default function ProfilePost({ item: items, id, setPosts }) {
   };
 
   return (
-    <div className=" flex flex-col gap-3 border-2 rounded-xl bg-white w-full px-4 py-5 ">
+    <div className=" flex flex-col gap-3 border-2 rounded-xl bg-white w-full p-1 sm:px-4 py-5 ">
       {/* content  */}
       <div className=" flex flex-col gap-5 ">
         {/* title  */}
-        <div className="flex  px-3 items-center justify-between">
+        <div className="flex px-1 sm:px-3 items-center justify-between">
           <div className=" flex items-center gap-4">
             <div
               onClick={() => navigate(`/profile/${item.postedBy.username}`)}
@@ -108,7 +108,7 @@ export default function ProfilePost({ item: items, id, setPosts }) {
             <div className="flex flex-col gap-0">
               <h1
                 onClick={() => navigate(`/profile/${item.postedBy.username}`)}
-                className="text-xl cursor-pointer capitalize font-semibold"
+                className="text-lg sm:text-xl text-black cursor-pointer capitalize font-semibold"
               >
                 {item.postedBy?.fullName}
               </h1>
@@ -121,7 +121,7 @@ export default function ProfilePost({ item: items, id, setPosts }) {
           {item.postedBy?._id == auth?._id && (
             <div
               onClick={() => setShowPopup((p) => !p)}
-              className=" btn btn-circle "
+              className=" bg-white border-gray-300 btn btn-circle "
             >
               <span>
                 <FaTrash color="red" />
@@ -139,8 +139,11 @@ export default function ProfilePost({ item: items, id, setPosts }) {
 
         {/* text content  */}
         {text && (
-          <div className="w-[90%] bg-gray-200 p-3 rounded-md overflow-hidden md:w-[80%] duration-200 transition-all  mx-auto">
-            <p className="">
+          <div
+            onClick={() => navigate(`/post/${item._id}`)}
+            className="w-[90%] bg-gray-200 p-2 sm:p-3 rounded-md overflow-hidden md:w-[80%] duration-200 transition-all  mx-auto"
+          >
+            <p className=" text-black">
               {text.length < 300 ? text : text.substring(0, 300) + "..."}
               {text.length < 300 ? (
                 ""
@@ -156,7 +159,7 @@ export default function ProfilePost({ item: items, id, setPosts }) {
         {item.image && (
           <div
             onClick={() => navigate(`/post/${item._id}`)}
-            className="w-[90%] cursor-pointer rounded-2xl overflow-hidden md:w-[80%] duration-200 transition-all h-[70vh] mx-auto "
+            className=" w-[99%] sm:w-[90%] cursor-pointer sm:rounded-2xl overflow-hidden md:w-[80%] duration-200 transition-all h-[60vh] sm:h-[70vh] mx-auto "
           >
             <img
               className=" w-full h-full object-cover object-center"
@@ -169,48 +172,50 @@ export default function ProfilePost({ item: items, id, setPosts }) {
       <div className="flex items-center gap-5 w-[90%] mx-auto">
         <div className="flex items-center gap-3">
           <FaHeart size={15} color="#316ff6" />
-          <span className="text-sm">
+          <span className="text-sm text-black">
             {item?.likes?.length
               ? `${item?.likes?.length} Likes`
               : "Be the first to Like."}
           </span>
         </div>
-        {item?.comments.length ? (
+        {item.comments.length ? (
           <div className="flex items-center gap-3">
             <MdOutlineChat size={17} color="#316ff6" />
-            <span className="text-sm">{item.comments.length} comments</span>
+            <span className="text-sm text-black">
+              {item.comments.length} comments
+            </span>
           </div>
         ) : (
           ""
         )}
       </div>
-      <div className="divider m-0 p-0 w-[90%] mx-auto"></div>
+      <div className="divider  m-0 p-0 w-[90%] mx-auto"></div>
 
       {/* like comment */}
       <div className="flex w-[99%] md:w-[90%] justify-around px-5 mx-auto  items-center ">
-        <div className="flex w-full items-center gap-[50px]">
+        <div className="flex w-full items-center  justify-between">
           {/* <p>50 people likes this.</p> */}
           <div
             onClick={handleLike}
-            className="flex cursor-pointer btn  items-center gap-3"
+            className="flex cursor-pointer btn border-gray-300 bg-white items-center gap-1 sm:gap-3"
           >
             {like ? (
               <FaHeart size={30} color="#316ff6" />
             ) : (
               <FaRegHeart size={30} color="#316ff6" />
             )}
-            <span className="font-semibold ">Like</span>
+            <span className="font-semibold text-black ">Like</span>
           </div>
           <div
             onClick={() => navigate(`/post/${item._id}`)}
-            className="flex cursor-pointer btn items-center gap-3"
+            className="flex cursor-pointer btn items-center border-gray-300 bg-white gap-1 px-2 sm:gap-3"
           >
             <MdOutlineChat
               className="cursor-pointer"
               size={30}
               color="#316ff6"
             />
-            <span className="font-semibold ">Comment</span>
+            <span className="font-semibold text-black ">Comment</span>
           </div>
         </div>
         <div className=" hidden sm:flex items-center gap-1">
