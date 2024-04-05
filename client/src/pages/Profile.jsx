@@ -528,9 +528,11 @@ export default function Profile() {
                 />
               ))
             ) : (
-              <div className="h-[40dvh] flex justify-center items-center ">
+              <div className="h-[40vh] flex justify-center items-center ">
                 <p className="text-xl font-semibold">
-                  You have not create a post.
+                  {username == auth?.username
+                    ? "You don't have any post."
+                    : "No post to show."}
                 </p>
               </div>
             )}

@@ -10,15 +10,19 @@ export default function Login() {
   // form states for login
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [err, setErr] = useState(false);
 
   // login hooks
   const { login, loading } = useLogin();
 
   const handleLogin = () => {
-    if (!username || !password) {
-      toast.error("enter username and password to login.");
-    } else {
-      login(username, password);
+    if (!loading) {
+      if (!username || !password) {
+        setErr(true);
+        toast.error("enter username and password to login.");
+      } else {
+        login(username, password);
+      }
     }
   };
 
@@ -42,7 +46,7 @@ export default function Login() {
           }}
           className="form-control gap-2 md:h-[70%]  md:w-[60%]"
         >
-          <label className="input input-bordered flex items-center gap-2">
+          <label className="input input-bordered bg-gray-100 flex items-center gap-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 16 16"
@@ -61,7 +65,7 @@ export default function Login() {
             />
           </label>
 
-          <label className="input input-bordered flex items-center gap-2">
+          <label className="input input-bordered bg-gray-100 flex items-center gap-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 16 16"
@@ -82,11 +86,14 @@ export default function Login() {
               placeholder="Password"
             />
           </label>
-
+          {err && (
+            <span className="text-sm text-center text-[red]">
+              Username and Password is Required.
+            </span>
+          )}
           <button
-            disabled={loading}
             onClick={handleLogin}
-            className="btn bg-[#316FF6] hover:bg-[#283e6b] text-white font-semibold"
+            className="btn bg-[#316FF6] border-none hover:bg-[#283e6b] text-white font-semibold"
           >
             {loading ? (
               <>

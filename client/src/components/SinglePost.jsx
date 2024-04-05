@@ -101,7 +101,7 @@ export default function SinglePost() {
                     onClick={() =>
                       navigate(`/profile/${posts?.postedBy?.username}`)
                     }
-                    className="h-full w-full object-center object-cover"
+                    className="h-full w-full object-center cursor-pointer object-cover"
                     alt="user-profile"
                     src={posts.postedBy?.profilePic}
                   />
@@ -114,7 +114,7 @@ export default function SinglePost() {
                   onClick={() =>
                     navigate(`/profile/${posts?.postedBy?.username}`)
                   }
-                  className="text-xl text-black font-semibold"
+                  className="text-xl text-black cursor-pointer font-semibold"
                 >
                   {posts?.postedBy?.fullName}
                 </h1>

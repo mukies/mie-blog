@@ -51,10 +51,12 @@ export default function MessagePage() {
   }
   // send message
   const handleMessage = async () => {
-    if (text || imgUrl) {
-      await sendMessage(id, text, imgUrl);
-      setText("");
-      setImgUrl(null);
+    if (!sendLoading) {
+      if (text || imgUrl) {
+        await sendMessage(id, text, imgUrl);
+        setText("");
+        setImgUrl(null);
+      }
     }
   };
 
@@ -71,7 +73,7 @@ export default function MessagePage() {
         </div>
         <div className=" flex  items-center gap-3 px-5 justify-center whitespace-nowrap mx-auto w-[50%]">
           <span className="sm:text-xl text-lg font-semibold">To:</span>
-          <div className="text-2xl  font-semibold">
+          <div className="text-2xl flex justify-center items-center font-semibold">
             {loading ? (
               <div className="fixed top-0 left-0 right-0 z-[97] bottom-0 bg-white flex justify-center items-center">
                 <span className="loading loading-spinner scale-150 "></span>
@@ -152,7 +154,7 @@ export default function MessagePage() {
           <div className="relative gap-2  w-full h-[80%] md:w-[40%] flex flex-col rounded-lg">
             <div
               onClick={() => setImgUrl(null)}
-              className="absolute top-0 right-0 btn btn-md btn-circle text-[red]"
+              className="absolute top-0 right-0 btn btn-md btn-circle bg-gray-200 border-none text-[red]"
             >
               <span>
                 <FaTimes />
@@ -168,7 +170,6 @@ export default function MessagePage() {
             <div className=" flex px-4 justify-center items-center h-[50px] ">
               <button
                 onClick={handleMessage}
-                disabled={sendLoading}
                 className="btn btn-success text-white w-full "
               >
                 {sendLoading ? (

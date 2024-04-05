@@ -36,7 +36,11 @@ export const AdminAuthentication = () => {
   }, []);
   return (
     <div
-      className={loading ? "flex justify-center items-center h-[80dvh]" : ""}
+      className={
+        loading
+          ? "flex justify-center bg-white items-center min-h-[100dvh]"
+          : "flex justify-center bg-white items-center min-h-[100dvh] "
+      }
     >
       {loading ? (
         <span className="loading loading-spinner scale-125"></span>

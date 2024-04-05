@@ -13,53 +13,63 @@ export default function AdminRegister() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleRegister = async () => {
-    if (!name || !email || !password || !confirmPassword) {
-      toast.error("Please fill all the fields");
-      setShow((p) => !p);
-      return;
-    }
+    if (!loading) {
+      try {
+        setLoading(true);
+        if (!name || !email || !password || !confirmPassword) {
+          toast.error("Please fill all the fields");
+          setShow((p) => !p);
+          return;
+        }
 
-    if (password !== confirmPassword) {
-      toast.error("Passwords do not match");
-      setShow((p) => !p);
-      return;
-    }
+        if (password !== confirmPassword) {
+          toast.error("Passwords do not match");
+          setShow((p) => !p);
+          return;
+        }
 
-    if (password.length < 6) {
-      toast.error("Password must be at least 6 characters long");
-      setShow((p) => !p);
-      return;
-    }
+        if (password.length < 6) {
+          toast.error("Password must be at least 6 characters long");
+          setShow((p) => !p);
+          return;
+        }
 
-    const { data } = await axios.post("/api/admin/register", {
-      name,
-      email,
-      password,
-    });
+        const { data } = await axios.post("/api/admin/register", {
+          name,
+          email,
+          password,
+        });
 
-    if (data.success) {
-      toast.success(data.message);
-      const { data: loginData } = await axios.post("/api/admin/login", {
-        email,
-        password,
-      });
+        if (data.success) {
+          toast.success(data.message);
+          const { data: loginData } = await axios.post("/api/admin/login", {
+            email,
+            password,
+          });
 
-      if (loginData.success) {
-        localStorage.setItem("_A", JSON.stringify(loginData.user));
-        window.location.href = "/";
-      } else {
-        toast.error(loginData.message);
+          if (loginData.success) {
+            localStorage.setItem("_A", JSON.stringify(loginData.user));
+            window.location.href = "/";
+          } else {
+            toast.error(loginData.message);
+          }
+        } else {
+          toast.error(data.message);
+          setShow((p) => !p);
+        }
+      } catch (error) {
+        toast.error(error);
+      } finally {
+        setLoading(false);
       }
-    } else {
-      toast.error(data.message);
-      setShow((p) => !p);
     }
   };
 
   return (
-    <div className=" admin h-[100dvh] py-5  bg-base-300 flex md:flex-row gap-14 md:gap-20 px-5 flex-col justify-center items-center">
+    <div className=" admin h-[100dvh] w-full bg-base-300 flex md:flex-row gap-14 md:gap-20 p-5 flex-col justify-center items-center">
       <div className="md:h-[60%] xl:h-[23rem]  py-4 w-[19rem] sm:w-[22rem] md:w-[25rem] flex bg-[#ffffffa8] rounded-xl flex-col  md:gap-10 gap-5 justify-center items-center  ">
         <p className="text-2xl font-bold">
           <span className="text-[red]">Admin</span> Registration to{" "}
@@ -69,7 +79,7 @@ export default function AdminRegister() {
           onSubmit={(e) => e.preventDefault()}
           className="form-control gap-2 md:h-[70%]  md:w-[60%]"
         >
-          <label className="input input-accent flex items-center gap-2">
+          <label className="input input-accent bg-gray-100 flex items-center gap-2">
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -78,7 +88,7 @@ export default function AdminRegister() {
               placeholder="Fullname"
             />
           </label>
-          <label className="input input-accent flex items-center gap-2">
+          <label className="input input-accent bg-gray-100 flex items-center gap-2">
             <input
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -88,7 +98,7 @@ export default function AdminRegister() {
             />
           </label>
 
-          <label className="input input-accent flex items-center gap-2">
+          <label className="input input-accent bg-gray-100 flex items-center gap-2">
             <input
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -97,7 +107,7 @@ export default function AdminRegister() {
               placeholder="Password"
             />
           </label>
-          <label className="input input-accent flex items-center gap-2">
+          <label className="input input-accent bg-gray-100 flex items-center gap-2">
             <input
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
@@ -124,7 +134,7 @@ export default function AdminRegister() {
 
           <button
             onClick={() => setShow((p) => !p)}
-            className="btn bg-[#316FF6] hover:bg-[#283e6b] text-white font-semibold"
+            className="btn bg-[#316FF6] border-none hover:bg-[#283e6b] text-white font-semibold"
           >
             Register
           </button>

@@ -73,7 +73,7 @@ export default function Register({ setRegister }) {
         }}
         className="form-control  w-[60%] sm:w-[70%]  gap-2 md:h-[80%] max-w-[400px] md:w-[80%]"
       >
-        <label className="input input-bordered flex items-center gap-2">
+        <label className="input input-info bg-gray-100 flex items-center gap-2">
           <input
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
@@ -83,7 +83,7 @@ export default function Register({ setRegister }) {
           />
         </label>
 
-        <label className="input input-bordered flex items-center gap-2">
+        <label className="input input-info bg-gray-100 flex items-center gap-2">
           <input
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -92,7 +92,7 @@ export default function Register({ setRegister }) {
             placeholder="Username"
           />
         </label>
-        <label className="input input-bordered flex items-center gap-2">
+        <label className="input input-info bg-gray-100 flex items-center gap-2">
           <input
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -102,7 +102,7 @@ export default function Register({ setRegister }) {
           />
         </label>
 
-        <label className="input input-bordered flex items-center gap-2">
+        <label className="input input-info bg-gray-100 flex items-center gap-2">
           <input
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -111,7 +111,7 @@ export default function Register({ setRegister }) {
             placeholder="Password"
           />
         </label>
-        <label className="input input-bordered flex items-center gap-2">
+        <label className="input input-info bg-gray-100 flex items-center gap-2">
           <input
             value={confirm}
             onChange={(e) => setConfirm(e.target.value)}
@@ -144,7 +144,7 @@ export default function Register({ setRegister }) {
           </label>
         </div>
 
-        <button className="btn mt-3 btn-md bg-[#316FF6] hover:bg-[#283e6b] text-white font-semibold">
+        <button className="btn mt-3 btn-md bg-[#316FF6] hover:bg-[#283e6b] border-none text-white font-semibold">
           {loading ? (
             <>
               <span className="loading loading-spinner"></span>

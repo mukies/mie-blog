@@ -63,8 +63,8 @@ export default function SearchPage({ action }) {
           <span className="text-3xl block text-center font-semibold mb-5 ">
             Search People
           </span>
-          <div className="flex items-center justify-center">
-            <label className="input  bg-gray-100 border-2 border-[#316ff6a9] mx-auto flex w-[70%]  items-center gap-2">
+          <div className="flex items-center justify-normal sm:justify-center">
+            <label className="input bg-gray-100 border-2 border-[#316ff6a9] sm:mx-auto  sm:w-[70%] w-[86%] flex justify-between  items-center gap-0 sm:gap-2">
               <input
                 value={key}
                 onChange={(e) => setKey(e.target.value)}
@@ -80,13 +80,13 @@ export default function SearchPage({ action }) {
               />
               <IoSearchOutline
                 onClick={handleSearch}
-                className="hidden sm:flex min-w-max rounded-full bg-[#316ff6] text-white hover:bg-[#3d5ea7] duration-200 font-bold cursor-pointer  p-2"
+                className="flex min-w-max rounded-full bg-[#316ff6] text-white hover:bg-[#3d5ea7] duration-200 font-bold cursor-pointer  p-2"
                 size={40}
               />
             </label>
             <IoSearchOutline
               onClick={handleSearch}
-              className=" sm:hidden  min-w-max rounded-full bg-[#316ff6] text-white hover:bg-[#3d5ea7] duration-200 font-bold cursor-pointer  p-2"
+              className=" hidden  min-w-max rounded-full bg-[#316ff6] text-white hover:bg-[#3d5ea7] duration-200 font-bold cursor-pointer  p-2"
               size={40}
             />
           </div>

@@ -50,15 +50,16 @@ export default function AdminHome() {
   return (
     <div className="w-full">
       <div className="max-w-[768px] mx-auto py-5 flex flex-col gap-6 ">
-        <div className="hero  bg-base-200 rounded-xl p-3">
+        <div className="hero  bg-gray-100 rounded-xl p-3">
           <div className="hero-content flex-col lg:flex-row-reverse">
             <img
               src="https://daisyui.com/images/stock/photo-1635805737707-575885ab0820.jpg"
               className="max-w-sm rounded-lg shadow-2xl"
             />
-            <div className="flex items-center md:items-start flex-col gap-3">
-              <h1 className="text-5xl font-bold">
-                Welcome to <span className="text-[#316ff6]">Mie!</span>
+            <div className="flex items-center justify-center md:items-start flex-col gap-3">
+              <h1 className="text-2xl sm:text-5xl  font-bold">
+                Welcome to{" "}
+                <span className="text-[#316ff6] text-center">Mie!</span>
               </h1>
               <h1 className="text-3xl font-bold text-red-600 selection:bg-red-500 selection:text-white">
                 Admin Panel
@@ -74,18 +75,18 @@ export default function AdminHome() {
           </div>
         </div>
         {/* form  */}
-        <div className="hero min-h-[80dvh] bg-base-200 rounded-xl">
+        <div className="hero sm:min-h-[100vh] min-h-[60vh] bg-white rounded-xl">
           <div className="hero-content flex-col ">
             <div className="text-center lg:text-left">
               <h1 className="text-2xl sm:text-5xl font-bold my-0 sm:my-3">
                 Change Password!
               </h1>
             </div>
-            <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-              <form className="card-body">
+            <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-gray-100">
+              <form className="card-body ">
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text">
+                    <span className="label-text text-black">
                       New Password<span className="text-[red]">*</span>
                     </span>
                   </label>
@@ -94,13 +95,13 @@ export default function AdminHome() {
                     onChange={(e) => setPassword(e.target.value)}
                     type="text"
                     placeholder="password"
-                    className="input input-bordered"
+                    className="input input-info bg-gray-100"
                     required
                   />
                 </div>
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text">
+                    <span className="label-text text-black">
                       Confirm Password<span className="text-[red]">*</span>
                     </span>
                   </label>
@@ -109,14 +110,14 @@ export default function AdminHome() {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     type="text"
                     placeholder="re-password"
-                    className="input input-bordered"
+                    className="input input-info bg-gray-100"
                     required
                   />
                 </div>
                 <div className="form-control mt-6">
                   <button
                     onClick={changePassword}
-                    className="btn btn-primary capitalize"
+                    className="btn btn-primary text-white capitalize"
                   >
                     {passwordLoading ? (
                       <span className="loading loading-spinner"></span>

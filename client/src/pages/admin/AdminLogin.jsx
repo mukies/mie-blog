@@ -7,28 +7,38 @@ import "../../index.css";
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
-    if (!email || !password) {
-      toast.error("Please fill all the fields");
-      return;
-    }
+    if (!loading) {
+      try {
+        setLoading(true);
+        if (!email || !password) {
+          toast.error("Please fill all the fields");
+          return;
+        }
 
-    const { data } = await axios.post("/api/admin/login", {
-      email,
-      password,
-    });
+        const { data } = await axios.post("/api/admin/login", {
+          email,
+          password,
+        });
 
-    if (data.success) {
-      toast.success(data.message);
-      localStorage.setItem("_A", JSON.stringify(data.user));
-      window.location.href = "/";
-    } else {
-      toast.error(data.message);
+        if (data.success) {
+          toast.success(data.message);
+          localStorage.setItem("_A", JSON.stringify(data.user));
+          window.location.href = "/";
+        } else {
+          toast.error(data.message);
+        }
+      } catch (error) {
+        toast.error(error.message);
+      } finally {
+        setLoading(false);
+      }
     }
   };
   return (
-    <div className=" admin h-[100dvh] bg-cover bg-center py-5  flex md:flex-row gap-14 md:gap-20 px-5 flex-col justify-center items-center">
+    <div className=" admin h-[100dvh] w-full bg-cover bg-center py-5  flex md:flex-row gap-14 md:gap-20 px-5 flex-col justify-center items-center">
       <div className="md:h-[60%] xl:h-[20rem]  py-4 w-[19rem] sm:w-[22rem] md:w-[25rem] flex bg-[#ffffffa8] rounded-xl flex-col  md:gap-10 gap-5 justify-center items-center  ">
         <p className="text-2xl font-bold">
           <span className="text-[red]">Admin</span> Login to{" "}
@@ -38,7 +48,7 @@ export default function AdminLogin() {
           onSubmit={(e) => e.preventDefault()}
           className="form-control gap-2 md:h-[70%]  md:w-[60%]"
         >
-          <label className="input  input-accent flex items-center gap-2">
+          <label className="input  input-accent bg-gray-100 flex items-center gap-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 16 16"
@@ -57,7 +67,7 @@ export default function AdminLogin() {
             />
           </label>
 
-          <label className="input input-accent flex items-center gap-2">
+          <label className="input input-accent bg-gray-100 flex items-center gap-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 16 16"
@@ -81,25 +91,14 @@ export default function AdminLogin() {
 
           <button
             onClick={handleLogin}
-            className="btn bg-[#316FF6] hover:bg-[#283e6b] text-white font-semibold"
+            className="btn bg-[#316FF6] border-none hover:bg-[#283e6b] text-white font-semibold"
           >
-            Login
+            {loading ? (
+              <span className="loading loading-spinner"></span>
+            ) : (
+              "Login"
+            )}
           </button>
-          {/* {loading ? (
-            <span className="loading loading-dots "></span>
-          ) : !loading && !admin ? (
-            <p>
-              Didn't have an account ?{" "}
-              <Link
-                to="/mie-reg"
-                className="cursor-pointer text-[#316ff6] font-bold"
-              >
-                Sign Up
-              </Link>{" "}
-            </p>
-          ) : (
-            ""
-          )} */}
         </form>
       </div>
     </div>

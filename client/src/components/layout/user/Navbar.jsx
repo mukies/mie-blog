@@ -93,7 +93,7 @@ export default function Nav() {
                 onClick={() => {
                   navigate("/");
                 }}
-                className="btn sm:hidden bg-white border-gray-200 scale-75 md:scale-100 btn-circle"
+                className="btn sm:hidden bg-white border-gray-200 scale-90 md:scale-100 btn-circle"
               >
                 <FaHome size={30} color="#316FF6" />
               </span>
@@ -101,19 +101,19 @@ export default function Nav() {
                 onClick={() => {
                   navigate("/chats");
                 }}
-                className="btn bg-white border-gray-200 scale-75 md:scale-100 btn-circle"
+                className="btn bg-white border-gray-200 scale-90 md:scale-100 btn-circle"
               >
                 <IoChatbubbleEllipsesSharp size={30} color="#316FF6" />
               </span>
               <span
                 onClick={() => navigate("/user-suggestion")}
-                className="btn bg-white border-gray-200 scale-75 md:scale-100 btn-circle"
+                className="btn bg-white border-gray-200 scale-90 md:scale-100 btn-circle"
               >
                 <BsFillPeopleFill size={30} color="#316FF6" />
               </span>
               <span
                 onClick={() => setSearchbar(true)}
-                className="btn btn-md bg-white border-gray-200 scale-75 flex justify-center items-center  btn-circle md:hidden"
+                className="btn btn-md bg-white border-gray-200 scale-90 flex justify-center items-center  btn-circle md:hidden"
               >
                 <IoSearchOutline size={30} color="#316FF6" />
               </span>
