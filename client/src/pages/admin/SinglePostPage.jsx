@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import AdminCommentSection from "../../components/adminComponent/AdminCommentSection";
 import { useNavigate, useParams } from "react-router-dom";
 import FriendListPopup from "../../components/adminComponent/FriendListPopup";
+import { timeAgo } from "../../helper/dateFormater";
 
 export default function SinglePostPage() {
   const { postID } = useParams();
@@ -75,7 +76,7 @@ export default function SinglePostPage() {
             </button>
           </div>
 
-          <div className=" flex flex-col gap-3 border-2 rounded-xl bg-white w-full px-4 py-5 ">
+          <div className=" flex flex-col gap-3 border-2 rounded-xl bg-white w-full px-1 sm:px-4 py-5 ">
             <div className=" flex flex-col gap-5">
               {/* title  */}
               <div className="flex items-center gap-4  justify-between ">
@@ -91,7 +92,9 @@ export default function SinglePostPage() {
                     <h1 className="text-xl font-semibold">
                       {post.postedBy?.fullName}
                     </h1>
-                    <span className="text-gray-700">Just now</span>
+                    <span className="text-gray-700">
+                      {timeAgo(new Date(post?.createdAt))}
+                    </span>
                   </div>
                 </div>
 
@@ -111,7 +114,7 @@ export default function SinglePostPage() {
 
               {/* text content  */}
               {post?.text && (
-                <div className="w-[90%] rounded-2xl p-3 overflow-hidden md:w-[80%] duration-200 transition-all  mx-auto">
+                <div className="w-[90%] rounded-2xl p-2 sm:p-3 overflow-hidden md:w-[80%] duration-200 transition-all  mx-auto">
                   <p className="">{post?.text}</p>
                 </div>
               )}
@@ -119,7 +122,7 @@ export default function SinglePostPage() {
               {post?.image && (
                 <div
                   onClick={() => setViewImg(true)}
-                  className="w-[99%] cursor-pointer rounded-2xl overflow-hidden md:w-[80%] duration-200 transition-all h-[70vh] mx-auto "
+                  className="w-[99%] cursor-pointer sm:rounded-2xl overflow-hidden md:w-[80%] duration-200 transition-all h-[70vh] mx-auto "
                 >
                   <img
                     className=" w-full h-full object-cover object-center"

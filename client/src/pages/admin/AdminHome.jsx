@@ -64,7 +64,7 @@ export default function AdminHome() {
               <h1 className="text-3xl font-bold text-red-600 selection:bg-red-500 selection:text-white">
                 Admin Panel
               </h1>
-              <p className="py-6 ">
+              <p className="sm:py-6 py-1 ">
                 This is the Admin Panel of{" "}
                 <span className="text-[#316ff6] font-semibold text-xl">
                   Mie!
@@ -138,54 +138,63 @@ export default function AdminHome() {
           </div>
         </div>
         {/* form  */}
-        <div className="bg-base-200 flex sm:flex-row flex-col gap-3 justify-around items-center rounded-xl p-3">
-          <div className="h-[350px] w-[300px] sm:w-auto   flex-1  flex flex-col items-center gap-3">
+        <div className="bg-gray-100 flex sm:flex-row flex-col gap-3 justify-around items-center rounded-xl p-3">
+          <div className="h-[350px] w-[300px] sm:w-auto  border border-gray-400 p-2 sm:p-0 rounded-md flex-1  flex flex-col items-center gap-3">
             <div
               onClick={() => navigate("/admin/users")}
-              className=" h-[80%] overflow-hidden rounded-md cursor-pointer"
+              className=" h-[80%] flex items-center overflow-hidden rounded-md cursor-pointer"
             >
               <img
                 src="/user.png"
                 alt="users-icon"
-                className="object-cover object-center hover:scale-[100%] scale-[90%] duration-150 h-full w-auto"
+                className="object-cover object-center sm:hover:scale-105 duration-150 h-[85%] w-full"
               />
             </div>
             <div>
-              <Link to={"/admin/users"} className="btn btn-md btn-outline">
+              <Link
+                to={"/admin/users"}
+                className="btn btn-md btn-outline text-black"
+              >
                 Manage Users
               </Link>
             </div>
           </div>
-          <div className="h-[350px] w-[300px] sm:w-full  flex-1 flex flex-col items-center gap-3">
+          <div className="h-[350px] w-[300px] sm:w-full border border-gray-400 p-2 sm:p-0 rounded-md  flex-1 flex flex-col items-center gap-3">
             <div
               onClick={() => navigate("/admin/chats")}
-              className=" h-[80%] overflow-hidden rounded-md cursor-pointer "
+              className=" h-[80%] overflow-hidden flex items-center rounded-md cursor-pointer "
             >
               <img
                 src="/chat.png"
                 alt="chats-icon"
-                className="object-cover mix-blend-multiply object-center hover:scale-[130%] scale-[120%] duration-150 h-full w-auto"
+                className="object-cover mix-blend-multiply object-center sm:hover:scale-[130%] scale-[120%] duration-150 h-full w-auto"
               />
             </div>
             <div>
-              <Link to={"/admin/chats"} className="btn btn-md btn-outline">
+              <Link
+                to={"/admin/chats"}
+                className="btn btn-md btn-outline text-black"
+              >
                 Manage Chats
               </Link>
             </div>
           </div>
-          <div className="h-[350px] w-[300px] sm:w-auto  flex-1 flex flex-col items-center gap-3">
+          <div className="h-[350px] w-[300px] sm:w-auto border p-2 sm:p-0 border-gray-400 rounded-md flex-1 flex flex-col items-center gap-3">
             <div
               onClick={() => navigate("/admin/news-feed")}
-              className=" h-[80%] overflow-hidden rounded-md cursor-pointer "
+              className=" h-[80%] flex items-center overflow-hidden rounded-md cursor-pointer "
             >
               <img
                 src="/News-Feed.jpg"
                 alt="news-feed-icon"
-                className="object-cover mix-blend-multiply object-left hover:scale-[105%] scale-90  duration-150 h-full w-auto"
+                className="object-cover mix-blend-multiply object-left sm:hover:scale-[105%]   duration-150 h-[80%] w-full"
               />
             </div>
             <div>
-              <Link to={"/admin/news-feed"} className="btn btn-md btn-outline">
+              <Link
+                to={"/admin/news-feed"}
+                className="btn btn-md btn-outline text-black"
+              >
                 News Feed
               </Link>
             </div>

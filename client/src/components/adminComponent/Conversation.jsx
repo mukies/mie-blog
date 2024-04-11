@@ -53,7 +53,7 @@ export default function Conversation({ chat, setChats }) {
           </div>
 
           <div className="flex flex-col">
-            <h1 className="text-xl font-semibold capitalize ">
+            <h1 className="sm:text-xl text-lg font-semibold capitalize ">
               {chat.users[0].fullName}
             </h1>
           </div>
@@ -71,7 +71,7 @@ export default function Conversation({ chat, setChats }) {
             )}
           </div>
           <div className="flex flex-col">
-            <h1 className="text-xl font-semibold capitalize">
+            <h1 className="sm:text-xl text-lg font-semibold capitalize">
               {chat.users[1]?.fullName}
             </h1>
           </div>
@@ -79,12 +79,12 @@ export default function Conversation({ chat, setChats }) {
       </div>
       <div className="flex gap-2 items-center">
         <div onClick={() => navigate(`/admin/chats/${chat._id}`)}>
-          <button className="btn btn-outline btn-sm text-xs sm:text-sm">
+          <button className="btn btn-outline btn-sm text-xs text-black sm:text-sm">
             View messages
           </button>
         </div>
         <div role="button" tabIndex={0} className="dropdown dropdown-end">
-          <button className="btn btn-sm  hover:bg-red-900 bg-red-600 text-white">
+          <button className="btn btn-sm border-none  hover:bg-red-900 bg-red-600 text-white">
             <FaTrashCan />
           </button>
           {/* dropdown  */}

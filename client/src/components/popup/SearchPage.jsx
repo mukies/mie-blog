@@ -26,6 +26,7 @@ export default function SearchPage({ action }) {
   }, []);
 
   const handleSearch = async () => {
+    inputRef.current?.blur();
     if (key.length == 0) {
       setUsers(null);
     }

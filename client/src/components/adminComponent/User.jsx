@@ -56,7 +56,7 @@ export default function User({ user, setUsers }) {
         <div className="flex flex-col">
           <h1
             onClick={() => navigate(`/admin/users/${user.username}`)}
-            className="text-xl font-semibold cursor-pointer "
+            className="sm:text-xl text-sm whitespace-nowrap font-semibold cursor-pointer "
           >
             {user.fullName}
           </h1>
@@ -69,13 +69,13 @@ export default function User({ user, setUsers }) {
         <div>
           <button
             onClick={() => navigate(`/admin/users/${user.username}`)}
-            className="btn btn-outline btn-sm"
+            className="btn btn-outline btn-sm text-black"
           >
             details
           </button>
         </div>
         <div role="button" tabIndex={0} className="dropdown dropdown-end">
-          <button className="btn btn-sm  hover:bg-red-900 bg-red-600 text-white">
+          <button className="btn btn-sm border-none hover:bg-red-900 bg-red-600 text-white">
             <FaTrashCan />
           </button>
           {/* dropdown  */}

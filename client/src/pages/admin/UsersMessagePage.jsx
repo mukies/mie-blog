@@ -40,7 +40,7 @@ export default function UserMessagePage() {
   };
 
   return (
-    <div className="max-w-[768px] h-[calc(100dvh-66px)]   mx-auto">
+    <div className="max-w-[768px] h-[calc(100dvh)] sm:h-[calc(100dvh-66px)]   mx-auto">
       {loading ? (
         <div className="fixed top-0 left-0 right-0 z-[97] bottom-0 bg-white flex justify-center items-center">
           <span className="loading loading-spinner scale-150 "></span>
@@ -57,8 +57,8 @@ export default function UserMessagePage() {
                 back
               </button>
             </div>
-            <div className=" flex  items-center gap-3 px-5 justify-center mx-auto w-[50%]">
-              <div className=" flex flex-col sm:flex-row gap-1 sm:gap-2">
+            <div className=" flex  items-center gap-3 px-2 sm:px-5 sm:justify-center justify-end  sm:mx-auto w-full sm:w-[50%]">
+              <div className=" flex whitespace-nowrap max-w-max justify-end flex-row gap-1 sm:gap-2">
                 <div className="flex gap-2 items-center">
                   <div className="h-[25px] w-[25px] relative  ">
                     <img
@@ -110,7 +110,7 @@ export default function UserMessagePage() {
             className={
               loading
                 ? "border-l-2 border-b-2 rounded-b-md border-r-2 border-gray-300 flex justify-center items-center h-[calc(100%-120px)] p-3 overflow-auto "
-                : "border-l-2 border-b-2 rounded-b-md border-r-2 relative border-gray-300 flex flex-col gap-5 h-[calc(100dvh-60px-65px)] p-3 overflow-y-scroll "
+                : "border-l-2 border-b-2 rounded-b-md border-r-2 relative border-gray-300 flex flex-col gap-5 h-[calc(100dvh-60px)] p-3 overflow-y-scroll "
             }
           >
             {messages.map((msg) => (
@@ -144,7 +144,7 @@ export default function UserMessagePage() {
                   </span>
                 </div>
 
-                <div className="flex flex-col gap-3 max-w-[40%] ">
+                <div className="flex flex-col gap-0 sm:gap-3 sm:max-w-[40%] max-w-[50%] ">
                   {msg.text && (
                     <div
                       className={
@@ -161,8 +161,8 @@ export default function UserMessagePage() {
                   {msg.image && (
                     <>
                       <div
-                        onClick={() => setViewImg(true)}
-                        className="h-[60dvh] cursor-pointer rounded-md overflow-hidden w-full "
+                        onClick={() => setViewImg(msg.image)}
+                        className=" h-[40vh] sm:h-[60dvh] cursor-pointer rounded-md overflow-hidden w-full "
                       >
                         <img
                           className=" h-full w-full object-center object-cover"
@@ -171,7 +171,7 @@ export default function UserMessagePage() {
                         />
                       </div>
                       {viewImg && (
-                        <ImageViewerPopup action={setViewImg} img={msg.image} />
+                        <ImageViewerPopup action={setViewImg} img={viewImg} />
                       )}
                     </>
                   )}

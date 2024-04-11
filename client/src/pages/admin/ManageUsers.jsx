@@ -37,8 +37,8 @@ export default function ManageUsers() {
       <div
         className={
           loading || !users.length
-            ? "flex h-[calc(100dvh-150px)] justify-center items-center"
-            : "flex flex-col gap-3 min-h-[calc(100dvh-69px)]"
+            ? "flex h-[60vh] justify-center items-center"
+            : "flex flex-col gap-3 min-h-[calc(100vh-64px)]"
         }
       >
         {loading ? (

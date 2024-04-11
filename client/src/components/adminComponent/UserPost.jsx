@@ -37,7 +37,7 @@ export default function UserPost({ post, setPosts }) {
     }
   };
   return (
-    <div className=" flex flex-col gap-3 border-2 rounded-xl bg-white w-full px-4 py-5 ">
+    <div className=" flex flex-col gap-3 border-2 rounded-xl bg-white w-full px-0 sm:px-4 py-5 ">
       <div className=" flex flex-col gap-5">
         {/* title  */}
         <div className="flex  justify-between items-center gap-4">
@@ -58,8 +58,11 @@ export default function UserPost({ post, setPosts }) {
               </span>
             </div>
           </div>
-          <div onClick={() => setDeletePopup(true)} className="btn btn-circle ">
-            <FaTrash size={20} color="red" />
+          <div
+            onClick={() => setDeletePopup(true)}
+            className="btn btn-circle btn-sm sm:btn-md "
+          >
+            <FaTrash size={20} className="scale-75 sm:scale-100" color="red" />
           </div>
         </div>
         {deletePopup && (
@@ -68,7 +71,10 @@ export default function UserPost({ post, setPosts }) {
 
         {/* text content  */}
         {post.text.length ? (
-          <div onClick={() => navigate(`/admin/post/${post._id}`)}>
+          <div
+            className="px-2"
+            onClick={() => navigate(`/admin/post/${post._id}`)}
+          >
             <p className="">
               {post.text.length < 300
                 ? post.text
@@ -89,7 +95,7 @@ export default function UserPost({ post, setPosts }) {
         {post.image ? (
           <div
             onClick={() => navigate(`/admin/post/${post._id}`)}
-            className="w-[99%] rounded-2xl overflow-hidden md:w-[90%] cursor-pointer duration-200 transition-all h-[80vh] mx-auto "
+            className="w-full sm:rounded-2xl overflow-hidden md:w-[90%] cursor-pointer duration-200 transition-all h-[60vh] sm:h-[80vh] mx-auto "
           >
             <img
               className=" w-full h-full object-cover object-center"

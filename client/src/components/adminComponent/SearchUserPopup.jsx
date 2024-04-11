@@ -21,6 +21,7 @@ export default function SearchUserPopup({ action }) {
   }, []);
 
   const handleSearch = async () => {
+    inputRef.current?.blur();
     if (key.length == 0) {
       setUsers(null);
     }
@@ -58,7 +59,7 @@ export default function SearchUserPopup({ action }) {
           <span className="text-3xl block text-center font-semibold mb-5 ">
             Search People
           </span>
-          <label className="input  border-2 border-[#316ff6a9] mx-auto flex w-[70%]  items-center gap-2">
+          <label className="input bg-gray-200 border-2 border-[#316ff6a9] mx-auto flex w-[70%]  items-center sm:gap-2">
             <input
               value={key}
               onChange={(e) => setKey(e.target.value)}
@@ -74,7 +75,7 @@ export default function SearchUserPopup({ action }) {
             />
             <IoSearchOutline
               onClick={handleSearch}
-              className=" rounded-full bg-[#316ff6] text-white hover:bg-[#3d5ea7] duration-200 font-bold cursor-pointer  p-2"
+              className="z-20 rounded-full bg-[#316ff6] text-white hover:bg-[#3d5ea7] duration-200 font-bold cursor-pointer min-w-max  p-2"
               size={40}
             />
           </label>

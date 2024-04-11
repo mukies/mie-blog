@@ -86,7 +86,7 @@ export default function UserDetails() {
         </>
       ) : !userDetailLoading && !postLoading && user ? (
         <>
-          <div className="px-3">
+          <div className=" px-1 sm:px-3">
             <UserProfile user={user} />
             <span className="text-2xl font-semibold">User Details:</span>
             <div className="flex mt-2 flex-col gap-1">
