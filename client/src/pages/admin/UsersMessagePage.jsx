@@ -40,7 +40,7 @@ export default function UserMessagePage() {
   };
 
   return (
-    <div className="max-w-[768px] h-[calc(100dvh)] sm:h-[calc(100dvh-66px)]   mx-auto">
+    <div className="max-w-[768px] h-[calc(100dvh)] sm:h-[calc(100dvh-65px)]   mx-auto">
       {loading ? (
         <div className="fixed top-0 left-0 right-0 z-[97] bottom-0 bg-white flex justify-center items-center">
           <span className="loading loading-spinner scale-150 "></span>
@@ -110,7 +110,7 @@ export default function UserMessagePage() {
             className={
               loading
                 ? "border-l-2 border-b-2 rounded-b-md border-r-2 border-gray-300 flex justify-center items-center h-[calc(100%-120px)] p-3 overflow-auto "
-                : "border-l-2 border-b-2 rounded-b-md border-r-2 relative border-gray-300 flex flex-col gap-5 h-[calc(100dvh-60px)] p-3 overflow-y-scroll "
+                : "border-l-2 border-b-2 rounded-b-md border-r-2 relative border-gray-300 flex flex-col gap-5 h-[calc(100dvh-64px)] p-3 overflow-y-scroll "
             }
           >
             {messages.map((msg) => (

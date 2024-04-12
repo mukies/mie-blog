@@ -6,7 +6,6 @@ export default function usePreviewImg() {
 
   const previewImg = (e) => {
     const image = e.target.files[0];
-    console.log(image);
     if (image.size > 3145728) {
       toast.error("Image must be less than 3 MB.");
       setImgUrl(null);
