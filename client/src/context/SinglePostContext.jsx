@@ -2,6 +2,7 @@
 /* eslint-disable react/prop-types */
 import axios from "axios";
 import { createContext, useContext, useState } from "react";
+import { toast } from "react-toastify";
 
 const SinglePostContext = createContext();
 
@@ -16,10 +17,10 @@ const SinglePostProvider = ({ children }) => {
       if (data.success) {
         setPosts(data.post);
       } else {
-        alert(data.message);
+        toast.error(data.message);
       }
     } catch (error) {
-      alert(error.message);
+      toast.error(error.message);
     } finally {
       setLoading(false);
     }

@@ -32,10 +32,10 @@ export default function UserDetails() {
         setUser(data.user);
         setIsFrozen(data.user.isFrozen);
       } else {
-        alert(data.message);
+        toast.error(data.message);
       }
     } catch (error) {
-      alert(error.message);
+      toast.error(error.message);
     } finally {
       setUserDetailLoading(false);
     }

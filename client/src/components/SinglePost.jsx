@@ -23,7 +23,7 @@ export default function SinglePost() {
   const commentRef = useRef();
   // for like the post
   const handleLike = async () => {
-    if (!auth) return alert("Login first");
+    if (!auth) return toast.error("Login first");
     if (posts?.likes?.includes(auth?._id)) {
       setPosts({
         ...posts,
@@ -39,7 +39,7 @@ export default function SinglePost() {
   // for adding a comment
   const handleComment = async () => {
     if (!auth) {
-      alert("Please login first.");
+      toast.error("Please login first.");
     } else {
       if (text) {
         setLoading(true);
@@ -58,10 +58,10 @@ export default function SinglePost() {
 
             setText("");
           } else {
-            alert(data.message);
+            toast.error(data.message);
           }
         } catch (error) {
-          alert(error.message);
+          toast.error(error.message);
         } finally {
           setLoading(false);
         }

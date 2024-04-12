@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useFeed } from "../context/FeedContext";
+import { toast } from "react-toastify";
 
 export const usePost = () => {
   const [loading, setLoading] = useState(false);
@@ -14,7 +15,7 @@ export const usePost = () => {
         // window.location.reload();
         setPosts((p) => [...p, data.post]);
       } else {
-        alert(data.message);
+        toast.error(data.message);
       }
     } catch (error) {
       console.log(error);

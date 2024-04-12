@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 export const useRegister = () => {
   const [loading, setLoading] = useState(false);
@@ -26,10 +27,10 @@ export const useRegister = () => {
           window.location.reload();
           //   navigate("/");
         } else {
-          alert(loginData.data.message);
+          toast.error(loginData.data.message);
         }
       } else {
-        alert(data.message);
+        toast.error(data.message);
       }
     } catch (error) {
       console.log(error);

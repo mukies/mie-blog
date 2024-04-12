@@ -36,7 +36,7 @@ export default function Comment({ item: items, commentId, postId, index }) {
       setCmntLike((p) => !p);
       await axios.put(`/api/post/${postId}/comment/like-unlike/${index}`);
     } else {
-      alert("Please login first.");
+      toast.error("Please login first.");
     }
   };
 

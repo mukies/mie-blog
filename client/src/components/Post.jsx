@@ -66,10 +66,10 @@ export default function Post({ item: items, id }) {
         });
         setComment("");
       } else {
-        alert(data.message);
+        toast.error(data.message);
       }
     } catch (error) {
-      alert(error.message);
+      toast.error(error.message);
     } finally {
       setLoading(false);
     }

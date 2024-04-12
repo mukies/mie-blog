@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-
+import { toast } from "react-toastify";
 export default function useUserDetails() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState([]);
@@ -11,10 +11,10 @@ export default function useUserDetails() {
       if (data.success) {
         setUser(data.user);
       } else {
-        alert(data.message);
+        toast.error(data.message);
       }
     } catch (error) {
-      alert(error.message);
+      toast.error(error.message);
     } finally {
       setLoading(false);
     }

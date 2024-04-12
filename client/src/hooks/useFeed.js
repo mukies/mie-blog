@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export const useFeed = () => {
   const [loading, setLoading] = useState(false);
@@ -13,7 +14,7 @@ export const useFeed = () => {
       if (data.success) {
         setPosts(data.feedPost);
       } else {
-        alert("error while fetching feed post.");
+        toast.error("error while fetching feed post.");
       }
     } catch (error) {
       console.log(error);

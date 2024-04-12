@@ -2,6 +2,7 @@
 /* eslint-disable react/prop-types */
 import axios from "axios";
 import { createContext, useContext, useState } from "react";
+import { toast } from "react-toastify";
 
 const FeedContext = createContext();
 
@@ -17,7 +18,7 @@ const FeedProvider = ({ children }) => {
       if (data.success) {
         setPosts(data.feedPost);
       } else {
-        alert("error while fetching feed post.");
+        toast.error("error while fetching feed post.");
       }
     } catch (error) {
       console.log(error);
