@@ -8,6 +8,7 @@ import Popup from "./popup/Popup";
 import { useFeed } from "../context/FeedContext";
 import { useProfilePost } from "../context/ProfilePost";
 import { timeAgo } from "../helper/dateFormater";
+import { toast } from "react-toastify";
 
 export default function Post({ item: items, id }) {
   const auth = JSON.parse(localStorage.getItem("_L"));
@@ -90,15 +91,23 @@ export default function Post({ item: items, id }) {
         {/* title  */}
         <div className="flex px-1 sm:px-3 items-center justify-between">
           <div className=" flex items-center gap-4">
-            <div
-              onClick={() => navigate(`/profile/${item.postedBy.username}`)}
-              className="w-10 h-10 flex justify-center items-center overflow-hidden cursor-pointer rounded-full"
-            >
+            <div className="w-10 h-10 flex justify-center items-center overflow-hidden cursor-pointer rounded-full">
               {item || !feedLoding ? (
                 <img
+                  onClick={() => {
+                    if (item.postedBy?.username) {
+                      navigate(`/profile/${item.postedBy.username}`);
+                    } else {
+                      toast.error("User not available");
+                    }
+                  }}
                   className="object-cover object-center h-full w-full"
-                  alt={item.postedBy?.username}
-                  src={item.postedBy?.profilePic}
+                  alt="user-image"
+                  src={
+                    item.postedBy?.profilePic
+                      ? item.postedBy?.profilePic
+                      : "/no.avif"
+                  }
                 />
               ) : (
                 <span className="loading loading-spinner"></span>
@@ -106,10 +115,18 @@ export default function Post({ item: items, id }) {
             </div>
             <div className="flex flex-col gap-0">
               <h1
-                onClick={() => navigate(`/profile/${item.postedBy.username}`)}
+                onClick={() => {
+                  if (item.postedBy?.username) {
+                    navigate(`/profile/${item.postedBy.username}`);
+                  } else {
+                    toast.error("User not available");
+                  }
+                }}
                 className="text-lg sm:text-xl text-black cursor-pointer capitalize font-semibold"
               >
-                {item.postedBy?.fullName}
+                {item.postedBy?.fullName
+                  ? item.postedBy?.fullName
+                  : "user unavailable"}
               </h1>
               <span className="text-gray-700 flex items-center gap-2">
                 {timeAgo(new Date(item.createdAt))}
@@ -191,8 +208,8 @@ export default function Post({ item: items, id }) {
       <div className="divider  m-0 p-0 w-[90%] mx-auto"></div>
 
       {/* like comment */}
-      <div className="flex w-[99%] md:w-[90%] justify-around px-5 mx-auto  items-center ">
-        <div className="flex w-full items-center  justify-between">
+      <div className="flex w-[99%] md:w-[90%]  justify-around px-5 mx-auto  items-center ">
+        <div className="flex w-full items-center sm:justify-normal sm:gap-5 justify-between">
           {/* <p>50 people likes this.</p> */}
           <div
             onClick={handleLike}

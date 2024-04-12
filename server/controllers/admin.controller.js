@@ -197,8 +197,6 @@ exports.adminSearchUser = async (req, res) => {
 
 exports.deleteUser = async (req, res) => {
   try {
-    await postModel.deleteMany({ postedBy: req.params.id });
-
     await conversationModel.deleteMany({ users: { $in: req.params.id } });
 
     const user = await userModel.findByIdAndDelete(req.params.id);

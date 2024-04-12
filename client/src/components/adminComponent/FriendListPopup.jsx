@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 import { FaTimes } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function FriendListPopup({ title, action, data }) {
-  // console.log("first", data);
   const navigate = useNavigate();
 
   return (
@@ -23,20 +23,24 @@ export default function FriendListPopup({ title, action, data }) {
                 <div className="h-14 w-14 rounded-full overflow-hidden bg-gray-400">
                   <img
                     className=" h-full w-full object-cover object-center "
-                    src={item.profilePic}
-                    alt={item.username}
+                    src="user-profile"
+                    alt={item.username ? item.username : "/no.avif"}
                   />
                 </div>
                 <span className="text-xl font-semibold capitalize">
-                  {item.fullName}
+                  {item.fullName ? item.fullName : "user unavailable"}
                 </span>
               </div>
 
               <div className=" flex flex-col gap-2 justify-center  ">
                 <button
                   onClick={() => {
-                    navigate(`/admin/users/${item.username}`);
-                    action((p) => !p);
+                    if (item?.username) {
+                      navigate(`/admin/users/${item.username}`);
+                      action((p) => !p);
+                    } else {
+                      toast.error("User not available.");
+                    }
                   }}
                   className="btn btn-success btn-sm text-white"
                 >

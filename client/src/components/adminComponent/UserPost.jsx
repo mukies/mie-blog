@@ -44,14 +44,36 @@ export default function UserPost({ post, setPosts }) {
           <div className="flex items-center gap-4">
             <div className="w-10 h-10 overflow-hidden rounded-full">
               <img
-                className="h-full w-full object-cover object-center"
+                onClick={() => {
+                  if (post.postedBy?.username) {
+                    navigate(`/admin/users/${post.postedBy.username}`);
+                  } else {
+                    toast.error("User not available.");
+                  }
+                }}
+                className="h-full cursor-pointer w-full object-cover object-center"
                 alt="user-profile"
-                src={post.postedBy?.profilePic}
+                src={
+                  post.postedBy?.profilePic
+                    ? post.postedBy?.profilePic
+                    : "/no.avif"
+                }
               />
             </div>
             <div className="flex flex-col gap-0">
-              <h1 className="text-xl font-semibold capitalize">
-                {post.postedBy?.fullName}
+              <h1
+                onClick={() => {
+                  if (post.postedBy?.username) {
+                    navigate(`/admin/users/${post.postedBy.username}`);
+                  } else {
+                    toast.error("User not available.");
+                  }
+                }}
+                className="text-xl font-semibold cursor-pointer capitalize"
+              >
+                {post.postedBy?.fullName
+                  ? post.postedBy?.fullName
+                  : "user unavailable"}
               </h1>
               <span className="text-gray-700 flex items-center gap-2">
                 {timeAgo(new Date(post.createdAt))} <FaUserFriends />

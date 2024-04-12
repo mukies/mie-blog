@@ -9,6 +9,7 @@ import ImageViewerPopup from "./popup/ImageViewerPopup";
 import { useNavigate } from "react-router-dom";
 import Popup from "./popup/Popup";
 import { timeAgo } from "../helper/dateFormater";
+import { toast } from "react-toastify";
 
 export default function SinglePost() {
   const auth = JSON.parse(localStorage.getItem("_L"));
@@ -96,27 +97,37 @@ export default function SinglePost() {
           <div className="flex items-center gap-4  justify-between ">
             <div className="flex gap-4 items-center">
               <div className="w-10 h-10 flex justify-center items-center overflow-hidden rounded-full">
-                {posts.postedBy ? (
-                  <img
-                    onClick={() =>
-                      navigate(`/profile/${posts?.postedBy?.username}`)
+                <img
+                  onClick={() => {
+                    if (posts?.postedBy?.username) {
+                      navigate(`/profile/${posts?.postedBy?.username}`);
+                    } else {
+                      toast.error("User not available.");
                     }
-                    className="h-full w-full object-center cursor-pointer object-cover"
-                    alt="user-profile"
-                    src={posts.postedBy?.profilePic}
-                  />
-                ) : (
-                  <span className="loading loading-spinner"></span>
-                )}
+                  }}
+                  className="h-full w-full object-center cursor-pointer object-cover"
+                  alt="user-profile"
+                  src={
+                    posts.postedBy?.profilePic
+                      ? posts.postedBy?.profilePic
+                      : "/no.avif"
+                  }
+                />
               </div>
               <div className="flex flex-col gap-0">
                 <h1
-                  onClick={() =>
-                    navigate(`/profile/${posts?.postedBy?.username}`)
-                  }
-                  className="text-xl text-black cursor-pointer font-semibold"
+                  onClick={() => {
+                    if (posts?.postedBy?.username) {
+                      navigate(`/profile/${posts?.postedBy?.username}`);
+                    } else {
+                      toast.error("User not available.");
+                    }
+                  }}
+                  className="text-xl text-black cursor-pointer capitalize font-semibold"
                 >
-                  {posts?.postedBy?.fullName}
+                  {posts?.postedBy?.fullName
+                    ? posts?.postedBy?.fullName
+                    : "user unavailable"}
                 </h1>
                 <span className="text-gray-700  flex items-center gap-2">
                   {timeAgo(new Date(posts?.createdAt))}

@@ -5,6 +5,7 @@ import { FaTrashAlt } from "react-icons/fa";
 import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export default function AdminCommentSection({
   comment,
@@ -14,6 +15,7 @@ export default function AdminCommentSection({
 }) {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleCmntDelete = async () => {
     if (!loading) {
@@ -44,14 +46,36 @@ export default function AdminCommentSection({
         <div className="flex items-center gap-4">
           <div className="w-8 h-8 flex justify-center items-center overflow-hidden rounded-full">
             <img
-              className="h-full w-full object-center object-cover"
+              onClick={() => {
+                if (comment.commentedBy?.username) {
+                  navigate(`/admin/users/${comment.commentedBy?.username}`);
+                } else {
+                  toast.error("User Unavailable");
+                }
+              }}
+              className=" cursor-pointer h-full w-full object-center object-cover"
               alt="user-profile"
-              src={comment.commentedBy?.profilePic}
+              src={
+                comment.commentedBy?.profilePic
+                  ? comment.commentedBy?.profilePic
+                  : "/no.avif"
+              }
             />
           </div>
           <div className="flex flex-col gap-0 ">
-            <h1 className="text-xl font-semibold capitalize">
-              {comment.commentedBy?.fullName}
+            <h1
+              onClick={() => {
+                if (comment.commentedBy?.username) {
+                  navigate(`/admin/users/${comment.commentedBy?.username}`);
+                } else {
+                  toast.error("User Unavailable");
+                }
+              }}
+              className="text-xl cursor-pointer font-semibold capitalize"
+            >
+              {comment.commentedBy?.fullName
+                ? comment.commentedBy?.fullName
+                : "user deleted"}
             </h1>
           </div>
         </div>

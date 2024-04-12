@@ -66,7 +66,7 @@ export default function UserMessagePage() {
                       src={users[1]?.profilePic}
                       alt="user-image"
                     />
-                    {onlineUsers.includes(users[1]._id) && (
+                    {onlineUsers.includes(users[1]?._id) && (
                       <span className="absolute bottom-0 right-0 h-2 w-2 rounded-full bg-[green] border-[1px] border-white"></span>
                     )}
                   </div>

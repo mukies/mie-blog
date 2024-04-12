@@ -7,6 +7,7 @@ import useUserDetails from "../hooks/useUserDetails";
 import Popup from "./popup/Popup";
 import { useGetPost } from "../context/SinglePostContext";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function Comment({ item: items, commentId, postId, index }) {
   const { setPosts, posts } = useGetPost();
@@ -52,15 +53,23 @@ export default function Comment({ item: items, commentId, postId, index }) {
     <div className="flex flex-col border-[1px] p-3 rounded-lg border-gray-300 gap-5">
       <div className="flex items-center w-full sm:max-w-[50%] justify-between">
         <div className="flex items-center gap-4">
-          <div
-            onClick={() => navigate(`/profile/${item.commentedBy?.username}`)}
-            className="w-8 h-8 cursor-pointer flex justify-center items-center overflow-hidden rounded-full"
-          >
+          <div className="w-8 h-8 cursor-pointer flex justify-center items-center overflow-hidden rounded-full">
             {item && !loading ? (
               <img
+                onClick={() => {
+                  if (item.commentedBy?.username) {
+                    navigate(`/profile/${item.commentedBy?.username}`);
+                  } else {
+                    toast.error("User not available.");
+                  }
+                }}
                 className="h-full w-full object-center object-cover"
                 alt="user-image"
-                src={item.commentedBy?.profilePic}
+                src={
+                  item.commentedBy?.profilePic
+                    ? item.commentedBy?.profilePic
+                    : "/no.avif"
+                }
               />
             ) : (
               <span className="loading loading-spinner"></span>
@@ -68,10 +77,18 @@ export default function Comment({ item: items, commentId, postId, index }) {
           </div>
           <div className="flex flex-col gap-0 ">
             <h1
-              onClick={() => navigate(`/profile/${item.commentedBy?.username}`)}
+              onClick={() => {
+                if (item.commentedBy?.username) {
+                  navigate(`/profile/${item.commentedBy?.username}`);
+                } else {
+                  toast.error("User not available.");
+                }
+              }}
               className="text-xl capitalize text-black cursor-pointer font-semibold"
             >
-              {item.commentedBy?.fullName}
+              {item.commentedBy?.fullName
+                ? item.commentedBy?.fullName
+                : "user unavailable"}
             </h1>
             {/* <span className="text-gray-700">Just now</span> */}
           </div>
