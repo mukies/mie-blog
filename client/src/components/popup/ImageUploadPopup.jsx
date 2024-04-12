@@ -67,7 +67,7 @@ export default function ImageUploadPopup({ setPopup, title }) {
               onChange={previewImg}
               type="file"
               accept="image/*"
-              className="file-input text-white file-input-bordered file-input-primary w-full max-w-xs"
+              className="file-input  file-input-bordered file-input-primary bg-gray-100 w-full max-w-xs"
             />
           </div>
           {imgUrl && (

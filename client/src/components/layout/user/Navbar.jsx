@@ -39,6 +39,21 @@ export default function Nav() {
           : " nav-bar bg-white sticky top-0 px-1 sm:px-10 z-[99]"
       }
     >
+      {!loading && !user?.username && (
+        <div className="fixed overflow-hidden top-0 left-0 bottom-0 right-0 flex justify-center items-center z-[222] bg-black">
+          <div className="bg-white flex flex-col p-5 gap-3 rounded-xl ">
+            <p className="text-xs sm:text-sm md:text-lg font-semibold ">
+              Something went wrong.<br></br> Try logging in later.
+            </p>
+            <button
+              onClick={logout}
+              className="btn btn-secondary btn-sm max-w-max "
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+      )}
       {!loading && user.isFrozen ? (
         <div className="fixed overflow-hidden top-0 left-0 bottom-0 right-0 flex justify-center items-center z-[222] bg-black">
           <div className="bg-white flex flex-col p-5 gap-3 rounded-xl ">
