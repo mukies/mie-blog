@@ -28,7 +28,7 @@ export default function Feed() {
           ) : posts?.length ? (
             posts?.map((item, id) => <Post key={id} id={id} item={item} />)
           ) : (
-            <div className="h-[40dvh] flex justify-center items-center flex-col gap-3">
+            <div className="min-h-[calc(100vh-65px)] flex justify-center items-center flex-col gap-3">
               <p className="text-xl font-semibold ">
                 Follow some people to view their posts.
               </p>
