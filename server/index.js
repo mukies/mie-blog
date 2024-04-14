@@ -7,12 +7,14 @@ const postRoutes = require("./routes/post.route");
 const messageRoutes = require("./routes/message.route");
 const adminRoutes = require("./routes/admin.route");
 const { app, server } = require("./socket/socket");
+const job = require("./cron/cron");
 const path = require("path");
 const port = process.env.PORT;
 // let __dirname = path.resolve();
 
 // database
 require("./db/config");
+job.start();
 
 // middlewares
 app.use(express.json({ limit: "50mb" }));
