@@ -10,7 +10,7 @@ export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const socket = io("http://localhost:8080", {
+    const socket = io("https://mie-0fly.onrender.com", {
       query: {
         userID: auth?._id,
       },
