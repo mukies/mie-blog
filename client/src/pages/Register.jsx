@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import { FaTimes } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaTimes } from "react-icons/fa";
 import { useRegister } from "../hooks/useRegister.js";
 import { toast } from "react-toastify";
 
@@ -16,6 +16,8 @@ export default function Register({ setRegister }) {
   const [confirm, setConfirm] = useState("");
   const [gender, setGender] = useState(null);
   const [err, setErr] = useState(false);
+
+  const [showPass, setShowPass] = useState(false);
 
   // form submit
   const handleSubmit = () => {
@@ -106,7 +108,7 @@ export default function Register({ setRegister }) {
           <input
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            type="password"
+            type={showPass ? "text" : "password"}
             className="grow placeholder:text-gray-500"
             placeholder="Password"
           />
@@ -115,10 +117,25 @@ export default function Register({ setRegister }) {
           <input
             value={confirm}
             onChange={(e) => setConfirm(e.target.value)}
-            type="password"
+            type={showPass ? "text" : "password"}
             className="grow placeholder:text-gray-500"
             placeholder="Confirm Password"
           />
+          <span>
+            {showPass ? (
+              <FaEyeSlash
+                className="min-w-max cursor-pointer "
+                onClick={() => setShowPass((p) => !p)}
+                size={22}
+              />
+            ) : (
+              <FaEye
+                className="cursor-pointer min-w-max"
+                onClick={() => setShowPass((p) => !p)}
+                size={20}
+              />
+            )}
+          </span>
         </label>
         <div className="flex gap-4">
           <label className=" flex gap-2 items-center cursor-pointer">

@@ -4,6 +4,7 @@ import Register from "./Register";
 import { useLogin } from "../hooks/useLogin";
 import "../index.css";
 import { toast } from "react-toastify";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function Login() {
   const [register, setRegister] = useState(false);
@@ -11,6 +12,7 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [err, setErr] = useState(false);
+  const [showPass, setShowPass] = useState(false);
 
   // login hooks
   const { login, loading } = useLogin();
@@ -81,10 +83,25 @@ export default function Login() {
             <input
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              type="password"
+              type={showPass ? "text" : "password"}
               className="grow"
               placeholder="Password"
             />
+            <span>
+              {showPass ? (
+                <FaEyeSlash
+                  className="min-w-max cursor-pointer "
+                  onClick={() => setShowPass((p) => !p)}
+                  size={22}
+                />
+              ) : (
+                <FaEye
+                  className="min-w-max cursor-pointer"
+                  onClick={() => setShowPass((p) => !p)}
+                  size={20}
+                />
+              )}
+            </span>
           </label>
           {err && (
             <span className="text-sm text-center text-[red]">
