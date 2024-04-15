@@ -1,9 +1,9 @@
-const cron = require("cron");
+const { CronJob } = require("cron");
 const https = require("http");
 
 const URL = "https://mie-0fly.onrender.com";
 
-const job = new cron.CronJob("*/14 * * * *", function () {
+const job = new CronJob("*/14 * * * *", function () {
   https
     .get(URL, (res) => {
       if (res.statusCode === 200) {

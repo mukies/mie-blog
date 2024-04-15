@@ -5,6 +5,7 @@
 body {
   scroll-behavior: smooth;
   color: black;
+  background-color: #fff;
 }
 
 .nav-bar {
