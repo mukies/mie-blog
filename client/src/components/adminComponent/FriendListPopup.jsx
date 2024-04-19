@@ -23,8 +23,8 @@ export default function FriendListPopup({ title, action, data }) {
                 <div className="h-14 w-14 rounded-full overflow-hidden bg-gray-400">
                   <img
                     className=" h-full w-full object-cover object-center "
-                    src="user-profile"
-                    alt={item.username ? item.username : "/no.avif"}
+                    alt="user-profile"
+                    src={item.username ? item.profilePic : "/no.avif"}
                   />
                 </div>
                 <span className="text-xl font-semibold capitalize">
