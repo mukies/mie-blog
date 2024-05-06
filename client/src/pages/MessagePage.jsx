@@ -61,8 +61,9 @@ export default function MessagePage() {
   };
 
   return (
-    <div className="max-w-[768px] h-[calc(100dvh-66px)]   mx-auto">
-      <div className="bg-gray-300 sticky top-0 z-10 sm:relative rounded-t-lg h-[60px] px-2 flex  items-center text-black">
+    <div className="max-w-[768px] min-h-[100dvh] sm:min-h-[calc(100vh-60px)]   mx-auto">
+      <div className="bg-gray-300 sticky top-0 sm:top-[64px] z-10  rounded-t-lg h-[60px] px-2 flex  items-center text-black">
+        {/* <div className="flex items-center "></div> */}
         <div className="absolute top-[25%] left-[10px]">
           <button
             onClick={() => navigate("/chats")}
