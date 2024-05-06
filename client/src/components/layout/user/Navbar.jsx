@@ -82,12 +82,12 @@ export default function Nav() {
 
             <label
               onClick={() => setSearchbar((p) => !p)}
-              className="input relative input-bordered p-0  hidden md:w-[70%] md:flex items-center gap-2"
+              className="input relative input-bordered bg-gray-100 p-0  hidden md:w-[70%] md:flex items-center gap-2"
             >
               <input
                 type="text"
                 maxLength={10}
-                className="md:grow h-full w-full  p-[16px] "
+                className="md:grow h-full w-full   p-[16px] "
                 placeholder="Search People..."
               />
               <IoSearchOutline

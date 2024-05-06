@@ -239,7 +239,7 @@ export default function Post({ item: items, id }) {
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             type="text"
-            className="input input-accent input-md"
+            className="input input-accent bg-gray-100 input-md"
             placeholder="write a comment"
           />
           <button

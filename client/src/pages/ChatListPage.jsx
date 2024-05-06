@@ -59,7 +59,7 @@ export default function ChatListPage() {
   };
 
   return (
-    <div className="max-w-[768px]  h-[calc(100vh-69px)] bg-white mx-auto">
+    <div className="max-w-[768px]  min-h-[calc(100vh-69px)] bg-white mx-auto">
       <div className="bg-[#316ff6] rounded-lg h-[60px] relative flex justify-center items-center text-white ">
         <span className="text-2xl font-semibold">Conversations</span>
         <button

@@ -50,8 +50,8 @@ export default function MessageSection({
     <div
       className={
         loading || userLoading || !messages?.length
-          ? "border-l-2 border-b-2 rounded-b-md border-r-2 flex-col gap-3 border-gray-300 flex justify-center items-center sm:min-h-[calc(100%-120px)] min-h-[calc(100vh-100px)] p-3 overflow-auto "
-          : "border-l-2 border-b-2 border-r-2 relative  flex flex-col gap-5 h-[calc(100%-120px+62px)] sm:h-[calc(100%-120px)] p-3 overflow-auto "
+          ? "border-l-2 border-b-2 rounded-b-md border-r-2 flex-col gap-3 border-gray-300 flex justify-center items-center sm:min-h-[calc(100%-120px)]  min-h-[calc(100vh-130px)] p-3 overflow-auto "
+          : "border-l-2 border-b-2 border-r-2 relative  flex flex-col gap-5 min-h-[calc(100%-120px+62px)] sm:min-h-[calc(100%-120px)] p-3 overflow-auto "
       }
     >
       {loading || userLoading ? (

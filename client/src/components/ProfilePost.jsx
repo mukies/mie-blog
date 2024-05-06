@@ -193,7 +193,7 @@ export default function ProfilePost({ item: items, id, setPosts }) {
 
       {/* like comment */}
       <div className="flex w-[99%] md:w-[90%] justify-around px-5 mx-auto  items-center ">
-        <div className="flex w-full items-center  justify-between">
+        <div className="flex w-full items-center  justify-between sm:justify-normal sm:gap-5">
           {/* <p>50 people likes this.</p> */}
           <div
             onClick={handleLike}
@@ -223,7 +223,7 @@ export default function ProfilePost({ item: items, id, setPosts }) {
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             type="text"
-            className="input input-accent input-md"
+            className="input input-accent bg-gray-100 input-md"
             placeholder="write a comment"
           />
           <button
