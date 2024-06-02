@@ -14,7 +14,7 @@ const port = process.env.PORT;
 
 // database
 require("./db/config");
-job.start();
+// job.start();
 
 // middlewares
 app.use(express.json({ limit: "50mb" }));
